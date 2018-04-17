@@ -1,0 +1,54 @@
+{
+  "name": "plusclouds/core",
+  "description": "PlusClouds Core Package",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Semih Turna",
+      "email": "semih.turna@plusclouds.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.1.0",
+    "danielstjules/stringy": "~3.1.0",
+    "phoenix/eloquent-meta": "1.7.*",
+    "kalnoy/nestedset": "^4.3",
+    "vinkla/translator": "5.0.*",
+    "vinkla/hashids": "3.3.*",
+    "cviebrock/eloquent-sluggable": "^4.3",
+    "spatie/laravel-medialibrary": "^6.0.0",
+    "wpb/string-blade-compiler": "^3.5",
+    "predis/predis": "^1.1",
+    "aloha/twilio": "^3.0"
+  },
+  "require-dev": {
+    "illuminate/support": "5.5.*",
+    "illuminate/database": "5.5.*",
+    "illuminate/validation": "5.5.*",
+    "illuminate/http": "5.5.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "PlusClouds\\Core\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "PlusClouds\\Core\\CoreServiceProvider",
+        "Phoenix\\EloquentMeta\\ServiceProvider",
+        "Vinkla\\Hashids\\HashidsServiceProvider",
+        "Aloha\\Twilio\\Support\\Laravel\\ServiceProvider"
+      ],
+      "aliases": {
+        "Registry": "PlusClouds\\Core\\Common\\Registry\\Facades\\Registry",
+        "Hashids": "Vinkla\\Hashids\\Facades\\Hashids",
+        "Twilio": "Aloha\\Twilio\\Support\\Laravel\\Facade"
+      }
+    }
+  },
+  "suggest": {
+    "plusclouds/account": "Bazı sınıflar için gereklidir. [ Category, Comment, Domain, Vote, Hook ]"
+  }
+}
