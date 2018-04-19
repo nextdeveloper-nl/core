@@ -58,6 +58,8 @@ class Discount extends AbstractModel
         'start_at',
         'expires_at',
         'deleted_at',
+        'custom_start_at',
+        'custom_expires_at',
     ];
 
     public static function boot() {
@@ -70,16 +72,18 @@ class Discount extends AbstractModel
      * @return null|Carbon
      */
     public function getStartAtAttribute() {
-        return $this->attributes['start_at'] ??
-            $this->pivot->custom_start_at ? Carbon::parse( $this->pivot->custom_start_at ) : null;
+        $startAt = optional( $this->pivot )->custom_start_at ?? $this->attributes['start_at'];
+
+        return ! is_null( $startAt ) ? Carbon::parse( $startAt ) : null;
     }
 
     /**
      * @return null|Carbon
      */
     public function getExpiresAtAttribute() {
-        return $this->attributes['expires_at'] ??
-            $this->pivot->custom_expires_at ? Carbon::parse( $this->pivot->custom_expires_at ) : null;
+        $expiresAt = optional( $this->pivot )->custom_expires_at ?? $this->attributes['expires_at'];
+
+        return ! is_null( $expiresAt ) ? Carbon::parse( $expiresAt ) : null;
     }
 
 }

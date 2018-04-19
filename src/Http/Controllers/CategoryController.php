@@ -115,6 +115,8 @@ class CategoryController extends AbstractController
     public function destroy(Category $category) {
         $category->delete();
 
+        // todo: Gate gelecek
+
         return $this->noContent();
     }
 

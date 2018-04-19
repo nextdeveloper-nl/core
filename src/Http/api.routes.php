@@ -41,3 +41,20 @@ Route::prefix( 'categories' )->group( function() {
     // Varolan bir kategoriyi siler.
     Route::delete( '/{category}', 'CategoryController@destroy' );
 } );
+
+Route::prefix( 'discounts' )->group( function() {
+    // İndirim listesini döndürür.
+    Route::get( '/', 'DiscountController@index' );
+
+    // İndirim bilgisini döndürür.
+    Route::get( '/{discount}', 'DiscountController@show' );
+
+    // Yeni bir indirim oluşturur.
+    Route::post( '/', 'DiscountController@store' );
+
+    // Varolan indirim bilgilerini günceller.
+    Route::put( '/{discount}', 'DiscountController@update' );
+
+    // Varolan bir indirimi siler.
+    Route::delete( '/{discount}', 'DiscountController@destroy' );
+} );

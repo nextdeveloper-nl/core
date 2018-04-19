@@ -10,6 +10,7 @@
 
 use PlusClouds\Core\Database\Models\Country;
 use PlusClouds\Core\Database\Models\Category;
+use PlusClouds\Core\Database\Models\Discount;
 use PlusClouds\Core\Database\Models\Domain;
 
 return [
@@ -27,5 +28,9 @@ return [
 
     'domain' => function($value) {
         return Domain::findByRef( $value );
+    },
+
+    'discount' => function($value) {
+        return Discount::findByRef( $value );
     },
 ];

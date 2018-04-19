@@ -91,6 +91,8 @@ class CountryController extends AbstractController
     public function destroy(Country $country){
         $country->delete();
 
+        // todo: Gate gelecek
+
         return $this->noContent();
     }
 
