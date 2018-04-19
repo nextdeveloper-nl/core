@@ -20,6 +20,7 @@ use PlusClouds\Core\Database\Models\Domain;
 class CategoryQueryFilter extends AbstractQueryFilter
 {
 
+
     /**
      * Bir kategoriye ait alt kategorileri filtreler.
      *
@@ -32,6 +33,7 @@ class CategoryQueryFilter extends AbstractQueryFilter
 
         return $this->builder->whereDescendantOf( $root->id );
     }
+
 
     /**
      * Bir kategoriye ait üst kategorileri filtreler.
@@ -46,10 +48,11 @@ class CategoryQueryFilter extends AbstractQueryFilter
         return $this->builder->whereAncestorOf( $child->id );
     }
 
+
     /**
      * Alan adına göre kategorileri filtreler.
      *
-     * @param string $domainRef
+     * @param $domainRef
      *
      * @return mixed
      */

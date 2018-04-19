@@ -20,25 +20,17 @@ use Illuminate\Support\ServiceProvider;
 abstract class AbstractServiceProvider extends ServiceProvider
 {
 
-    /**
-     * @var string
-     */
-    protected $projectPath;
+    protected function bootModelBindings() {
+        $bindings = require_once( __DIR__.'/../config/model-binding.php' );
 
-    /**
-     * AbstractServiceProvider constructor.
-     *
-     * @param Application $app
-     */
-    public function __construct(Application $app) {
-        parent::__construct( $app );
-
-        // Proje yolu ayarlanıyor.
-        $projectFolder = implode( DIRECTORY_SEPARATOR, explode( '\\', __NAMESPACE__ ) );
-
-        $this->projectPath = base_path().'vendor/'.$projectFolder;
+        foreach( $bindings as $key => $value ) {
+            if( is_callable( $value ) ) {
+                $this->app['router']->bind( $key, $value );
+            } else {
+                $this->app['router']->model( $key, $value );
+            }
+        }
     }
-
 
     /**
      * Helper dosyaları yükleniyor.
@@ -47,7 +39,7 @@ abstract class AbstractServiceProvider extends ServiceProvider
      */
     protected function registerHelpers() {
         $fileSystem = $this->app['Illuminate\Filesystem\Filesystem'];
-        $helpers = $this->projectPath.DIRECTORY_SEPARATOR.'Helpers'. DIRECTORY_SEPARATOR .'*.php';
+        $helpers = __DIR__.DIRECTORY_SEPARATOR.'Helpers'.DIRECTORY_SEPARATOR.'*.php';
 
         foreach( $fileSystem->glob( $helpers ) as $file ) {
             require_once( $file );

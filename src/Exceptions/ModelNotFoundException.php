@@ -10,21 +10,22 @@
 
 namespace PlusClouds\Core\Exceptions;
 
+
 /**
- * Class NotSupportedException
+ * Class ModelNotFoundException
  * @package PlusClouds\Core\Exceptions
  */
-class NotSupportedException extends AbstractCoreException
+class ModelNotFoundException extends AbstractCoreException
 {
 
     /**
-     * @param \Illuminate\Http\Request
+     * @param  \Illuminate\Http\Request
      *
      * @return mixed
      */
     public function render($request) {
         return response()->api()->setRef( $this->getRef() )
-            ->errorNotImplemented( $this->getMessage() );
+            ->errorNotFound( $this->getMessage() );
     }
 
 }

@@ -35,6 +35,21 @@ function customRnd($min = 1, $max = 2) {
 }
 
 /**
+ * Generate new random uuid
+ *
+ * @return string
+ */
+function genUuid() {
+    $rnd = unpack( 'v*', fread( fopen( '/dev/random', 'r' ), 16 ) );
+
+    $uuid = sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+        $rnd[1], $rnd[2], $rnd[3], $rnd[4] & 0x0fff | 0x4000,
+        $rnd[5] & 0x3fff | 0x8000, $rnd[6], $rnd[7], $rnd[8] );
+
+    return $uuid;
+}
+
+/**
  * Convert a delimited string into an array of tag strings
  *
  * @param string|array $tags

@@ -11,9 +11,10 @@
 namespace PlusClouds\Core;
 
 use InvalidArgumentException;
-use Illuminate\Foundation\AliasLoader;
+use Illuminate\Contracts\Debug\ExceptionHandler;
+use PlusClouds\Core\Exceptions\Handler;
 use PlusClouds\Core\Common\Registry\Drivers\IDriver;
-use PlusClouds\Core\Common\Registry\Facades\Registry;
+use PlusClouds\Core\Http\Traits\Response\Responsable;
 
 /**
  * Class CoreServiceProvider
@@ -33,28 +34,30 @@ class CoreServiceProvider extends AbstractServiceProvider
     public function boot() {
         $this->publishes( [
             __DIR__.'/../config/core.php' => config_path( 'core.php' ),
-        ], 'core' );
+        ], 'config' );
+
+
+        $this->bootErrorHandler();
+        $this->bootModelBindings();
     }
 
     /**
      * @return void
      */
     public function register() {
+        // Register Response Api Macro
+        $this->app['Illuminate\Contracts\Routing\ResponseFactory']->macro( 'api', function() {
+            return new class
+            {
+
+                use Responsable;
+            };
+        } );
+
         $this->registerRegistry();
         $this->registerHelpers();
-
-        // Eloquent Meta
-//        $this->app->register( 'Phoenix\EloquentMeta\ServiceProvider' );
-
-        // Hashids
-//        $this->app->register( 'Vinkla\Hashids\HashidsServiceProvider' );
-
-//        AliasLoader::getInstance()->alias( 'Hashids', 'Vinkla\Hashids\Facades\Hashids' );
-
-        // Aloha Twilio
-//        $this->app->register('Aloha\Twilio\Support\Laravel\ServiceProvider');
-
-//        AliasLoader::getInstance()->alias( 'Twilio', 'Aloha\Twilio\Support\Laravel\Facade' );
+        $this->registerMiddlewares();
+        $this->registerRoutes();
 
         $this->mergeConfigFrom( __DIR__.'/../config/core.php', 'core' );
     }
@@ -64,6 +67,32 @@ class CoreServiceProvider extends AbstractServiceProvider
      */
     public function provides() {
         return [ 'core' ];
+    }
+
+    /**
+     * Hata işleyiciyi değiştiriyoruz.
+     *
+     * @return void
+     */
+    public function bootErrorHandler(){
+        $this->app->singleton(
+            ExceptionHandler::class,
+            Handler::class
+        );
+    }
+
+    /**
+     * Rota'ları kaydeder.
+     *
+     * @return void
+     */
+    private function registerRoutes() {
+        if( ! $this->app->routesAreCached() ) {
+            $this->app['router']->prefix( 'v2' )
+                ->middleware( 'api' )
+                ->namespace( 'PlusClouds\Core\Http\Controllers' )
+                ->group( __DIR__.DIRECTORY_SEPARATOR.'Http'.DIRECTORY_SEPARATOR.'api.routes.php' );
+        }
     }
 
     /**
@@ -91,8 +120,25 @@ class CoreServiceProvider extends AbstractServiceProvider
         } );
 
         $this->app->singleton( 'registry', IDriver::class );
+    }
 
-//        AliasLoader::getInstance()->alias( 'Registry', Registry::class );
+    /**
+     * Denetleyiciler kaydediliyor.
+     *
+     * @return void
+     */
+    private function registerMiddlewares() {
+        $kernel = $this->app['Illuminate\Contracts\Http\Kernel'];
+
+        // Register HTTP middleware
+        foreach( config( 'core.middlewares.http' ) as $middleware ) {
+            $kernel->pushMiddleware( $middleware );
+        }
+
+        // Register Route middleware
+        foreach( config( 'core.middlewares.route' ) as $key => $middleware ) {
+            $this->app['router']->middleware( $key, $middleware );
+        }
     }
 
 }

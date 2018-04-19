@@ -23,7 +23,7 @@ trait WithPassive
      * @return void
      */
     public static function bootWithPassive() {
-        static::addGlobalScope( ActiveScope::class );
+        static::addGlobalScope( new ActiveScope() );
     }
 
     /**

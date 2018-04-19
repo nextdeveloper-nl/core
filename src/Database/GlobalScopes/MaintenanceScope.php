@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the PlusClouds-5.5 library.
+ * This file is part of the PlusClouds.Core library.
  *
  * (c) Semih Turna <semih.turna@plusclouds.com>
  *

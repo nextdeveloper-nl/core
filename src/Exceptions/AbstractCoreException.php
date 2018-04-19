@@ -10,7 +10,7 @@
 
 namespace PlusClouds\Core\Exceptions;
 
-use \Exception;
+use Exception;
 
 /**
  * Class AbstractCoreException
@@ -18,5 +18,57 @@ use \Exception;
  */
 abstract class AbstractCoreException extends Exception
 {
+
+    /**
+     * @var int|null|string
+     */
+    protected $ref;
+
+    /**
+     * @var int|mixed
+     */
+    protected $code;
+
+    /**
+     * @var string
+     */
+    protected $message;
+
+    /**
+     * @var string
+     */
+    protected $file;
+
+    /**
+     * @var int
+     */
+    protected $line;
+
+    /**
+     * @var array
+     */
+    protected $trace;
+
+    /**
+     * AbstractCoreException constructor.
+     *
+     * @param Exception $e
+     * @param null|string|int $ref
+     */
+    public function __construct(Exception $e, $ref = null ) {
+        $this->ref = $ref;
+        $this->code = $e->getCode();
+        $this->message = $e->getMessage();
+        $this->file = $e->getFile();
+        $this->line = $e->getLine();
+        $this->trace = $e->getTrace();
+    }
+
+    /**
+     * @return int|null|string
+     */
+    public function getRef(){
+        return $this->ref;
+    }
 
 }

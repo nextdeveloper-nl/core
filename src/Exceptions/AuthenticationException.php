@@ -10,21 +10,22 @@
 
 namespace PlusClouds\Core\Exceptions;
 
+
 /**
- * Class NotSupportedException
+ * Class AuthenticationException
  * @package PlusClouds\Core\Exceptions
  */
-class NotSupportedException extends AbstractCoreException
+class AuthenticationException extends AbstractCoreException
 {
 
     /**
-     * @param \Illuminate\Http\Request
+     * @param  \Illuminate\Http\Request
      *
      * @return mixed
      */
     public function render($request) {
         return response()->api()->setRef( $this->getRef() )
-            ->errorNotImplemented( $this->getMessage() );
+            ->errorUnauthorized( $this->getMessage() );
     }
 
 }

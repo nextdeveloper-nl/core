@@ -10,21 +10,22 @@
 
 namespace PlusClouds\Core\Exceptions;
 
+
 /**
- * Class NotSupportedException
+ * Class ValidationException
  * @package PlusClouds\Core\Exceptions
  */
-class NotSupportedException extends AbstractCoreException
+class ValidationException extends AbstractCoreException
 {
 
     /**
-     * @param \Illuminate\Http\Request
+     * @param  \Illuminate\Http\Request
      *
      * @return mixed
      */
     public function render($request) {
         return response()->api()->setRef( $this->getRef() )
-            ->errorNotImplemented( $this->getMessage() );
+            ->errorUnprocessable( $this->getMessage() );
     }
 
 }

@@ -10,21 +10,18 @@
 
 namespace PlusClouds\Core\Exceptions;
 
-/**
- * Class NotSupportedException
- * @package PlusClouds\Core\Exceptions
- */
-class NotSupportedException extends AbstractCoreException
+
+class TokenMismatchException extends AbstractCoreException
 {
 
     /**
-     * @param \Illuminate\Http\Request
+     * @param  \Illuminate\Http\Request
      *
      * @return mixed
      */
     public function render($request) {
         return response()->api()->setRef( $this->getRef() )
-            ->errorNotImplemented( $this->getMessage() );
+            ->errorBadRequest( $this->getMessage() );
     }
 
 }

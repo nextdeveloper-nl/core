@@ -22,7 +22,7 @@ trait HashId
 {
 
     /**
-     *
+     * return @void
      */
     public static function bootHashid() {
         static::created( function($model) {
@@ -66,16 +66,16 @@ trait HashId
 
     /**
      * @param $ref
-     * @param array $columns
      *
      * @return mixed
+     * @throws ModelNotFoundException
      */
-    public static function findByRef($ref, $columns = [ '*' ]) {
-        if( ! is_null( $data = static::whereRaw( static::getHashidsColumn().' = \''.$ref.'\' COLLATE utf8_bin' )->first( $columns ) ) ) {
+    public static function findByRef($ref) {
+        if( ! is_null( $data = static::whereRaw( static::getHashidsColumn().' = \''.$ref.'\' COLLATE utf8_bin' )->first() ) ) {
             return $data;
         }
 
-        throw new ModelNotFoundException;
+        throw new ModelNotFoundException( 'Could not find the records you are looking for.' );
     }
 
     /**

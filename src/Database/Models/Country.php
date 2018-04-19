@@ -10,6 +10,7 @@
 
 namespace PlusClouds\Core\Database\Models;
 
+use PlusClouds\Core\Database\Traits\Filterable;
 use PlusClouds\Core\Database\Traits\GlobalScopes\WithPassive;
 
 /**
@@ -19,6 +20,7 @@ use PlusClouds\Core\Database\Traits\GlobalScopes\WithPassive;
 class Country extends AbstractModel
 {
 
+    use Filterable;
     use WithPassive;
 
     /**
@@ -36,6 +38,7 @@ class Country extends AbstractModel
      */
     protected $casts = [
         'phone_code' => 'integer',
+        'rate'       => 'double',
         'is_active'  => 'boolean',
     ];
 
