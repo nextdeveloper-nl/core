@@ -34,7 +34,6 @@ class Domain extends AbstractModel
      * @var array
      */
     protected $casts = [
-        'options'   => 'array',
         'is_locked' => 'boolean',
         'is_active' => 'boolean',
     ];

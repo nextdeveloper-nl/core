@@ -13,6 +13,7 @@ namespace PlusClouds\Core\Database\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use PlusClouds\Core\Database\Traits\Filterable;
+use PlusClouds\Core\Database\Traits\HashId;
 
 /**
  * Class EmailTemplate
@@ -21,7 +22,7 @@ use PlusClouds\Core\Database\Traits\Filterable;
 class EmailTemplate extends AbstractModel
 {
 
-    use SoftDeletes, Filterable;
+    use SoftDeletes, HashId, Filterable;
 
     /**
      * @var array

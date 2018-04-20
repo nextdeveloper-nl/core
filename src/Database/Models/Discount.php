@@ -15,6 +15,10 @@ use Illuminate\Support\Carbon;
 use PlusClouds\Core\Database\Observers\DiscountObserver;
 use PlusClouds\Core\Database\Traits\HashId;
 
+/**
+ * Class Discount
+ * @package PlusClouds\Core\Database\Models
+ */
 class Discount extends AbstractModel
 {
 
@@ -62,6 +66,9 @@ class Discount extends AbstractModel
         'custom_expires_at',
     ];
 
+    /**
+     * @return void
+     */
     public static function boot() {
         parent::boot();
 

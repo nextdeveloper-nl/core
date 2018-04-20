@@ -11,6 +11,7 @@
 namespace PlusClouds\Core\Database\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
+use PlusClouds\Core\Database\Observers\HookObserver;
 use PlusClouds\Core\Database\Traits\HashId;
 use PlusClouds\Core\Database\Traits\Filterable;
 
@@ -24,6 +25,15 @@ class Hook extends AbstractModel
 {
 
     use SoftDeletes, HashId, Filterable;
+
+    /**
+     * @return void
+     */
+    public static function boot() {
+        parent::boot();
+
+        parent::observe( HookObserver::class );
+    }
 
     /**
      * @return int

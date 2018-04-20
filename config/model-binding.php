@@ -12,6 +12,8 @@ use PlusClouds\Core\Database\Models\Country;
 use PlusClouds\Core\Database\Models\Category;
 use PlusClouds\Core\Database\Models\Discount;
 use PlusClouds\Core\Database\Models\Domain;
+use PlusClouds\Core\Database\Models\EmailTemplate;
+use PlusClouds\Core\Database\Models\Hook;
 
 return [
     'country' => function($value) {
@@ -32,5 +34,13 @@ return [
 
     'discount' => function($value) {
         return Discount::findByRef( $value );
+    },
+
+    'template' => function($value) {
+        return EmailTemplate::findByRef( $value );
+    },
+
+    'hook' => function($value) {
+        return Hook::findByRef( $value );
     },
 ];
