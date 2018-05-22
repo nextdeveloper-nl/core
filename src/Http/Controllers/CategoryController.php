@@ -16,8 +16,7 @@ use PlusClouds\Core\Database\Models\Category;
 use PlusClouds\Core\Database\Models\Domain;
 use PlusClouds\Core\Http\Requests\CategoryStoreRequest;
 use PlusClouds\Core\Http\Requests\CategoryUpdateRequest;
-use PlusClouds\Core\Http\Resources\CategoryCollection;
-use PlusClouds\Core\Http\Resources\CategoryResource;
+use PlusClouds\Core\Http\Transformers\CategoryTransformer;
 
 /**
  * Class CategoryController
@@ -39,7 +38,7 @@ class CategoryController extends AbstractController
 
         throw_if( $categories->isEmpty(), ModelNotFoundException::class, 'Could not find the records you are looking for.' );
 
-        return $this->withCollection( CategoryCollection::make( $categories ) );
+        return $this->withCollection( $categories->toTree(), app( CategoryTransformer::class ) );
     }
 
     /**
@@ -50,12 +49,11 @@ class CategoryController extends AbstractController
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(Category $category) {
-        return $this->withItem( CategoryResource::make( $category ) );
+        return $this->withItem( $category, app( CategoryTransformer::class ) );
     }
 
-
     /**
-     * // Yeni bir kategori oluşturur.
+     * Yeni bir kategori oluşturur.
      *
      * @param CategoryStoreRequest $request
      *
@@ -71,9 +69,8 @@ class CategoryController extends AbstractController
         }
 
         return $this->setStatusCode( 201 )
-            ->withItem( CategoryResource::make( $category->fresh() ) );
+            ->withItem( $category->fresh(), app( CategoryTransformer::class ) );
     }
-
 
     /**
      * Varolan kategori bilgilerini günceller.
@@ -96,13 +93,12 @@ class CategoryController extends AbstractController
             $ancestor = Category::findByRef( ( $categoryRef = $request->get( 'category_ref' ) ) );
 
             if( $ancestor->id_ref !== $categoryRef ) {
-                $category->makeChildOf( $ancestor );
+                $category->appendToNode( $ancestor )->save();
             }
         }
 
         return $this->noContent();
     }
-
 
     /**
      * Varolan bir kategoriyi siler.
@@ -113,9 +109,9 @@ class CategoryController extends AbstractController
      * @throws \Exception
      */
     public function destroy(Category $category) {
-        $category->delete();
+        $this->authorize( 'destroy', $category );
 
-        // todo: Gate gelecek
+        $category->delete();
 
         return $this->noContent();
     }

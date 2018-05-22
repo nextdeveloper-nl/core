@@ -36,6 +36,7 @@ class CoreServiceProvider extends AbstractServiceProvider
             __DIR__.'/../config/core.php' => config_path( 'core.php' ),
         ], 'config' );
 
+        $this->loadViewsFrom( $this->dir.'/../resources/views', 'Core' );
 
         $this->bootErrorHandler();
         $this->bootModelBindings();
@@ -56,7 +57,7 @@ class CoreServiceProvider extends AbstractServiceProvider
 
         $this->registerRegistry();
         $this->registerHelpers();
-        $this->registerMiddlewares();
+        $this->registerMiddlewares( 'core' );
         $this->registerRoutes();
 
         $this->mergeConfigFrom( __DIR__.'/../config/core.php', 'core' );
@@ -74,7 +75,7 @@ class CoreServiceProvider extends AbstractServiceProvider
      *
      * @return void
      */
-    public function bootErrorHandler(){
+    public function bootErrorHandler() {
         $this->app->singleton(
             ExceptionHandler::class,
             Handler::class
@@ -120,25 +121,6 @@ class CoreServiceProvider extends AbstractServiceProvider
         } );
 
         $this->app->singleton( 'registry', IDriver::class );
-    }
-
-    /**
-     * Denetleyiciler kaydediliyor.
-     *
-     * @return void
-     */
-    private function registerMiddlewares() {
-        $kernel = $this->app['Illuminate\Contracts\Http\Kernel'];
-
-        // Register HTTP middleware
-        foreach( config( 'core.middlewares.http' ) as $middleware ) {
-            $kernel->pushMiddleware( $middleware );
-        }
-
-        // Register Route middleware
-        foreach( config( 'core.middlewares.route' ) as $key => $middleware ) {
-            $this->app['router']->middleware( $key, $middleware );
-        }
     }
 
 }

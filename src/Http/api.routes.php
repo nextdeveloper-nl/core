@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-Route::prefix('countries')->group(function(){
+Route::prefix( 'countries' )->group( function() {
     // Ülke listesini döndürür.
     Route::get( '/', 'CountryController@index' );
 
@@ -23,7 +23,7 @@ Route::prefix('countries')->group(function(){
 
     // Varolan bir ülkeyi siler.
     Route::delete( '/{country}', 'CountryController@destroy' );
-});
+} );
 
 Route::prefix( 'domains' )->group( function() {
     // Alan adı listesini döndürür.
@@ -42,10 +42,10 @@ Route::prefix( 'domains' )->group( function() {
     Route::delete( '/{domain}', 'DomainController@destroy' );
 
     // Alan adını kullanıma kapatır.
-    Route::put('/{domain}/lock', 'LockedDomainsController@update');
+    Route::put( '/{domain}/lock', 'LockedDomainsController@update' );
 
     // Alan adını kullanıma açar.
-    Route::delete('/{domain}/unlock', 'LockedDomainsController@destroy');
+    Route::delete( '/{domain}/unlock', 'LockedDomainsController@destroy' );
 } );
 
 Route::prefix( 'categories' )->group( function() {
@@ -84,19 +84,19 @@ Route::prefix( 'discounts' )->group( function() {
 
 Route::prefix( 'email-templates' )->group( function() {
     // E-posta şablon listesini döndürür.
-    Route::get( '/', 'EmailTemplate@index' );
+    Route::get( '/', 'EmailTemplateController@index' );
 
     // E-posta şablon bilgisini döndürür.
-    Route::get( '/{template}', 'EmailTemplate@show' );
+    Route::get( '/{template}', 'EmailTemplateController@show' );
 
     // Yeni bir e-posta şablonu oluşturur.
-    Route::post( '/', 'EmailTemplate@store' );
+    Route::post( '/', 'EmailTemplateController@store' );
 
     // Varolan e-posta şablon bilgilerini günceller.
-    Route::put( '/{template}', 'EmailTemplate@update' );
+    Route::put( '/{template}', 'EmailTemplateController@update' );
 
     // Varolan bir e-posta şablonunu siler.
-    Route::delete( '/{template}', 'EmailTemplate@destroy' );
+    Route::delete( '/{template}', 'EmailTemplateController@destroy' );
 } );
 
 Route::prefix( 'hooks' )->group( function() {

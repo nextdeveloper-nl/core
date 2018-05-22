@@ -24,8 +24,7 @@ class ModelNotFoundException extends AbstractCoreException
      * @return mixed
      */
     public function render($request) {
-        return response()->api()->setRef( $this->getRef() )
-            ->errorNotFound( $this->getMessage() );
+        return response()->api()->errorNotFound( $this->getMessage() );
     }
 
 }

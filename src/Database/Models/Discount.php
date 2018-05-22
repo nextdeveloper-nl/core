@@ -35,21 +35,13 @@ class Discount extends AbstractModel
     /**
      * @var array
      */
-    protected $fillable = [
-        'title',
-        'discount_type',
-        'percentage',
-        'price',
-        'currency_code',
-        'min_order_value',
-        'start_at',
-        'expires_at',
-    ];
+    protected $guarded = [];
 
     /**
      * @var array
      */
     protected $casts = [
+        'discount_type'   => 'bool',
         'percentage'      => 'double',
         'price'           => 'double',
         'min_order_value' => 'double',

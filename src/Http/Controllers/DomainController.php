@@ -16,8 +16,7 @@ use PlusClouds\Core\Database\Filters\DomainQueryFilter;
 use PlusClouds\Core\Database\Models\Domain;
 use PlusClouds\Core\Http\Requests\DomainStoreRequest;
 use PlusClouds\Core\Http\Requests\DomainUpdateRequest;
-use PlusClouds\Core\Http\Resources\DomainCollection;
-use PlusClouds\Core\Http\Resources\DomainResource;
+use PlusClouds\Core\Http\Transformers\DomainTransformer;
 
 class DomainController extends AbstractController
 {
@@ -35,7 +34,7 @@ class DomainController extends AbstractController
 
         throw_if( $domains->isEmpty(), ModelNotFoundException::class, 'Could not find the records you are looking for.' );
 
-        return $this->withCollection( DomainCollection::make( $domains ) );
+        return $this->withCollection( $domains, app( DomainTransformer::class ) );
     }
 
     /**
@@ -46,7 +45,7 @@ class DomainController extends AbstractController
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(Domain $domain) {
-        return $this->withItem( DomainResource::make( $domain ) );
+        return $this->withItem( $domain, app( DomainTransformer::class ) );
     }
 
     /**
@@ -60,7 +59,7 @@ class DomainController extends AbstractController
         $domain = Domain::create( $request->validated() );
 
         return $this->setStatusCode( 201 )
-            ->withItem( DomainResource::make( $domain->fresh() ) );
+            ->withItem( $domain->fresh(), app( DomainTransformer::class ) );
     }
 
     /**
@@ -86,9 +85,9 @@ class DomainController extends AbstractController
      * @throws \Exception
      */
     public function destroy(Domain $domain) {
-        $domain->delete();
+        $this->authorize( 'destroy', $domain );
 
-        // todo : Gate gelecek
+        $domain->delete();
 
         return $this->noContent();
     }

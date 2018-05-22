@@ -20,11 +20,6 @@ abstract class AbstractCoreException extends Exception
 {
 
     /**
-     * @var int|null|string
-     */
-    protected $ref;
-
-    /**
      * @var int|mixed
      */
     protected $code;
@@ -53,22 +48,13 @@ abstract class AbstractCoreException extends Exception
      * AbstractCoreException constructor.
      *
      * @param Exception $e
-     * @param null|string|int $ref
      */
-    public function __construct(Exception $e, $ref = null ) {
-        $this->ref = $ref;
+    public function __construct(Exception $e ) {
         $this->code = $e->getCode();
         $this->message = $e->getMessage();
         $this->file = $e->getFile();
         $this->line = $e->getLine();
         $this->trace = $e->getTrace();
-    }
-
-    /**
-     * @return int|null|string
-     */
-    public function getRef(){
-        return $this->ref;
     }
 
 }

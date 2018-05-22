@@ -15,8 +15,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use PlusClouds\Core\Database\Models\EmailTemplate;
 use PlusClouds\Core\Http\Requests\EmailTemplateStoreRequest;
 use PlusClouds\Core\Http\Requests\EmailTemplateUpdateRequest;
-use PlusClouds\Core\Http\Resources\EmailTemplateCollection;
-use PlusClouds\Core\Http\Resources\EmailTemplateResource;
+use PlusClouds\Core\Http\Transformers\EmailTemplateTransformer;
 
 /**
  * Class EmailTemplateController
@@ -36,7 +35,7 @@ class EmailTemplateController extends AbstractController
 
         throw_if( $templates->isEmpty(), ModelNotFoundException::class, 'Could not find the records you are looking for.' );
 
-        return $this->withCollection( EmailTemplateCollection::make( $templates ) );
+        return $this->withCollection( $templates, app( EmailTemplateTransformer::class ) );
     }
 
     /**
@@ -47,7 +46,7 @@ class EmailTemplateController extends AbstractController
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(EmailTemplate $template) {
-        return $this->withItem( EmailTemplateResource::make( $template ) );
+        return $this->withItem( $template, app( EmailTemplateTransformer::class ) );
     }
 
     /**
@@ -61,7 +60,7 @@ class EmailTemplateController extends AbstractController
         $template = EmailTemplate::create( $request->validated() );
 
         return $this->setStatusCode( 201 )
-            ->withItem( EmailTemplateResource::make( $template->fresh() ) );
+            ->withItem( $template->fresh(), app( EmailTemplateTransformer::class ) );
     }
 
     /**
@@ -87,9 +86,9 @@ class EmailTemplateController extends AbstractController
      * @throws \Exception
      */
     public function delete(EmailTemplate $template) {
-        $template->delete();
+        $this->authorize( 'destroy', $template );
 
-        // todo: Gate gelecek
+        $template->delete();
 
         return $this->noContent();
     }

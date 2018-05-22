@@ -10,6 +10,9 @@
 
 namespace PlusClouds\Core\Http\Controllers;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller;
 use PlusClouds\Core\Http\Traits\Response\Responsable;
 
@@ -20,6 +23,7 @@ use PlusClouds\Core\Http\Traits\Response\Responsable;
 abstract class AbstractController extends Controller
 {
 
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
     use Responsable;
 
     /**
@@ -31,6 +35,7 @@ abstract class AbstractController extends Controller
      * AbstractController constructor.
      */
     public function __construct() {
+        auth()->loginUsingId( 1 );
         $this->authUser = auth()->user();
     }
 

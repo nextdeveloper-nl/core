@@ -24,8 +24,7 @@ class AuthorizationException extends AbstractCoreException
      * @return mixed
      */
     public function render($request) {
-        return response()->api()->setRef( $this->getRef() )
-            ->errorForbidden( $this->getMessage() );
+        return response()->api()->errorForbidden( $this->getMessage() );
     }
 
 }

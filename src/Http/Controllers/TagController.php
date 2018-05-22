@@ -13,8 +13,7 @@ namespace PlusClouds\Core\Http\Controllers;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use PlusClouds\Core\Database\Models\Tag;
-use PlusClouds\Core\Http\Resources\TagCollection;
-use PlusClouds\Core\Http\Resources\TagResource;
+use PlusClouds\Core\Http\Transformers\TagTransformer;
 
 /**
  * Class TagController
@@ -34,7 +33,7 @@ class TagController extends AbstractController
 
         throw_if( $tags->isEmpty(), ModelNotFoundException::class, 'Could not find the records you are looking for.' );
 
-        return $this->withCollection( TagCollection::make( $tags ) );
+        return $this->withCollection( $tags, app( TagTransformer::class ) );
     }
 
     /**
@@ -45,7 +44,7 @@ class TagController extends AbstractController
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(Tag $tag) {
-        return $this->withItem( TagResource::make( $tag ) );
+        return $this->withItem( $tag, app( TagTransformer::class ) );
     }
 
     /**

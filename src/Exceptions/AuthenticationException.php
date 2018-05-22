@@ -24,8 +24,7 @@ class AuthenticationException extends AbstractCoreException
      * @return mixed
      */
     public function render($request) {
-        return response()->api()->setRef( $this->getRef() )
-            ->errorUnauthorized( $this->getMessage() );
+        return response()->api()->errorUnauthorized( $this->getMessage() );
     }
 
 }

@@ -24,8 +24,7 @@ class ValidationException extends AbstractCoreException
      * @return mixed
      */
     public function render($request) {
-        return response()->api()->setRef( $this->getRef() )
-            ->errorUnprocessable( $this->getMessage() );
+        return response()->api()->errorUnprocessable( $this->getMessage() );
     }
 
 }

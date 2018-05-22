@@ -10,13 +10,28 @@
 
 namespace PlusClouds\Core\Exceptions;
 
+use Throwable;
+
 
 /**
- * Class TokenMismatchException
+ * Class VerifiedException
  * @package PlusClouds\Core\Exceptions
  */
-class TokenMismatchException extends AbstractCoreException
+class VerifiedException extends AbstractCoreException
 {
+
+    /**
+     * VerifiedException constructor.
+     *
+     * @param string $message
+     * @param int $code
+     * @param Throwable|null $previous
+     */
+    public function __construct($message = "", $code = 0, Throwable $previous = null) {
+        $this->message = $message;
+        $this->code = $code;
+        $this->previous = $previous;
+    }
 
     /**
      * @param  \Illuminate\Http\Request

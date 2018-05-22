@@ -22,7 +22,8 @@ class DomainUpdateRequest extends AbstractFormRequest
      * @return bool
      */
     public function authorize() {
-        return $this->user()->can( 'domain@update' );
+        return $this->user()->can( 'domain@update' )
+            && getMasterAccount( $this->user() )->id == $this->route( 'domain' )->account_id;
     }
 
     /**

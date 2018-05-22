@@ -15,8 +15,7 @@ use PlusClouds\Core\Database\Filters\CountryQueryFilter;
 use PlusClouds\Core\Database\Models\Country;
 use PlusClouds\Core\Http\Requests\CountryStoreRequest;
 use PlusClouds\Core\Http\Requests\CountryUpdateRequest;
-use PlusClouds\Core\Http\Resources\CountryCollection;
-use PlusClouds\Core\Http\Resources\CountryResource;
+use PlusClouds\Core\Http\Transformers\CountryTransformer;
 
 /**
  * Class CountryController
@@ -38,7 +37,7 @@ class CountryController extends AbstractController
 
         throw_if( $countries->isEmpty(), ModelNotFoundException::class, 'Could not find the records you are looking for.' );
 
-        return $this->withCollection( CountryCollection::make( $countries ) );
+        return $this->withCollection( $countries, app( CountryTransformer::class ) );
     }
 
     /**
@@ -49,7 +48,7 @@ class CountryController extends AbstractController
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(Country $country) {
-        return $this->withItem( CountryResource::make( $country ) );
+        return $this->withItem( $country, app( CountryTransformer::class ) );
     }
 
     /**
@@ -63,7 +62,7 @@ class CountryController extends AbstractController
         $country = Country::create( $request->validated() );
 
         return $this->setStatusCode( 201 )
-            ->withItem( CountryResource::make( $country->fresh() ) );
+            ->withItem( $country->fresh(), app( CountryTransformer::class ) );
     }
 
     /**
@@ -88,10 +87,10 @@ class CountryController extends AbstractController
      * @return mixed
      * @throws \Exception
      */
-    public function destroy(Country $country){
-        $country->delete();
+    public function destroy(Country $country) {
+        $this->authorize( 'destroy', $country );
 
-        // todo: Gate gelecek
+        $country->delete();
 
         return $this->noContent();
     }

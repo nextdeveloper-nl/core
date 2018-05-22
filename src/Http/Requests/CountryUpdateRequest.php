@@ -11,6 +11,10 @@
 namespace PlusClouds\Core\Http\Requests;
 
 
+/**
+ * Class CountryUpdateRequest
+ * @package PlusClouds\Core\Http\Requests
+ */
 class CountryUpdateRequest extends AbstractFormRequest
 {
 

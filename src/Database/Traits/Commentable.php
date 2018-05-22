@@ -35,15 +35,15 @@ trait Commentable
      *
      * @param array $data
      * @param Model $creator
-     * @param Model|null $parent
+     * @param Model|null $ancestor
      *
      * @return bool
      */
-    public function comment($data, Model $creator, Model $parent = null) {
+    public function comment($data, Model $creator, Model $ancestor = null) {
         $comment = ( new Comment() )->createComment( $this, $data, $creator );
 
-        if( ! empty( $parent ) ) {
-            $comment->appendToNode( $parent )->save();
+        if( ! empty( $ancestor ) ) {
+            $ancestor->appendNode( $comment );
         }
 
         return $comment;
@@ -54,15 +54,15 @@ trait Commentable
      *
      * @param int $id
      * @param array $data
-     * @param Model|null $parent
+     * @param Model|null $ancestor
      *
      * @return bool
      */
-    public function updateComment($id, $data, Model $parent = null) {
+    public function updateComment($id, $data, Model $ancestor = null) {
         $comment = ( new Comment() )->updateComment( $id, $data );
 
-        if( ! empty( $parent ) ) {
-            $comment->appendToNode( $parent )->save();
+        if( ! empty( $ancestor ) ) {
+            $comment->appendToNode( $ancestor )->save();
         }
 
         return $comment;

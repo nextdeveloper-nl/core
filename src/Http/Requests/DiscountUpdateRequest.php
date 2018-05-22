@@ -11,6 +11,10 @@
 namespace PlusClouds\Core\Http\Requests;
 
 
+/**
+ * Class DiscountUpdateRequest
+ * @package PlusClouds\Core\Http\Requests
+ */
 class DiscountUpdateRequest extends AbstractFormRequest
 {
 

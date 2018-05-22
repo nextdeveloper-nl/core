@@ -88,7 +88,7 @@ class Handler extends BaseHandler
                 );
             }
 
-            return parent::render( $request, new $customException( $e, $this->ref ) );
+            return parent::render( $request, new $customException( $e ) );
         }
 
         return parent::render( $request, $e );

@@ -19,4 +19,15 @@ use Illuminate\Foundation\Http\FormRequest;
 abstract class AbstractFormRequest extends FormRequest
 {
 
+    /**
+     * @param array $errors
+     *
+     * @return mixed
+     */
+    public function response(array $errors) {
+        return response()->api()->errorUnprocessable( 'Validation Failed', array_map( function($error) {
+            return reset( $error );
+        }, array_values( $errors ) ) );
+    }
+
 }

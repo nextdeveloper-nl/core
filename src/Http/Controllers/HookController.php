@@ -15,8 +15,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use PlusClouds\Core\Database\Models\Hook;
 use PlusClouds\Core\Http\Requests\HookStoreRequest;
 use PlusClouds\Core\Http\Requests\HookUpdateRequest;
-use PlusClouds\Core\Http\Resources\HookCollection;
-use PlusClouds\Core\Http\Resources\HookResource;
+use PlusClouds\Core\Http\Transformers\HookTransformer;
 
 /**
  * Class HookController
@@ -36,7 +35,7 @@ class HookController extends AbstractController
 
         throw_if( $hooks->isEmpty(), ModelNotFoundException::class, 'Could not find the records you are looking for.' );
 
-        return $this->withCollection( HookCollection::make( $hooks ) );
+        return $this->withCollection( $hooks, app( HookTransformer::class ) );
     }
 
     /**
@@ -47,7 +46,7 @@ class HookController extends AbstractController
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(Hook $hook) {
-        return $this->withItem( HookResource::make( $hook ) );
+        return $this->withItem( $hook, app( HookTransformer::class ) );
     }
 
     /**
@@ -70,7 +69,7 @@ class HookController extends AbstractController
         $hook = Hook::create( $request->except( [ 'account_ref' ] ) );
 
         return $this->setStatusCode( 201 )
-            ->withItem( HookResource::make( $hook->fresh() ) );
+            ->withItem( $hook->fresh(), app( HookTransformer::class ) );
     }
 
     /**
@@ -96,9 +95,9 @@ class HookController extends AbstractController
      * @throws \Exception
      */
     public function delete(Hook $hook) {
-        $hook->delete();
+        $this->authorize( 'destroy', $hook );
 
-        // @todo: Gate gelecek;
+        $hook->delete();
 
         return $this->noContent();
     }

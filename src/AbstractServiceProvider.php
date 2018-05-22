@@ -10,7 +10,6 @@
 
 namespace PlusClouds\Core;
 
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -20,14 +19,66 @@ use Illuminate\Support\ServiceProvider;
 abstract class AbstractServiceProvider extends ServiceProvider
 {
 
-    protected function bootModelBindings() {
-        $bindings = require_once( __DIR__.'/../config/model-binding.php' );
+    /**
+     * @var bool|string
+     */
+    protected $dir;
 
-        foreach( $bindings as $key => $value ) {
-            if( is_callable( $value ) ) {
-                $this->app['router']->bind( $key, $value );
-            } else {
-                $this->app['router']->model( $key, $value );
+
+    /**
+     * AbstractServiceProvider constructor.
+     *
+     * @param $app
+     *
+     * @throws \ReflectionException
+     */
+    public function __construct($app) {
+        parent::__construct( $app );
+
+        $reflection = new \ReflectionClass( get_called_class() );
+        $file = $reflection->getFileName();
+        $this->dir = realpath( dirname( $file ) );
+    }
+
+
+    /**
+     * @return void
+     */
+    protected function bootModelBindings() {
+        $bindings = require_once( $this->dir.'/../config/model-binding.php' );
+
+        if( count( $bindings ) ) {
+            foreach( $bindings as $key => $value ) {
+                if( is_callable( $value ) ) {
+                    $this->app['router']->bind( $key, $value );
+                } else {
+                    $this->app['router']->model( $key, $value );
+                }
+            }
+        }
+    }
+
+    /**
+     * Denetleyiciler kaydediliyor.
+     *
+     * @param string $key
+     *
+     * @return void
+     */
+    protected function registerMiddlewares($key) {
+        $kernel = $this->app['Illuminate\Contracts\Http\Kernel'];
+
+        // Register HTTP middleware
+        if( count( $hr = config( sprintf( '%s.middlewares.http', $key ) ) ) ) {
+            foreach( $hr as $middleware ) {
+                $kernel->pushMiddleware( $middleware );
+            }
+        }
+
+        // Register Route middleware
+        if( count( $rr = config( sprintf( '%s.middlewares.route', $key ) ) ) ) {
+            foreach( $rr as $key => $middleware ) {
+                $this->app['router']->middleware( $key, $middleware );
             }
         }
     }
@@ -39,7 +90,7 @@ abstract class AbstractServiceProvider extends ServiceProvider
      */
     protected function registerHelpers() {
         $fileSystem = $this->app['Illuminate\Filesystem\Filesystem'];
-        $helpers = __DIR__.DIRECTORY_SEPARATOR.'Helpers'.DIRECTORY_SEPARATOR.'*.php';
+        $helpers = $this->dir.DIRECTORY_SEPARATOR.'Helpers'.DIRECTORY_SEPARATOR.'*.php';
 
         foreach( $fileSystem->glob( $helpers ) as $file ) {
             require_once( $file );

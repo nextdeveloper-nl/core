@@ -14,6 +14,7 @@ use Cviebrock\EloquentSluggable\Services\SlugService;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use PlusClouds\Core\Database\Traits\GlobalScopes\WithPassive;
 use PlusClouds\Core\Database\Traits\HashId;
 use PlusClouds\Core\Database\Traits\Filterable;
 use Kalnoy\Nestedset\NodeTrait;
@@ -27,16 +28,7 @@ class Category extends AbstractModel
 
     use SoftDeletes, HashId, Filterable;
     use NodeTrait, Sluggable {
-        NodeTrait::replicate as replicateNode;
-        Sluggable::replicate as replicateSlug;
-    }
-
-    public function replicate(array $except = null) : Model {
-        $instance = $this->replicate( $except );
-
-        ( new SlugService() )->slug( $instance, true );
-
-        return $instance;
+        Sluggable::replicate insteadof NodeTrait;
     }
 
     /**

@@ -23,8 +23,7 @@ class NotSupportedException extends AbstractCoreException
      * @return mixed
      */
     public function render($request) {
-        return response()->api()->setRef( $this->getRef() )
-            ->errorNotImplemented( $this->getMessage() );
+        return response()->api()->errorNotImplemented( $this->getMessage() );
     }
 
 }

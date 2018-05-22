@@ -31,7 +31,7 @@ class CategoryQueryFilter extends AbstractQueryFilter
     public function descendants($categoryRef) {
         $root = Category::findByRef( $categoryRef );
 
-        return $this->builder->whereDescendantOf( $root->id );
+        return $this->builder->descendantsOf( $root->id );
     }
 
 
@@ -45,7 +45,7 @@ class CategoryQueryFilter extends AbstractQueryFilter
     public function ancestors($categoryRef) {
         $child = Category::findByRef( $categoryRef );
 
-        return $this->builder->whereAncestorOf( $child->id );
+        return $this->builder->ancestorsOf( $child->id );
     }
 
 

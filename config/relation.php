@@ -9,6 +9,18 @@
  */
 
 return [
+    'user' => [
+        'country' => function($self) {
+            return $self->belongsTo( 'PlusClouds\Core\Database\Models\Country' );
+        },
+    ],
+
+    'address' => [
+        'country' => function($self) {
+            return $self->belongsTo( 'PlusClouds\Core\Database\Models\Country' );
+        },
+    ],
+
     'tag' => [
         'products' => function($self) {
             return $self->morphedByMany( 'PlusClouds\Marketplace\Database\Models\Product', 'taggable' );
@@ -23,5 +35,5 @@ return [
         'datacenters' => function($self) {
             return $self->hasMany( 'PlusClouds\IAAS\Database\Models\Datacenter' );
         },
-    ]
+    ],
 ];

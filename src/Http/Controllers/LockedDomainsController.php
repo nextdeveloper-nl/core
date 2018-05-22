@@ -26,12 +26,16 @@ class LockedDomainsController extends AbstractController
      * @param Domain $domain
      *
      * @return mixed
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(Domain $domain) {
+        $this->authorize( 'update', $domain );
+
         $domain->update( [ 'is_locked' => true ] );
 
         return $this->noContent();
     }
+
 
     /**
      * Alan adını kullanıma açar.
@@ -39,9 +43,12 @@ class LockedDomainsController extends AbstractController
      * @param Domain $domain
      *
      * @return mixed
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function destroy(Domain $domain) {
-        $domain->update([ 'is_locked' => false ]);
+        $this->authorize( 'update', $domain );
+
+        $domain->update( [ 'is_locked' => false ] );
 
         return $this->noContent();
     }

@@ -15,8 +15,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use PlusClouds\Core\Database\Models\Discount;
 use PlusClouds\Core\Http\Requests\DiscountStoreRequest;
 use PlusClouds\Core\Http\Requests\DiscountUpdateRequest;
-use PlusClouds\Core\Http\Resources\DiscountCollection;
-use PlusClouds\Core\Http\Resources\DiscountResource;
+use PlusClouds\Core\Http\Transformers\DiscountTransformer;
 
 /**
  * Class DiscountController
@@ -36,7 +35,7 @@ class DiscountController extends AbstractController
 
         throw_if( $discounts->isEmpty(), ModelNotFoundException::class, 'Could not find the records you are looking for.' );
 
-        return $this->withCollection( DiscountCollection::make( $discounts ) );
+        return $this->withCollection( $discounts, app( DiscountTransformer::class ) );
     }
 
     /**
@@ -47,7 +46,7 @@ class DiscountController extends AbstractController
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(Discount $discount) {
-        return $this->withItem( DiscountResource::make( $discount ) );
+        return $this->withItem( $discount, app( DiscountTransformer::class ) );
     }
 
     /**
@@ -61,7 +60,7 @@ class DiscountController extends AbstractController
         $discount = Discount::create( $request->validated() );
 
         return $this->setStatusCode( 201 )
-            ->withItem( DiscountResource::make( $discount->fresh() ) );
+            ->withItem( $discount->fresh(), app( DiscountTransformer::class ) );
     }
 
     /**
@@ -87,9 +86,9 @@ class DiscountController extends AbstractController
      * @throws \Exception
      */
     public function delete(Discount $discount) {
-        $discount->delete();
+        $this->authorize( 'destroy', $discount );
 
-        // todo : Gate gelecek
+        $discount->delete();
 
         return $this->noContent();
     }

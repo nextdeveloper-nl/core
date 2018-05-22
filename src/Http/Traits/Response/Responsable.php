@@ -10,8 +10,13 @@
 
 namespace PlusClouds\Core\Http\Traits\Response;
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use League\Fractal\Manager;
+use League\Fractal\Pagination\Cursor;
+use League\Fractal\Pagination\IlluminatePaginatorAdapter;
+use League\Fractal\Resource\Collection;
+use League\Fractal\Resource\Item;
 use Symfony\Component\HttpFoundation\Response;
-use PlusClouds\Core\Common\Contracts\IResource;
 
 /**
  * Trait Responsable
@@ -59,25 +64,82 @@ trait Responsable
         return $this;
     }
 
+
     /**
-     * @param IResource $resource
+     * @param $data
+     * @param $transformer
+     * @param null $resourceKey
+     * @param array $meta
      * @param array $headers
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function withItem(IResource $resource, array $headers = []) {
-        return $this->withArray( $resource, $headers );
+    public function withItem($data, $transformer, $resourceKey = null, array $meta = [], array $headers = []) {
+        $resource = new Item( $data, $transformer, $resourceKey );
+        $resource->setMeta( $meta );
+
+        $manager = new Manager();
+        $manager->parseIncludes( request( 'include', [] ) );
+
+        return $this->withArray(
+            $manager->createData( $resource )->toArray(),
+            $headers
+        );
+    }
+
+
+    /**
+     * @param $data
+     * @param $transformer
+     * @param null $resourceKey
+     * @param Cursor|null $cursor
+     * @param array $meta
+     * @param array $headers
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function withCollection($data, $transformer, $resourceKey = null, Cursor $cursor = null, array $meta = [], array $headers = []) {
+        $resource = new Collection( $data, $transformer, $resourceKey );
+        $resource->setMeta( $meta );
+
+        if( ! is_null( $cursor ) ) {
+            $resource->setCursor( $cursor );
+        }
+
+        $manager = new Manager();
+        $manager->parseIncludes( request( 'include', [] ) );
+
+        return $this->withArray(
+            $manager->createData( $resource )->toArray(),
+            $headers
+        );
     }
 
     /**
-     * @param IResource $resource
+     * @param LengthAwarePaginator $paginator
+     * @param $transformer
+     * @param null $resourceKey
+     * @param array $meta
      * @param array $headers
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function withCollection(IResource $resource, array $headers = []) {
-        return $this->withArray( $resource, $headers );
+    public function withPaginator(LengthAwarePaginator $paginator, $transformer, $resourceKey = null, array $meta = [], array $headers = []) {
+        $paginator->appends( array_diff_key( $_GET, array_flip( [ 'page' ] ) ) );
+
+        $resource = new Collection( $paginator->items(), $transformer, $resourceKey );
+        $resource->setPaginator( new IlluminatePaginatorAdapter( $paginator ) );
+        $resource->setMeta( $meta );
+
+        $manager = new Manager();
+        $manager->parseIncludes( request( 'include', [] ) );
+
+        return $this->withArray(
+            $manager->createData( $resource )->toArray(),
+            $headers
+        );
     }
+
 
     /**
      * @param string $message
@@ -88,10 +150,12 @@ trait Responsable
      * @return \Illuminate\Http\JsonResponse
      */
     public function withError($message, $code, array $errors = [], array $headers = []) {
+        $this->ref = genUuid();
+
         $data = [
             'error' => [
                 'status'  => $this->statusCode,
-                'ref'     => $this->ref ?? 0,
+                'ref'     => $this->ref,
                 'code'    => $code,
                 'message' => $message,
             ],
@@ -105,7 +169,7 @@ trait Responsable
     }
 
     /**
-     * @param array|IResource $data
+     * @param array $data
      * @param array $headers
      *
      * @return \Illuminate\Http\JsonResponse
@@ -113,12 +177,6 @@ trait Responsable
     public function withArray($data, array $headers = []) {
         if( ! empty( $this->getRef() ) ) {
             $headers = array_merge( [ 'X-Request-Ref' => $this->getRef() ], $headers );
-        }
-
-        if( $data instanceof IResource ) {
-            return $data->response()
-                ->setStatusCode( $this->statusCode )
-                ->withHeaders( $headers );
         }
 
         return response()->json( $data, $this->statusCode, $headers );
