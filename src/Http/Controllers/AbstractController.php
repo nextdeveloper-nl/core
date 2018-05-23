@@ -35,7 +35,6 @@ abstract class AbstractController extends Controller
      * AbstractController constructor.
      */
     public function __construct() {
-        auth()->loginUsingId( 1 );
         $this->authUser = auth()->user();
     }
 
