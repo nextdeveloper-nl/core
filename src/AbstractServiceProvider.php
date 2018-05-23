@@ -69,14 +69,14 @@ abstract class AbstractServiceProvider extends ServiceProvider
         $kernel = $this->app['Illuminate\Contracts\Http\Kernel'];
 
         // Register HTTP middleware
-        if( count( $hr = config( sprintf( '%s.middlewares.http', $key ) ) ) ) {
+        if( ! empty( $hr = config( sprintf( '%s.middlewares.http', $key ) ) ) ) {
             foreach( $hr as $middleware ) {
                 $kernel->pushMiddleware( $middleware );
             }
         }
 
         // Register Route middleware
-        if( count( $rr = config( sprintf( '%s.middlewares.route', $key ) ) ) ) {
+        if( ! empty( $rr = config( sprintf( '%s.middlewares.route', $key ) ) ) ) {
             foreach( $rr as $key => $middleware ) {
                 $this->app['router']->middleware( $key, $middleware );
             }

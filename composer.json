@@ -22,7 +22,8 @@
     "aloha/twilio": "^3.0",
     "laravel/scout": "^4.0",
     "league/fractal": "0.17.*",
-    "true/punycode": "~2.0"
+    "true/punycode": "~2.0",
+    "doctrine/dbal": "^2.7"
   },
   "require-dev": {
     "illuminate/support": "5.5.*",
