@@ -43,9 +43,9 @@ trait HashId
      * @return string
      */
     public static function getHashidConnection(Model $model) {
-        $key = 'hashids.table__'.$model->getTable();
+        $key = 'hashids.connections.table__'.$model->getTable();
 
-        return config()->has( $key ) ? $key : 'main';
+        return config()->has( $key ) ? 'table__'. $model->getTable() : 'main';
     }
 
     /**
