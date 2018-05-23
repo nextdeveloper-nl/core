@@ -10,7 +10,10 @@
 
 namespace PlusClouds\Core\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\ValidationException;
 
 /**
  * Class AbstractFormRequest
@@ -20,14 +23,12 @@ abstract class AbstractFormRequest extends FormRequest
 {
 
     /**
-     * @param array $errors
-     *
-     * @return mixed
+     * @param Validator $validator
      */
-    public function response(array $errors) {
-        return response()->api()->errorUnprocessable( 'Validation Failed', array_map( function($error) {
-            return reset( $error );
-        }, array_values( $errors ) ) );
+    protected function failedValidation(Validator $validator) {
+        $errors = ( new ValidationException( $validator ) )->errors();
+
+        throw new HttpResponseException( response()->api()->errorUnprocessable( 'Validation Failed', $errors ) );
     }
 
 }

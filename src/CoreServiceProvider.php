@@ -61,6 +61,7 @@ class CoreServiceProvider extends AbstractServiceProvider
         $this->registerRoutes();
 
         $this->mergeConfigFrom( __DIR__.'/../config/core.php', 'core' );
+        $this->mergeConfigFrom( __DIR__.'/../config/relation.php', 'relation' );
     }
 
     /**

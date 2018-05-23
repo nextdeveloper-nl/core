@@ -29,17 +29,42 @@ abstract class AbstractModel extends Model
         $class_name = class_basename( $this );
 
         #i: Convert array to dot notation
-        $config = implode( '.', [ 'relation', $class_name, $method ] );
+        $config = implode( '.', [ 'relation', strtolower( $class_name ), $method ] );
 
         #i: Relation method resolver
         if( config()->has( $config ) ) {
-            $function = config( $config );
+            $relation = config( $config );
 
-            return $function( $this );
+            return $relation( $this );
         }
 
         #i: No relation found, return the call to parent (Eloquent) to handle it.
         return parent::__call( $method, $parameters );
+    }
+
+    /**
+     * @param string $key
+     *
+     * @return mixed
+     */
+    public function __get($key) {
+        $class_name = class_basename( $this );
+
+        #i: Convert array to dot notation
+        $config = implode( '.', [ 'relation', strtolower( $class_name ), $key ] );
+
+        #i: Relation method resolver
+        if( config()->has( $config ) ) {
+            if( ! property_exists( $this, $key ) ) {
+                $relation = config( $config );
+
+                return tap( $relation($this)->getResults(), function($results) use ($key) {
+                    $this->setRelation( $key, $results );
+                } );
+            }
+        }
+
+        return parent::__get( $key );
     }
 
 }

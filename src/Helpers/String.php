@@ -107,3 +107,33 @@ function maskCreditCard($cardNumber, $maskingChar = 'x') {
 
     return implode( '-', $numbers );
 }
+
+/**
+ * @param $string
+ * @param int $width
+ * @param bool $cut
+ * @param string $break
+ *
+ * @return \Illuminate\Support\Collection|null
+ */
+function utf8_wordwrap($string, $width = 75, $cut = false, $break = "\n") {
+    if( $cut ) {
+        // Match anything 1 to $width chars long followed by whitespace or EOS,
+        // otherwise match anything $width chars long
+        $search = '/(.{1,'.$width.'})(?:\s|$)|(.{'.$width.'})/uS';
+        $replace = '$1$2'.$break;
+    } else {
+        // Anchor the beginning of the pattern with a lookahead
+        // to avoid crazy backtracking when words are longer than $width
+        $search = '/(?=\s)(.{1,'.$width.'})(?:\s|$)/uS';
+        $replace = '$1'.$break;
+    }
+
+    $lines = collect( explode( $break, rtrim( preg_replace( $search, $replace, $string ), $break ) ) )->map( function($line) {
+        return trim( $line );
+    } )->filter( function($line) {
+        return ! empty( $line );
+    } );
+
+    return $lines->count() > 0 ? $lines : null;
+}
