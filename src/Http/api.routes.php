@@ -15,17 +15,19 @@ Route::prefix( 'countries' )->group( function() {
     // Ülke bilgisini döndürür.
     Route::get( '/{country}', 'CountryController@show' );
 
-    // Yeni bir ülke oluşturur.
-    Route::post( '/', 'CountryController@store' );
+    Route::middleware( 'auth:api' )->group( function() {
+        // Yeni bir ülke oluşturur.
+        Route::post( '/', 'CountryController@store' );
 
-    // Varolan ülke bilgilerini günceller.
-    Route::put( '/{country}', 'CountryController@update' );
+        // Varolan ülke bilgilerini günceller.
+        Route::put( '/{country}', 'CountryController@update' );
 
-    // Varolan bir ülkeyi siler.
-    Route::delete( '/{country}', 'CountryController@destroy' );
+        // Varolan bir ülkeyi siler.
+        Route::delete( '/{country}', 'CountryController@destroy' );
+    } );
 } );
 
-Route::prefix( 'domains' )->group( function() {
+Route::prefix( 'domains' )->middleware( 'auth:api' )->group( function() {
     // Alan adı listesini döndürür.
     Route::get( '/', 'DomainController@index' );
 
@@ -55,17 +57,19 @@ Route::prefix( 'categories' )->group( function() {
     // Kategori bilgisini döndürür.
     Route::get( '/{category}', 'CategoryController@show' );
 
-    // Yeni bir kategori oluşturur.
-    Route::post( '/', 'CategoryController@store' );
+    Route::middleware( 'auth:api' )->group( function() {
+        // Yeni bir kategori oluşturur.
+        Route::post( '/', 'CategoryController@store' );
 
-    // Varolan kategori bilgilerini günceller.
-    Route::put( '/{category}', 'CategoryController@update' );
+        // Varolan kategori bilgilerini günceller.
+        Route::put( '/{category}', 'CategoryController@update' );
 
-    // Varolan bir kategoriyi siler.
-    Route::delete( '/{category}', 'CategoryController@destroy' );
+        // Varolan bir kategoriyi siler.
+        Route::delete( '/{category}', 'CategoryController@destroy' );
+    } );
 } );
 
-Route::prefix( 'discounts' )->group( function() {
+Route::prefix( 'discounts' )->middleware( 'auth:api' )->group( function() {
     // İndirim listesini döndürür.
     Route::get( '/', 'DiscountController@index' );
 
@@ -82,7 +86,7 @@ Route::prefix( 'discounts' )->group( function() {
     Route::delete( '/{discount}', 'DiscountController@destroy' );
 } );
 
-Route::prefix( 'email-templates' )->group( function() {
+Route::prefix( 'email-templates' )->middleware( 'auth:api' )->group( function() {
     // E-posta şablon listesini döndürür.
     Route::get( '/', 'EmailTemplateController@index' );
 
@@ -99,7 +103,7 @@ Route::prefix( 'email-templates' )->group( function() {
     Route::delete( '/{template}', 'EmailTemplateController@destroy' );
 } );
 
-Route::prefix( 'hooks' )->group( function() {
+Route::prefix( 'hooks' )->middleware( 'auth:api' )->group( function() {
     // Kanca listesini döndürür.
     Route::get( '/', 'HookController@index' );
 
@@ -124,10 +128,10 @@ Route::prefix( 'tags' )->group( function() {
     Route::get( '/{tag}', 'TagController@show' );
 
     // Varolan bir etiketi siler.
-    Route::delete( '/{tag}', 'TagController@destroy' );
+    Route::delete( '/{tag}', 'TagController@destroy' )->middleware( 'auth:api' );
 } );
 
-Route::prefix( 'mails' )->group( function() {
+Route::prefix( 'mails' )->middleware( 'auth:api' )->group( function() {
     // Bir kullanıcıya e-posta gönderir.
     Route::post( '/send', 'MailController@send' );
 
