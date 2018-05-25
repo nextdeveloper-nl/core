@@ -59,6 +59,7 @@ class CoreServiceProvider extends AbstractServiceProvider
         $this->registerHelpers();
         $this->registerMiddlewares( 'core' );
         $this->registerRoutes();
+        $this->registerCommands();
 
         $this->mergeConfigFrom( __DIR__.'/../config/core.php', 'core' );
         $this->mergeConfigFrom( __DIR__.'/../config/relation.php', 'relation' );
@@ -94,6 +95,17 @@ class CoreServiceProvider extends AbstractServiceProvider
                 ->middleware( 'api' )
                 ->namespace( 'PlusClouds\Core\Http\Controllers' )
                 ->group( __DIR__.DIRECTORY_SEPARATOR.'Http'.DIRECTORY_SEPARATOR.'api.routes.php' );
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function registerCommands() {
+        if( $this->app->runningInConsole() ) {
+            $this->commands( [
+
+            ] );
         }
     }
 
