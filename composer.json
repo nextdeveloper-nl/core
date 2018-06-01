@@ -23,7 +23,8 @@
     "laravel/scout": "^4.0",
     "league/fractal": "0.17.*",
     "true/punycode": "~2.0",
-    "doctrine/dbal": "^2.7"
+    "doctrine/dbal": "^2.7",
+    "monolog/monolog": "^1.23"
   },
   "require-dev": {
     "illuminate/support": "5.5.*",

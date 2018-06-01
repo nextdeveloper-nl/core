@@ -56,6 +56,18 @@ class Handler extends BaseHandler
      */
     public function report(Exception $e) {
         parent::report( $e );
+
+        if( isLoggedIn() ) {
+            $monolog = \Log::getMonolog();
+            $monolog->pushProcessor( function($item) {
+                $item['extra']['user'] = array_only( getAUUser()->toArray(), [ 'id', 'fullname' ] );
+
+                return $item;
+            } );
+        }
+
+        // Hatayı, saklıyoruz.
+        logger()->error( $e );
     }
 
 

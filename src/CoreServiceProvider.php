@@ -10,6 +10,7 @@
 
 namespace PlusClouds\Core;
 
+use Illuminate\Support\Facades\Log;
 use InvalidArgumentException;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use PlusClouds\Core\Exceptions\Handler;
@@ -38,6 +39,7 @@ class CoreServiceProvider extends AbstractServiceProvider
 
         $this->loadViewsFrom( $this->dir.'/../resources/views', 'Core' );
 
+        $this->bootLogger();
         $this->bootErrorHandler();
         $this->bootModelBindings();
     }
@@ -85,6 +87,28 @@ class CoreServiceProvider extends AbstractServiceProvider
     }
 
     /**
+     * @todo ElasticSearchHandler eklenecek!
+     *
+     * @return void
+     */
+    public function bootLogger() {
+        $monolog = Log::getMonolog();
+
+        // @todo SlackWebHookHandler çalışmıyor!
+//        $slackHandler = new \Monolog\Handler\SlackWebhookHandler(
+//            'https://hooks.slack.com/services/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'
+//        );
+//
+//        $slackHandler->setFormatter( new \Monolog\Formatter\LineFormatter() );
+//
+//        $monolog->pushHandler( $slackHandler );
+
+        $monolog->pushProcessor( new \Monolog\Processor\WebProcessor() );
+        $monolog->pushProcessor( new \Monolog\Processor\MemoryUsageProcessor() );
+        $monolog->pushProcessor( new \Monolog\Processor\MemoryPeakUsageProcessor() );
+    }
+
+    /**
      * Rota'ları kaydeder.
      *
      * @return void
@@ -104,7 +128,7 @@ class CoreServiceProvider extends AbstractServiceProvider
     private function registerCommands() {
         if( $this->app->runningInConsole() ) {
             $this->commands( [
-
+                'PlusClouds\Core\Console\Commands\FetchDisposableEmailDomainsCommand',
             ] );
         }
     }
