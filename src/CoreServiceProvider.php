@@ -13,9 +13,11 @@ namespace PlusClouds\Core;
 use Illuminate\Support\Facades\Log;
 use InvalidArgumentException;
 use Illuminate\Contracts\Debug\ExceptionHandler;
+use PlusClouds\Core\Common\Services\NiN\NiN;
 use PlusClouds\Core\Exceptions\Handler;
 use PlusClouds\Core\Common\Registry\Drivers\IDriver;
 use PlusClouds\Core\Http\Traits\Response\Responsable;
+use Twilio\Rest\Client;
 
 /**
  * Class CoreServiceProvider
@@ -42,6 +44,8 @@ class CoreServiceProvider extends AbstractServiceProvider
         $this->bootLogger();
         $this->bootErrorHandler();
         $this->bootModelBindings();
+        $this->bootTwilio();
+        $this->bootNiN();
     }
 
     /**
@@ -106,6 +110,26 @@ class CoreServiceProvider extends AbstractServiceProvider
         $monolog->pushProcessor( new \Monolog\Processor\WebProcessor() );
         $monolog->pushProcessor( new \Monolog\Processor\MemoryUsageProcessor() );
         $monolog->pushProcessor( new \Monolog\Processor\MemoryPeakUsageProcessor() );
+    }
+
+    /**
+     * Twilio servisini kaydeder.
+     *
+     * @return void
+     */
+    private function bootTwilio() {
+        $this->app->singleton( 'Twilio', function() {
+            return new Client( env( 'TWILIO_ACCOUNT_SID' ), env( 'TWILIO_AUTH_TOKEN' ) );
+        } );
+    }
+
+    /**
+     * NiN servisini kaydeder.
+     *
+     * return @void
+     */
+    private function bootNiN() {
+        $this->app->singleton( 'NiN', NiN::class );
     }
 
     /**

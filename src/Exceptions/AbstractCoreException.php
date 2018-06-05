@@ -45,11 +45,18 @@ abstract class AbstractCoreException extends Exception
     protected $trace;
 
     /**
+     * @var Exception
+     */
+    protected $originalException;
+
+    /**
      * AbstractCoreException constructor.
      *
      * @param Exception $e
      */
     public function __construct(Exception $e ) {
+        $this->originalException = $e;
+
         $this->code = $e->getCode();
         $this->message = $e->getMessage();
         $this->file = $e->getFile();

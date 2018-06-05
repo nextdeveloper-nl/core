@@ -11,8 +11,7 @@
 namespace PlusClouds\Core\Validation\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
-use Aloha\Twilio\TwilioInterface;
-use Services_Twilio_RestException;
+use Twilio\Exceptions\RestException;
 
 /**
  * Class MobilePhone
@@ -21,24 +20,20 @@ use Services_Twilio_RestException;
 class MobilePhone implements Rule
 {
 
-    /**
-     * @var TwilioInterface
-     */
     protected $twilio;
 
     /**
-     * @var
+     * @var int
      */
     protected $phoneCode;
 
     /**
      * MobilePhone constructor.
      *
-     * @param TwilioInterface $twilio
      * @param $phoneCode
      */
-    public function __construct(TwilioInterface $twilio, $phoneCode) {
-        $this->twilio = $twilio;
+    public function __construct($phoneCode) {
+        $this->twilio = app( 'Twilio' );
         $this->phoneCode = $phoneCode;
     }
 
@@ -49,10 +44,10 @@ class MobilePhone implements Rule
      * @return bool
      */
     public function passes($attribute, $value) {
-        $phone = $this->phoneCode.$value;
+        $phone = '+'.$this->phoneCode.$value;
 
         try {
-            $this->twilio->getTwilio()
+            $this->twilio
                 ->lookups
                 ->phoneNumbers( $phone )->fetch( [
                     'type' => 'carrier',
@@ -60,7 +55,7 @@ class MobilePhone implements Rule
 
             return true;
         }
-        catch( Services_Twilio_RestException $e ) {
+        catch( RestException $e ) {
             return false;
         }
     }

@@ -11,15 +11,19 @@
 /**
  * Generate new random code
  *
- * @param int $digits
+ * @param int $length
  *
  * @return int
  */
-function generateRandomCode($digits = 4) {
-    $min = pow( 10, ( $digits - 1 ) );
-    $max = ( $min * 10 ) - 1;
+function generateRandomCode($length = 4) {
+    $chars = str_shuffle( 'abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ' );
 
-    return mt_rand( $min, $max );
+    return substr($chars, 1, $length);
+//
+//    $min = pow( 10, ( $digits - 1 ) );
+//    $max = ( $min * 10 ) - 1;
+//
+//    return mt_rand( $min, $max );
 }
 
 /**

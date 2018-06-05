@@ -19,12 +19,12 @@
     "cviebrock/eloquent-sluggable": "^4.3",
     "spatie/laravel-medialibrary": "^6.0.0",
     "predis/predis": "^1.1",
-    "aloha/twilio": "^3.0",
     "laravel/scout": "^4.0",
     "league/fractal": "0.17.*",
     "true/punycode": "~2.0",
     "doctrine/dbal": "^2.7",
-    "monolog/monolog": "^1.23"
+    "monolog/monolog": "^1.23",
+    "twilio/sdk": "^5.19"
   },
   "require-dev": {
     "illuminate/support": "5.5.*",
@@ -42,13 +42,11 @@
       "providers": [
         "PlusClouds\\Core\\CoreServiceProvider",
         "Phoenix\\EloquentMeta\\ServiceProvider",
-        "Vinkla\\Hashids\\HashidsServiceProvider",
-        "Aloha\\Twilio\\Support\\Laravel\\ServiceProvider"
+        "Vinkla\\Hashids\\HashidsServiceProvider"
       ],
       "aliases": {
         "Registry": "PlusClouds\\Core\\Common\\Registry\\Facades\\Registry",
-        "Hashids": "Vinkla\\Hashids\\Facades\\Hashids",
-        "Twilio": "Aloha\\Twilio\\Support\\Laravel\\Facade"
+        "Hashids": "Vinkla\\Hashids\\Facades\\Hashids"
       }
     }
   },
