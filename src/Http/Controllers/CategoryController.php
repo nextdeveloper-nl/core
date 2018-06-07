@@ -60,7 +60,7 @@ class CategoryController extends AbstractController
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(CategoryStoreRequest $request) {
-        $category = Category::create( array_merge( [ 'user_id' => $this->authUser->id ], $request->validated() ) );
+        $category = Category::create( array_merge( [ 'user_id' => getAUUser()->id ], $request->validated() ) );
 
         // Seçilen kategorinin alt kategorisi olarak ekliyoruz.
         if( $request->has( 'category_ref' ) ) {

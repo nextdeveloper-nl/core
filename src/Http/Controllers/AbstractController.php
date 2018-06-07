@@ -26,16 +26,4 @@ abstract class AbstractController extends Controller
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
     use Responsable;
 
-    /**
-     * @var \Illuminate\Contracts\Auth\Authenticatable|null
-     */
-    protected $authUser;
-
-    /**
-     * AbstractController constructor.
-     */
-    public function __construct() {
-        $this->authUser = auth()->user();
-    }
-
 }
