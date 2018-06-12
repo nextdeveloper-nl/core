@@ -10,6 +10,7 @@ return [
             'Illuminate\Database\Eloquent\ModelNotFoundException'                  => 'PlusClouds\Core\Exceptions\ModelNotFoundException',
             'Symfony\Component\HttpKernel\Exception\NotFoundHttpException'         => 'PlusClouds\Core\Exceptions\NotFoundException',
             'Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException' => 'PlusClouds\Core\Exceptions\MethodNotAllowedException',
+            'League\OAuth2\Server\Exception\OAuthServerException'                  => 'PlusClouds\Core\Exceptions\AuthenticationException',
         ],
     ],
 
