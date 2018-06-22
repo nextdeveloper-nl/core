@@ -26,11 +26,4 @@ trait WithPassive
         static::addGlobalScope( new ActiveScope() );
     }
 
-    /**
-     * @return mixed
-     */
-    public static function withPassive() {
-        return static::withoutGlobalScope( ActiveScope::class);
-    }
-
 }

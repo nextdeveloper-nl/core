@@ -31,5 +31,14 @@ class ActiveScope implements Scope
         $builder->where( $column, true );
     }
 
+    /**
+     * @param Builder $builder
+     */
+    public function extend(Builder $builder) {
+        $builder->macro( 'withPassive', function(Builder $builder) {
+            return $builder->withoutGlobalScope( $this );
+        } );
+    }
+
 
 }

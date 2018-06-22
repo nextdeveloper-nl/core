@@ -32,4 +32,13 @@ class PublicScope implements Scope
         $builder->where( $column, true );
     }
 
+    /**
+     * @param Builder $builder
+     */
+    public function extend(Builder $builder) {
+        $builder->macro( 'withPrivate', function(Builder $builder) {
+            return $builder->withoutGlobalScope( $this );
+        } );
+    }
+
 }

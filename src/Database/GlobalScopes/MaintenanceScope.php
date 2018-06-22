@@ -31,4 +31,13 @@ class MaintenanceScope implements Scope
         $builder->where( $column, '=', false );
     }
 
+    /**
+     * @param Builder $builder
+     */
+    public function extend(Builder $builder) {
+        $builder->macro( 'withMaintenance', function(Builder $builder) {
+            return $builder->withoutGlobalScope( $this );
+        } );
+    }
+
 }

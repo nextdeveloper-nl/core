@@ -27,11 +27,4 @@ trait WithMaintenance
         static::addGlobalScope( new MaintenanceScope() );
     }
 
-    /**
-     * @return mixed
-     */
-    public static function withMaintenance() {
-        return static::withoutGlobalScope( MaintenanceScope::class);
-    }
-
 }

@@ -27,11 +27,4 @@ trait WithPrivate
         static::addGlobalScope( new PublicScope() );
     }
 
-    /**
-     * @return mixed
-     */
-    public static function withPrivate() {
-        return static::withoutGlobalScope( PublicScope::class);
-    }
-
 }
