@@ -24,7 +24,7 @@ class MethodNotAllowedException extends AbstractCoreException
      * @return mixed
      */
     public function render($request) {
-        return response()->api()->errorMethodNotAllowed( $this->getMessage() );
+        return response()->api()->errorMethodNotAllowed( 'Methot not allowed.' );
     }
 
 }

@@ -30,8 +30,8 @@ class NiN
      * @var array
      */
     private $requiredFields = [
-        [ 'no', 'name', 'surname', 'year' ],
-        [ 'no', 'name', 'surname', 'day', 'month', 'year' ],
+        [ 'nin', 'name', 'surname', 'year' ],
+        [ 'nin', 'name', 'surname', 'day', 'month', 'year' ],
     ];
 
     /**
@@ -64,7 +64,7 @@ class NiN
         $client = new \SoapClient( $this->endpoints['v1'], [ 'soap_version' => SOAP_1_2 ] );
 
         $response = $client->TCKimlikNoDogrula( [
-            'TCKimlikNo' => $fields['no'],
+            'TCKimlikNo' => $fields['nin'],
             'Ad'         => upperCaseTr( $fields['name'] ),
             'Soyad'      => upperCaseTr( $fields['surname'] ),
             'DogumYili'  => $fields['year'],
@@ -82,7 +82,7 @@ class NiN
         $client = new \SoapClient( $this->endpoints['v2'], [ 'soap_version' => SOAP_1_2 ] );
 
         $response = $client->YabanciKimlikNoDogrula( [
-            'KimlikNo' => $fields['no'],
+            'KimlikNo' => $fields['nin'],
             'Ad'       => upperCaseTr( $fields['name'] ),
             'Soyad'    => upperCaseTr( $fields['surname'] ),
             'DogumGun' => $fields['day'],

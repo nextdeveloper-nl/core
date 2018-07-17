@@ -24,7 +24,9 @@
     "true/punycode": "~2.0",
     "doctrine/dbal": "^2.7",
     "monolog/monolog": "^1.23",
-    "twilio/sdk": "^5.19"
+    "twilio/sdk": "^5.19",
+    "bensampo/laravel-enum": "^1.7",
+    "zendframework/zend-validator": "^2.10"
   },
   "require-dev": {
     "illuminate/support": "5.5.*",
