@@ -26,7 +26,9 @@
     "monolog/monolog": "^1.23",
     "twilio/sdk": "^5.19",
     "bensampo/laravel-enum": "^1.7",
-    "zendframework/zend-validator": "^2.10"
+    "zendframework/zend-validator": "^2.10",
+    "teamtnt/laravel-scout-tntsearch-driver": "^3.0",
+    "paragonie/blakechain": "^1.0"
   },
   "require-dev": {
     "illuminate/support": "5.5.*",
@@ -44,7 +46,8 @@
       "providers": [
         "PlusClouds\\Core\\CoreServiceProvider",
         "Phoenix\\EloquentMeta\\ServiceProvider",
-        "Vinkla\\Hashids\\HashidsServiceProvider"
+        "Vinkla\\Hashids\\HashidsServiceProvider",
+        "TeamTNT\\Scout\\TNTSearchScoutServiceProvider"
       ],
       "aliases": {
         "Registry": "PlusClouds\\Core\\Common\\Registry\\Facades\\Registry",

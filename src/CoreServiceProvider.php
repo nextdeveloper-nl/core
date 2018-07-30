@@ -68,7 +68,7 @@ class CoreServiceProvider extends AbstractServiceProvider
         $this->registerCommands();
 
         $this->mergeConfigFrom( __DIR__.'/../config/core.php', 'core' );
-        $this->mergeConfigFrom( __DIR__.'/../config/relation.php', 'relation' );
+        $this->customMergeConfigFrom( __DIR__.'/../config/relation.php', 'relation' );
     }
 
     /**

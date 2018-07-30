@@ -11,6 +11,7 @@
 namespace PlusClouds\Core;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Arr;
 
 /**
  * Class AbstractServiceProvider
@@ -95,6 +96,41 @@ abstract class AbstractServiceProvider extends ServiceProvider
         foreach( $fileSystem->glob( $helpers ) as $file ) {
             require_once( $file );
         }
+    }
+
+    /**
+     * @param $path
+     * @param $key
+     */
+    protected function customMergeConfigFrom($path, $key) {
+        //Get module app config
+        $config = $this->app['config']->get( $key, [] );
+        //Get module config
+        $module_config = require $path;
+        //recursive replace (also merges). Prefer app-specific config
+        $combined_config = array_replace_recursive( $module_config, $config );
+
+        //Recursive closure which removes null from the config
+        $filter_nulls = null;
+        $filter_nulls = function($input) use (&$filter_nulls) {
+            if( is_array( $input ) ) {
+                foreach( $input as &$value ) {
+                    // is_callable check just for IDE error supression, since the function itself should be callable
+                    if( is_array( $value ) && is_callable( $filter_nulls ) ) {
+                        $value = $filter_nulls( $value );
+                    }
+                }
+            }
+
+            // Keep not-null values
+            return array_filter( $input, function($v) {
+                return ! is_null( $v );
+            } );
+        };
+        // Apply filter
+        $filtered_config = $filter_nulls( $combined_config );
+        // And set
+        $this->app['config']->set( $key, $filtered_config );
     }
 
 }

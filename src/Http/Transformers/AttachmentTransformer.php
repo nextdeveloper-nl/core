@@ -14,10 +14,10 @@ namespace PlusClouds\Core\Http\Transformers;
 use Spatie\MediaLibrary\Media;
 
 /**
- * Class MediaTransformer
+ * Class AttachmentTransformer
  * @package PlusClouds\Core\Http\Transformers
  */
-class MediaTransformer extends AbstractTransformer
+class AttachmentTransformer extends AbstractTransformer
 {
 
     /**
