@@ -79,7 +79,7 @@ abstract class AbstractServiceProvider extends ServiceProvider
         // Register Route middleware
         if( ! empty( $rr = config( sprintf( '%s.middlewares.route', $key ) ) ) ) {
             foreach( $rr as $key => $middleware ) {
-                $this->app['router']->middleware( $key, $middleware );
+                $this->app['router']->aliasMiddleware( $key, $middleware );
             }
         }
     }
