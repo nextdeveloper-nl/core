@@ -33,7 +33,7 @@ class CategoryPolicy
      * @return bool
      */
     public function destroy(User $authUser, Category $category) {
-        return $authUser->can( 'category@destroy' )
+        return $authUser->can( 'core.category@destroy' )
             && $authUser->id == $category->user_id;
     }
 

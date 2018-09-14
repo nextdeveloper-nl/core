@@ -140,7 +140,7 @@ class CoreServiceProvider extends AbstractServiceProvider
     private function registerRoutes() {
         if( ! $this->app->routesAreCached() ) {
             $this->app['router']->prefix( 'v2' )
-                ->middleware( 'api' )
+                ->middleware( [ 'api', 'team-finder' ] )
                 ->namespace( 'PlusClouds\Core\Http\Controllers' )
                 ->group( __DIR__.DIRECTORY_SEPARATOR.'Http'.DIRECTORY_SEPARATOR.'api.routes.php' );
         }

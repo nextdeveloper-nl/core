@@ -22,7 +22,7 @@ class DiscountUpdateRequest extends AbstractFormRequest
      * @return bool
      */
     public function authorize() {
-        return $this->user()->can( 'discount@update' );
+        return $this->user()->can( 'core.discount@update' );
     }
 
     /**

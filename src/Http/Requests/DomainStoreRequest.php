@@ -22,7 +22,7 @@ class DomainStoreRequest extends AbstractFormRequest
      * @return bool
      */
     public function authorize() {
-        return $this->user()->can( 'domain@store' );
+        return $this->user()->can( 'core.domain@store' );
     }
 
     /**

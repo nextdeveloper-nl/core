@@ -22,7 +22,7 @@ class HookStoreRequest extends AbstractFormRequest
      * @return bool
      */
     public function authorize() {
-        return $this->user()->can( 'hook@store' );
+        return $this->user()->can( 'core.hook@store' );
     }
 
     /**

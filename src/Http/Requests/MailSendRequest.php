@@ -22,7 +22,7 @@ class MailSendRequest extends AbstractFormRequest
      * @return bool
      */
     public function authorize() {
-        return $this->user()->can( 'mail@send' );
+        return $this->user()->can( 'core.mail@send' );
     }
 
     /**

@@ -22,7 +22,7 @@ class DiscountStoreRequest extends AbstractFormRequest
      * @return bool
      */
     public function authorize() {
-        return $this->user()->can( 'discount@store' );
+        return $this->user()->can( 'core.discount@store' );
     }
 
     /**

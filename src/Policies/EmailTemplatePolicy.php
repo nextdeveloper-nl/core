@@ -33,7 +33,7 @@ class EmailTemplatePolicy
      * @return bool
      */
     public function destroy(User $authUser, EmailTemplate $template) {
-        return $authUser->can( 'emailtemplate@destroy' );
+        return $authUser->can( 'core.emailtemplate@destroy' );
     }
 
 }

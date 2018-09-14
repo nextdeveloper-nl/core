@@ -22,7 +22,7 @@ class MailBatchSendRequest extends AbstractFormRequest
      * @return bool
      */
     public function authorize() {
-        return $this->user()->can( 'mail@batch-send' );
+        return $this->user()->can( 'core.mail@batch-send' );
     }
 
     /**

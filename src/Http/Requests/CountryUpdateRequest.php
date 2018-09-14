@@ -22,7 +22,7 @@ class CountryUpdateRequest extends AbstractFormRequest
      * @return bool
      */
     public function authorize() {
-        return $this->user()->can( 'country@update' );
+        return $this->user()->can( 'core.country@update' );
     }
 
     /**

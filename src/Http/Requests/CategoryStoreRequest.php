@@ -22,7 +22,7 @@ class CategoryStoreRequest extends AbstractFormRequest
      * @return bool
      */
     public function authorize() {
-        return $this->user()->can( 'category@store' );
+        return $this->user()->can( 'core.category@store' );
     }
 
     /**

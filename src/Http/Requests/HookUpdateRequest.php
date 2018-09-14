@@ -22,7 +22,7 @@ class HookUpdateRequest extends AbstractFormRequest
      * @return bool
      */
     public function authorize() {
-        return $this->user()->can( 'hook@update' )
+        return $this->user()->can( 'core.hook@update' )
             && getMasterAccount( $this->user() )->id == $this->route( 'hook' )->vendor_id;
     }
 

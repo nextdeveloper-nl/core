@@ -33,7 +33,7 @@ class DomainPolicy
      * @return bool
      */
     public function update(User $authUser, Domain $domain) {
-        return $authUser->can( 'domain@update' )
+        return $authUser->can( 'core.domain@update' )
             && getMasterAccount( $authUser )->id == $domain->account_id;
     }
 
@@ -46,7 +46,7 @@ class DomainPolicy
      * @return bool
      */
     public function destroy(User $authUser, Domain $domain) {
-        return $authUser->can( 'domain@destroy' )
+        return $authUser->can( 'core.domain@destroy' )
             && getMasterAccount( $authUser )->id == $domain->account_id;
     }
 

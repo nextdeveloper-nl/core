@@ -22,7 +22,7 @@ class CountryStoreRequest extends AbstractFormRequest
      * @return bool
      */
     public function authorize() {
-        return $this->user()->can( 'country@store' );
+        return $this->user()->can( 'core.country@store' );
     }
 
     /**

@@ -33,7 +33,7 @@ class DiscountPolicy
      * @return bool
      */
     public function destroy(User $authUser, Discount $discount) {
-        return $authUser->can( 'discount@destroy' );
+        return $authUser->can( 'core.discount@destroy' );
     }
 
 }

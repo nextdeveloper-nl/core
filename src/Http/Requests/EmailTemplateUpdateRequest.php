@@ -22,7 +22,7 @@ class EmailTemplateUpdateRequest extends AbstractFormRequest
      * @return bool
      */
     public function authorize() {
-        return $this->user()->can( 'emailtemplate@update' );
+        return $this->user()->can( 'core.emailtemplate@update' );
     }
 
     /**

@@ -33,7 +33,7 @@ class CountryPolicy
      * @return bool
      */
     public function destroy(User $authUser, Country $country) {
-        return $authUser->can( 'category@destroy' );
+        return $authUser->can( 'core.category@destroy' );
     }
 
 }

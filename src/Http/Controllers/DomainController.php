@@ -30,7 +30,9 @@ class DomainController extends AbstractController
      * @throws \Throwable
      */
     public function index(DomainQueryFilter $filter) {
-        $domains = Domain::filter( $filter )->get();
+        $domains = Domain::filter( $filter )
+            ->where( 'account_id', getAUCurrentAccount()->id )
+            ->get();
 
         throw_if( $domains->isEmpty(), ModelNotFoundException::class, 'Could not find the records you are looking for.' );
 
@@ -45,6 +47,8 @@ class DomainController extends AbstractController
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(Domain $domain) {
+        throw_if( $domain->account_id != getAUCurrentAccount()->id, ModelNotFoundException::class, 'Could not find the records you are looking for.' );
+
         return $this->withItem( $domain, app( DomainTransformer::class ) );
     }
 
