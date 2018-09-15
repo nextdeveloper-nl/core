@@ -20,7 +20,7 @@ class CreateHistoryTable extends Migration
             $table->bigIncrements( 'id' );
             $table->unsignedBigInteger( 'historyable_id' );
             $table->string( 'historyable_type' );
-            $table->unsignedBigInteger( 'user_id' );
+            $table->unsignedBigInteger( 'user_id' )->nullable();
             $table->longText( 'body' );
             $table->string( 'hash', 44 );
             $table->timestamps();

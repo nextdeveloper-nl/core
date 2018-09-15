@@ -27,7 +27,9 @@ trait Historyable
      * @return mixed
      */
     public function history() {
-        return $this->morphMany( History::class, 'historyable' );
+        $historyModel = isset( $this->history_model ) ? $this->history_model : History::class;
+
+        return $this->morphMany( $historyModel, 'historyable' );
     }
 
     /**
@@ -59,7 +61,7 @@ trait Historyable
         $model->history()->create( [
             'historyable_id'   => $model->id,
             'historyable_type' => get_class( $model ),
-            'user_id'          => getAUUser()->id,
+            'user_id'          => $this->getCurrentUser(),
             'body'             => $data,
             'hash'             => $chain->getLastHash(),
         ] );
@@ -99,6 +101,10 @@ trait Historyable
         // Geçmiş verisi ile DB datasını karşılaştırıyoruz.
         return ( new Verifier() )
             ->verifyLastHash( $lastChain, $realChain->getLastHash() );
+    }
+
+    private function getCurrentUser(){
+        return isLoggedIn() ? getAUUser()->id : null;
     }
 
 }

@@ -18,6 +18,7 @@ return [
     'middlewares'      => [
         'http' => [
             'PlusClouds\Core\Http\Middleware\XSSProtection',
+            'PlusClouds\Core\Http\Middleware\CountryResolver',
             'PlusClouds\Core\Http\Middleware\Locale',
         ],
 
