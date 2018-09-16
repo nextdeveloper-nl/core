@@ -33,40 +33,59 @@ class CorePermissionTableSeeder extends Seeder
 
         $categories = [
             [
-                'slug'          =>  'support',
-                'category'      =>  'Support',
-                'description'   =>  'This category contains elements about support.',
+                'slug'          =>  'products',
+                'category'      =>  'Products',
+                'description'   =>  'Products of PlusClouds',
                 'domain_id'     =>  1,
                 'user_id'       =>  9,
-                'children'  =>  [
+                'children'      =>  [
                     [
-                        'slug'          =>  'tickets',
-                        'category'      =>  'Tickets',
-                        'description'   =>  'This category contains support tickets.',
+                        'slug'          =>  'cloud-server',
+                        'category'      =>  'Cloud Server',
+                        'description'   =>  'This category contains elements about support.',
                         'domain_id'     =>  1,
                         'user_id'       =>  9,
-                        'children'      =>  [
-                            [
-                                'slug'          =>  'paid',
-                                'category'      =>  'Paid Tickets',
-                                'description'   =>  'This category contains paid tickets.',
-                                'domain_id'     =>  1,
-                                'user_id'       =>  9,
-                            ],
-                            [
-                                'slug'          =>  'free',
-                                'category'      =>  'Free Tickets',
-                                'description'   =>  'This category contains free tickets.',
-                                'domain_id'     =>  1,
-                                'user_id'       =>  9,
-                            ],
-                        ]
+                    ],
+                    [
+                        'slug'          =>  'cloud-storage',
+                        'category'      =>  'Cloud Storage',
+                        'description'   =>  'This category contains elements about support.',
+                        'domain_id'     =>  1,
+                        'user_id'       =>  9,
+                    ],
+                    [
+                        'slug'          =>  'network',
+                        'category'      =>  'Network',
+                        'description'   =>  'This category contains elements about support.',
+                        'domain_id'     =>  1,
+                        'user_id'       =>  9,
+                    ],
+                    [
+                        'slug'          =>  'automation',
+                        'category'      =>  'Automation',
+                        'description'   =>  'This category contains elements about support.',
+                        'domain_id'     =>  1,
+                        'user_id'       =>  9,
+                    ],
+                    [
+                        'slug'          =>  'sql-services',
+                        'category'      =>  'SQL Services',
+                        'description'   =>  'This category contains elements about support.',
+                        'domain_id'     =>  1,
+                        'user_id'       =>  9,
+                    ],
+                    [
+                        'slug'          =>  'monitoring',
+                        'category'      =>  'Monitoring Services',
+                        'description'   =>  'This category contains elements about support.',
+                        'domain_id'     =>  1,
+                        'user_id'       =>  9,
                     ]
                 ]
             ],
             [
-                'slug'          =>  'marketplace',
-                'category'      =>  'Marketplace',
+                'slug'          =>  'solutions',
+                'category'      =>  'Solutions',
                 'description'   =>  'This category contains products and services.',
                 'domain_id'     =>  1,
                 'user_id'       =>  9,
@@ -128,7 +147,77 @@ class CorePermissionTableSeeder extends Seeder
                         'user_id'       =>  9,
                     ],
                 ]
+            ],
+            [
+                'slug'          =>  'enterprise',
+                'category'      =>  'Enterprise',
+                'description'   =>  'This category contains elements about support.',
+                'domain_id'     =>  1,
+                'user_id'       =>  9,
+                'children'  =>  [
+                    [
+                        'slug'          =>  'devops-and-application-services',
+                        'category'      =>  'DevOps & Application Services',
+                        'description'   =>  'This category contains support tickets.',
+                        'domain_id'     =>  1,
+                        'user_id'       =>  9,
+                    ],
+                    [
+                        'slug'          =>  'disaster-recovery-services',
+                        'category'      =>  'Disaster Recovery Services',
+                        'description'   =>  'This category contains support tickets.',
+                        'domain_id'     =>  1,
+                        'user_id'       =>  9,
+                    ],
+                    [
+                        'slug'          =>  'cloud-security',
+                        'category'      =>  'Cloud Security',
+                        'description'   =>  'This category contains support tickets.',
+                        'domain_id'     =>  1,
+                        'user_id'       =>  9,
+                    ],
+                    [
+                        'slug'          =>  'private-cloud',
+                        'category'      =>  'Private Cloud',
+                        'description'   =>  'This category contains support tickets.',
+                        'domain_id'     =>  1,
+                        'user_id'       =>  9,
+                    ],
+                ]
+            ],
+            [
+                'slug'          =>  'support',
+                'category'      =>  'Support',
+                'description'   =>  'This category contains elements about support.',
+                'domain_id'     =>  1,
+                'user_id'       =>  9,
+                'children'  =>  [
+                    [
+                        'slug'          =>  'tickets',
+                        'category'      =>  'Tickets',
+                        'description'   =>  'This category contains support tickets.',
+                        'domain_id'     =>  1,
+                        'user_id'       =>  9,
+                        'children'      =>  [
+                            [
+                                'slug'          =>  'paid',
+                                'category'      =>  'Paid Tickets',
+                                'description'   =>  'This category contains paid tickets.',
+                                'domain_id'     =>  1,
+                                'user_id'       =>  9,
+                            ],
+                            [
+                                'slug'          =>  'free',
+                                'category'      =>  'Free Tickets',
+                                'description'   =>  'This category contains free tickets.',
+                                'domain_id'     =>  1,
+                                'user_id'       =>  9,
+                            ],
+                        ]
+                    ]
+                ]
             ]
+
         ];
 
         $this->createCategories( $categories );

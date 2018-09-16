@@ -23,7 +23,7 @@ class CategoryTransformer extends AbstractTransformer
     /**
      * @var array
      */
-    protected $visible = [ 'id', 'name', 'children' ];
+    protected $visible = [ 'id', 'name', 'slug', 'children' ];
 
     /**
      * @param Category $category
