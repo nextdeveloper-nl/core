@@ -36,25 +36,47 @@ trait Historyable
      * @return void
      */
     public static function bootHistoryable() {
-        static::updating( function($model) {
+        static::created( function(Model $model) {
+            $model->track( $model, true );
+        } );
+
+        static::updating( function(Model $model) {
             $model->track( $model );
         } );
     }
 
     /**
      * @param Model $model
+     * @param bool $force
+     *
+     * @return bool
      */
-    protected function track(Model $model) {
+    protected function track(Model $model, $force = false) {
+        $excludeHistoryableColumns = array_merge(
+            [ $model->getKeyName(), 'id_ref' ],
+            ( $this->excludeHistoryableColumns ?? [] ),
+            ( $model->getDates() ?? [] )
+        );
+
+        if( ! $force ) {
+            // Eğer değişen sütunlar ve harici sütünlar birbirine eşit ise,
+            // herhangi bir izleme işlemi yapılmayacak
+            if( collect( $model->getDirty() )->keys()->diff( $excludeHistoryableColumns )->isEmpty() ) {
+                return false;
+            }
+        }
+
+        // Veriler içerisinden harici tutulan alanları kaldırıyoruz.
+        $data = collect( $model->getOriginal() )
+            ->merge( $model->getDirty() )
+            ->except( $excludeHistoryableColumns )
+            ->toJson();
+
         $chain = new Blakechain();
 
-        $model->history->each( function($item) use ($chain) {
+        $model->history->each( function($item) use ($model, $chain) {
             $chain->appendData( $item->body );
         } );
-
-        $data = json_encode( [
-            'old' => collect( $model->getOriginal() )->only( $this->logColumns )->toArray(),
-            'new' => collect( $model->toArray() )->only( $this->logColumns )->toArray(),
-        ] );
 
         $chain->appendData( $data );
 
@@ -65,29 +87,35 @@ trait Historyable
             'body'             => $data,
             'hash'             => $chain->getLastHash(),
         ] );
+
+        return true;
     }
 
     /**
      * @return bool
      */
     public function verifyHistory() {
+        if( $this->history->isEmpty() ) {
+            return false;
+        }
+
+        $excludeHistoryableColumns = array_merge(
+            [ $this->getKeyName(), 'id_ref' ],
+            ( $this->excludeHistoryableColumns ?? [] ),
+            ( $this->getDates() ?? [] )
+        );
+
         $realChain = new Blakechain();
         $lastChain = new Blakechain();
 
-        // Geçmiş verisini alıp zinir olarak yüklüyoruz ve hash değerlerini oluşturuyoruz.
+        // Geçmiş verisini alıp zincir olarak yüklüyoruz ve hash değerlerini oluşturuyoruz.
         ( $histories = $this->history )
             ->each( function($item) use ($realChain) {
                 $realChain->appendData( $item->body );
             } );
 
-        // DB'de kayıtlı gerçek veriyi işleyip formatlıyoruz.
-        $lastData = array_merge(
-            json_decode( $histories->last()->body, true ),
-            [
-                'new' => $this->only( $this->logColumns ),
-            ]
-        );
-
+        $data = collect( $this->getOriginal() )
+            ->except( $excludeHistoryableColumns );
 
         // Geçmiş kayıtlarından son veriyi çıkarıp, DB'de bulunan orjinal veriyi zincire atıp
         // hash değerlerini oluşturuyoruz.
@@ -96,14 +124,38 @@ trait Historyable
                 $lastChain->appendData( $item->body );
             } );
 
-        $lastChain->appendData( json_encode( $lastData ) );
+        $lastChain->appendData( $data );
 
         // Geçmiş verisi ile DB datasını karşılaştırıyoruz.
         return ( new Verifier() )
             ->verifyLastHash( $lastChain, $realChain->getLastHash() );
     }
 
-    private function getCurrentUser(){
+    /**
+     * @param string $hash
+     *
+     * @return bool
+     */
+    public function revertTo($hash) {
+        $history = $this->history->filter( function($item) use ($hash) {
+            return $item->hash === $hash;
+        } )->first();
+
+        if( ! is_null( $history ) ) {
+            $data = json_decode( $history->body, true );
+
+            $this->forceFill( $data );
+
+            return $this->save();
+        }
+
+        return false;
+    }
+
+    /**
+     * @return null|int
+     */
+    private function getCurrentUser() {
         return isLoggedIn() ? getAUUser()->id : null;
     }
 
