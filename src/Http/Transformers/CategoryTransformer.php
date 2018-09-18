@@ -11,7 +11,9 @@
 namespace PlusClouds\Core\Http\Transformers;
 
 
+use League\Fractal\ParamBag;
 use PlusClouds\Core\Database\Models\Category;
+use PlusClouds\Marketplace\Http\Transformers\ProductTransformer;
 
 /**
  * Class CategoryTransformer
@@ -24,6 +26,11 @@ class CategoryTransformer extends AbstractTransformer
      * @var array
      */
     protected $visible = [ 'id', 'name', 'slug', 'children' ];
+
+    /**
+     * @var array
+     */
+    protected $availableIncludes = [ 'products' ];
 
     /**
      * @param Category $category
@@ -48,4 +55,14 @@ class CategoryTransformer extends AbstractTransformer
         return $this->buildPayload( $payload );
     }
 
+    /**
+     * @param Category $category
+     * @param ParamBag|null $paramBag
+     *
+     * @return \League\Fractal\Resource\Collection
+     * @throws \Exception
+     */
+    public function includeProducts(Category $category, ParamBag $paramBag = null) {
+        return $this->collection( $category->products, new ProductTransformer( $paramBag ) );
+    }
 }
