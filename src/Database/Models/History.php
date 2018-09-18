@@ -29,6 +29,13 @@ class History extends AbstractModel
     protected $guarded = [];
 
     /**
+     * @var array
+     */
+    protected $casts = [
+        'body' => 'array'
+    ];
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
     public function historyable() {

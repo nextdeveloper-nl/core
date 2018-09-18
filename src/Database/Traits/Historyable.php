@@ -70,15 +70,15 @@ trait Historyable
         $data = collect( $model->getOriginal() )
             ->merge( $model->getDirty() )
             ->except( $excludeHistoryableColumns )
-            ->toJson();
+            ->toArray();
 
         $chain = new Blakechain();
 
         $model->history->each( function($item) use ($model, $chain) {
-            $chain->appendData( $item->body );
+            $chain->appendData( json_encode( $item->body, JSON_NUMERIC_CHECK ) );
         } );
 
-        $chain->appendData( $data );
+        $chain->appendData( json_encode( $data, JSON_NUMERIC_CHECK ) );
 
         $model->history()->create( [
             'historyable_id'   => $model->id,
@@ -111,20 +111,21 @@ trait Historyable
         // Geçmiş verisini alıp zincir olarak yüklüyoruz ve hash değerlerini oluşturuyoruz.
         ( $histories = $this->history )
             ->each( function($item) use ($realChain) {
-                $realChain->appendData( $item->body );
+                $realChain->appendData( json_encode( $item->body, JSON_NUMERIC_CHECK ) );
             } );
 
         $data = collect( $this->getOriginal() )
-            ->except( $excludeHistoryableColumns );
+            ->except( $excludeHistoryableColumns )
+            ->toArray();
 
         // Geçmiş kayıtlarından son veriyi çıkarıp, DB'de bulunan orjinal veriyi zincire atıp
         // hash değerlerini oluşturuyoruz.
         $histories->splice( 0, -1 )
             ->each( function($item) use ($lastChain) {
-                $lastChain->appendData( $item->body );
+                $lastChain->appendData( json_encode( $item->body, JSON_NUMERIC_CHECK ) );
             } );
 
-        $lastChain->appendData( $data );
+        $lastChain->appendData( json_encode( $data, JSON_NUMERIC_CHECK ) );
 
         // Geçmiş verisi ile DB datasını karşılaştırıyoruz.
         return ( new Verifier() )
@@ -142,9 +143,7 @@ trait Historyable
         } )->first();
 
         if( ! is_null( $history ) ) {
-            $data = json_decode( $history->body, true );
-
-            $this->forceFill( $data );
+            $this->forceFill( $history->body );
 
             return $this->save();
         }
