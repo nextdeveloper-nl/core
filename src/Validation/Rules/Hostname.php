@@ -31,7 +31,7 @@ class Hostname implements Rule
         $validator = new ZendHostname( [
             'allow'       => ZendHostname::ALLOW_DNS,
             'useIdnCheck' => true,
-            'useTldCheck' => false,
+            'useTldCheck' => true,
         ] );
 
         return $validator->isValid( $value );

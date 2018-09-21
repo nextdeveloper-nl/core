@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'rate_limit' => 60,
 
     'exceptions' => [
         'map' => [
@@ -23,7 +24,8 @@ return [
         ],
 
         'route' => [
-            'etag' => 'PlusClouds\Core\Http\Middleware\ETag',
+            'throttle' => 'PlusClouds\Core\Http\Middleware\ThrottleRequests',
+            'etag'     => 'PlusClouds\Core\Http\Middleware\ETag',
         ],
     ],
 
