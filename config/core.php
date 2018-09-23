@@ -3,6 +3,10 @@
 return [
     'rate_limit' => 60,
 
+    'country_resolver' => [
+        'default' => 'TR',
+    ],
+
     'exceptions' => [
         'map' => [
             'Illuminate\Auth\Access\AuthorizationException'                             => 'PlusClouds\Core\Exceptions\AuthorizationException',
@@ -20,19 +24,12 @@ return [
         'http' => [
             'PlusClouds\Core\Http\Middleware\XSSProtection',
             'PlusClouds\Core\Http\Middleware\CountryResolver',
-            'PlusClouds\Core\Http\Middleware\Locale',
         ],
 
         'route' => [
             'throttle' => 'PlusClouds\Core\Http\Middleware\ThrottleRequests',
             'etag'     => 'PlusClouds\Core\Http\Middleware\ETag',
         ],
-    ],
-
-    // Dil ayarları
-    'locale'           => [
-        'available' => [ 'tr', 'en' ],
-        'default'   => 'en',
     ],
 
     // Registry ayarları

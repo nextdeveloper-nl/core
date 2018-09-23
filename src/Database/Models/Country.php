@@ -51,7 +51,15 @@ class Country extends AbstractModel
      * @return mixed
      */
     public function scopeCode($query, $code) {
-        return $query->where( 'code', strtoupper( $code ) );
+        $code = strtoupper( $code );
+
+        $q = clone $query;
+
+        if( $q->where( 'code', $code )->count() > 0 ) {
+            return $query->where( 'code', $code );
+        } else {
+            return $query->where( 'code', config( 'core.country_resolver.default' ) );
+        }
     }
 
     /**
