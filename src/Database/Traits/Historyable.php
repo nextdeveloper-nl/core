@@ -24,6 +24,11 @@ trait Historyable
 {
 
     /**
+     * @var bool
+     */
+    protected $enableHistory = true;
+
+    /**
      * @return mixed
      */
     public function history() {
@@ -37,12 +42,41 @@ trait Historyable
      */
     public static function bootHistoryable() {
         static::created( function(Model $model) {
-            $model->track( $model, true );
+            if( $model->shouldHistoryEvent() ) {
+                $model->track( $model, true );
+            }
         } );
 
         static::updating( function(Model $model) {
-            $model->track( $model );
+            if( $model->shouldHistoryEvent() ) {
+                $model->track( $model );
+            }
         } );
+    }
+
+    /**
+     * @return $this
+     */
+    public function disableHistory() {
+        $this->enableHistory = false;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function enableHistory() {
+        $this->enableHistory = true;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function shouldHistoryEvent() {
+        return $this->enableHistory;
     }
 
     /**
