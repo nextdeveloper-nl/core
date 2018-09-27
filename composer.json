@@ -28,7 +28,8 @@
     "bensampo/laravel-enum": "^1.7",
     "zendframework/zend-validator": "^2.10",
     "teamtnt/laravel-scout-tntsearch-driver": "^3.0",
-    "paragonie/blakechain": "^1.0"
+    "paragonie/blakechain": "^1.0",
+    "laravel-notification-channels/twilio": "^2.0"
   },
   "require-dev": {
     "illuminate/support": "5.5.*",
@@ -47,6 +48,7 @@
         "PlusClouds\\Core\\CoreServiceProvider",
         "Phoenix\\EloquentMeta\\ServiceProvider",
         "Vinkla\\Hashids\\HashidsServiceProvider",
+        "NotificationChannels\\Twilio\\TwilioProvider",
         "TeamTNT\\Scout\\TNTSearchScoutServiceProvider"
       ],
       "aliases": {
