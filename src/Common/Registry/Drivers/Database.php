@@ -90,13 +90,13 @@ class Database extends AbstractSerializer implements IDriver
     public function load() {
         if( Schema::hasTable( ( $table = $this->table ) ) ) {
             $this->settings = $this->cache->rememberForever( $this->getCacheKey(), function() {
-                if( $settings = $this->dbManager->table( $this->table )->lists( 'value', 'key' ) ) {
-                    $settings = array_map( function($data) {
+                if( $settings = $this->dbManager->table( $this->table )->pluck( 'value', 'key' ) ) {
+                    $settings = $settings->map(function($data){
                         return ! is_array( $data ) ? $this->deserialize( $data, true ) : $data;
-                    }, $settings );
+                    });
                 }
 
-                return $settings;
+                return $settings->toArray();
             } );
         }
     }
