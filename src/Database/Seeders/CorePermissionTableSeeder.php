@@ -193,27 +193,25 @@ class CorePermissionTableSeeder extends Seeder
                 'user_id'       =>  9,
                 'children'  =>  [
                     [
-                        'slug'          =>  'tickets',
-                        'category'      =>  'Tickets',
+                        'slug'          =>  'incident-support',
+                        'category'      =>  'Incident Support',
                         'description'   =>  'This category contains support tickets.',
                         'domain_id'     =>  1,
                         'user_id'       =>  9,
-                        'children'      =>  [
-                            [
-                                'slug'          =>  'paid',
-                                'category'      =>  'Paid Tickets',
-                                'description'   =>  'This category contains paid tickets.',
-                                'domain_id'     =>  1,
-                                'user_id'       =>  9,
-                            ],
-                            [
-                                'slug'          =>  'free',
-                                'category'      =>  'Free Tickets',
-                                'description'   =>  'This category contains free tickets.',
-                                'domain_id'     =>  1,
-                                'user_id'       =>  9,
-                            ],
-                        ]
+                    ],
+                    [
+                        'slug'          =>  'devops-engineering-support',
+                        'category'      =>  'DevOps & Engineering Support',
+                        'description'   =>  'This category contains support tickets.',
+                        'domain_id'     =>  1,
+                        'user_id'       =>  9,
+                    ],
+                    [
+                        'slug'          =>  'managed-operations',
+                        'category'      =>  'Managed Operations',
+                        'description'   =>  'This category contains support tickets.',
+                        'domain_id'     =>  1,
+                        'user_id'       =>  9,
                     ]
                 ]
             ]
