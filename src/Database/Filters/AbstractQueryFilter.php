@@ -52,6 +52,8 @@ abstract class AbstractQueryFilter
         $this->builder = $builder;
 
         foreach( $this->filters() as $name => $value ) {
+            $name = camel_case( $name );
+
             if( method_exists( $this, $name ) && $this->checkFilterRules( $name ) ) {
                 call_user_func_array( [ $this, $name ], array_filter( [ $value ] ) );
             }
