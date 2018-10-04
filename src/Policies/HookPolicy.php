@@ -32,7 +32,7 @@ class HookPolicy
      *
      * @return bool
      */
-    public function destroy(User $authUser, Hook $hook) {
+    public function hookDestroy(User $authUser, Hook $hook) {
         return $authUser->can( 'core.hook@destroy' )
             && getMasterAccount( $authUser )->id == $hook->vendor_id;
     }

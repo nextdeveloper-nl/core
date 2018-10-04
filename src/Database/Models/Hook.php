@@ -16,7 +16,7 @@ use PlusClouds\Core\Database\Traits\HashId;
 use PlusClouds\Core\Database\Traits\Filterable;
 
 /**
- * @todo: Loggable trait eklenecek.
+ * @todo    : Loggable trait eklenecek.
  *
  * Class Hook
  * @package PlusClouds\Core\Database\Models
@@ -25,6 +25,23 @@ class Hook extends AbstractModel
 {
 
     use SoftDeletes, HashId, Filterable;
+
+    /**
+     * @var bool
+     */
+    public $timestamps = false;
+
+    /**
+     * @var array
+     */
+    protected $guarded = [];
+
+    /**
+     * @var array
+     */
+    protected $casts = [
+        'parameters' => 'array',
+    ];
 
     /**
      * @return void
@@ -36,9 +53,16 @@ class Hook extends AbstractModel
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function logs() {
+        return $this->hasMany( HookLog::class );
+    }
+
+    /**
      * @return int
      */
-    public static function position() {
+    public static function getPosition() {
         return static::max( 'position' ) + 1;
     }
 

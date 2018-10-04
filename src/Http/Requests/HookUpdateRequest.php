@@ -11,6 +11,10 @@
 namespace PlusClouds\Core\Http\Requests;
 
 
+use BenSampo\Enum\Rules\EnumValue;
+use PlusClouds\Core\Common\Enums\HookBehavior;
+use PlusClouds\Core\Common\Enums\HookMethod;
+
 /**
  * Class HookUpdateRequest
  * @package PlusClouds\Core\Http\Requests
@@ -32,9 +36,9 @@ class HookUpdateRequest extends AbstractFormRequest
     public function rules() {
         return [
             'action'     => 'required|max:255',
-            'behavior'   => 'required|in:before,after',
+            'behavior'    => [ 'required', new EnumValue( HookBehavior::class ) ],
             'url'        => 'required|url',
-            'method'     => 'required|in:GET,POST,PUT,PATCH,DELETE',
+            'method'      => [ 'required', new EnumValue( HookMethod::class ) ],
             'parameters' => 'array|nullable',
             'position'   => 'integer',
         ];

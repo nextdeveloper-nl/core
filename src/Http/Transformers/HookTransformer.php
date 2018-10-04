@@ -27,8 +27,8 @@ class HookTransformer extends AbstractTransformer
      */
     public function transform(Hook $hook){
         return $this->buildPayload( [
-            'id'         => $hook->id,
-            'action'     => getHookAction( $hook->action ),
+            'id'         => $hook->id_ref,
+            'action'     => $hook->action,
             'behavior'   => $hook->behavior,
             'url'        => $hook->url,
             'method'     => $hook->method,

@@ -20,7 +20,7 @@ return [
         ],
     ],
 
-    'middlewares'      => [
+    'middlewares' => [
         'http' => [
             'PlusClouds\Core\Http\Middleware\XSSProtection',
             'PlusClouds\Core\Http\Middleware\CountryResolver',
@@ -30,6 +30,10 @@ return [
             'throttle' => 'PlusClouds\Core\Http\Middleware\ThrottleRequests',
             'etag'     => 'PlusClouds\Core\Http\Middleware\ETag',
         ],
+    ],
+
+    'policies'         => [
+        'PlusClouds\Core\Database\Models\Hook' => 'PlusClouds\Core\Policies\HookPolicy',
     ],
 
     // Registry ayarları
