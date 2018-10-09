@@ -52,7 +52,7 @@ function genUuid($prefix = null) {
         if( $length > 3 ) {
             $prefix = substr( $prefix, 0, 3 );
         } elseif( $length < 3 ) {
-            $prefix = str_pad( $prefix, 4 - $length, '0', STR_PAD_LEFT );
+            $prefix = str_pad( $prefix, 3, '0', STR_PAD_LEFT );
         }
     }
 
