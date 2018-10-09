@@ -18,7 +18,7 @@
 function generateRandomCode($length = 4) {
     $chars = str_shuffle( 'abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ' );
 
-    return substr($chars, 1, $length);
+    return substr( $chars, 1, $length );
 //
 //    $min = pow( 10, ( $digits - 1 ) );
 //    $max = ( $min * 10 ) - 1;
@@ -41,10 +41,22 @@ function customRnd($min = 1, $max = 2) {
 /**
  * Generate new random uuid
  *
+ * @param null|string $prefix
+ *
  * @return string
  */
-function genUuid() {
-    return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+function genUuid($prefix = null) {
+    if( ! is_null( $prefix ) ) {
+        $length = strlen( $prefix );
+
+        if( $length > 3 ) {
+            $prefix = substr( $prefix, 0, 3 );
+        } elseif( $length < 3 ) {
+            $prefix = str_pad( $prefix, 4 - $length, '0', STR_PAD_LEFT );
+        }
+    }
+
+    $uuid = sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
         // 32 bits for "time_low"
         mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ),
         // 16 bits for "time_mid"
@@ -59,6 +71,8 @@ function genUuid() {
         // 48 bits for "node"
         mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff )
     );
+
+    return $prefix ? sprintf( '%s-%s', $prefix, $uuid ) : $uuid;
 }
 
 /**
