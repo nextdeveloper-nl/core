@@ -11,6 +11,9 @@
 namespace PlusClouds\Core\Http\Transformers;
 
 
+use League\Fractal\ParamBag;
+use PlusClouds\Account\Database\Models\User;
+use PlusClouds\Account\Http\Transformers\UserTransformer;
 use PlusClouds\Core\Database\Models\Comment;
 
 /**
@@ -24,6 +27,11 @@ class CommentTransformer extends AbstractTransformer
      * @var array
      */
     protected $visible = [ 'id', 'body', 'lft', 'rgt', 'created_at' ];
+
+    /**
+     * @var array
+     */
+    protected $availableIncludes = [ 'creator' ];
 
     /**
      * @param Comment $comment
@@ -49,4 +57,7 @@ class CommentTransformer extends AbstractTransformer
         return $this->buildPayload( $payload );
     }
 
+    public function includeCreator(Comment $comment, ParamBag $paramBag = null) {
+        return $this->item( $comment->creator, new UserTransformer( $paramBag ) );
+    }
 }

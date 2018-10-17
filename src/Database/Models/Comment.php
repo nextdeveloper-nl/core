@@ -11,6 +11,7 @@
 namespace PlusClouds\Core\Database\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
+use PlusClouds\Account\Database\Models\User;
 use PlusClouds\Core\Database\Traits\HashId;
 use Kalnoy\Nestedset\NodeTrait;
 
@@ -75,6 +76,13 @@ class Comment extends AbstractModel
      */
     public function deleteComment($id) {
         return (bool) static::find( $id )->delete();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function creator() {
+        return $this->belongsTo( User::class, 'user_id' );
     }
 
 }
