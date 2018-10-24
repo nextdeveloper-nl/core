@@ -29,7 +29,9 @@
     "zendframework/zend-validator": "^2.10",
     "teamtnt/laravel-scout-tntsearch-driver": "^3.0",
     "paragonie/blakechain": "^1.0",
-    "laravel-notification-channels/twilio": "^2.0"
+    "laravel-notification-channels/twilio": "^2.0",
+    "imtigger/laravel-job-status": "^0.2.0",
+    "graylog2/gelf-php": "^1.5"
   },
   "require-dev": {
     "illuminate/support": "5.5.*",

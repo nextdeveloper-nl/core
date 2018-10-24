@@ -13,6 +13,8 @@ namespace PlusClouds\Core;
 use Illuminate\Support\Facades\Log;
 use InvalidArgumentException;
 use Illuminate\Contracts\Debug\ExceptionHandler;
+use Monolog\Formatter\GelfMessageFormatter;
+use PlusClouds\Core\Common\Logger\Monolog\Handler\GraylogHandler;
 use PlusClouds\Core\Common\Services\NiN\NiN;
 use PlusClouds\Core\Exceptions\Handler;
 use PlusClouds\Core\Common\Registry\Drivers\IDriver;
@@ -106,6 +108,11 @@ class CoreServiceProvider extends AbstractServiceProvider
 //        $slackHandler->setFormatter( new \Monolog\Formatter\LineFormatter() );
 //
 //        $monolog->pushHandler( $slackHandler );
+
+        $graylogHandler = new GraylogHandler();
+        $graylogHandler->setFormatter( new GelfMessageFormatter() );
+
+        $monolog->pushHandler( $graylogHandler );
 
         $monolog->pushProcessor( new \Monolog\Processor\WebProcessor() );
         $monolog->pushProcessor( new \Monolog\Processor\MemoryUsageProcessor() );
