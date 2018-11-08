@@ -10,16 +10,20 @@
 
 namespace PlusClouds\Core;
 
+
+use Illuminate\Broadcasting\BroadcastManager;
 use Illuminate\Support\Facades\Log;
-use InvalidArgumentException;
 use Illuminate\Contracts\Debug\ExceptionHandler;
-use Monolog\Formatter\GelfMessageFormatter;
+use PlusClouds\Core\Common\Broadcasting\Broadcasters\PushStreamBroadcaster;
 use PlusClouds\Core\Common\Logger\Monolog\Handler\GraylogHandler;
 use PlusClouds\Core\Common\Services\NiN\NiN;
 use PlusClouds\Core\Exceptions\Handler;
 use PlusClouds\Core\Common\Registry\Drivers\IDriver;
 use PlusClouds\Core\Http\Traits\Response\Responsable;
-use Twilio\Rest\Client;
+use Monolog\Formatter\GelfMessageFormatter;
+use Twilio\Rest\Client as TwilioClient;
+use GuzzleHttp\Client as GuzzleClient;
+use InvalidArgumentException;
 
 /**
  * Class CoreServiceProvider
@@ -46,6 +50,9 @@ class CoreServiceProvider extends AbstractServiceProvider
         $this->bootLogger();
         $this->bootErrorHandler();
         $this->bootModelBindings();
+
+        // @todo PushStream aktif edilecek.
+//        $this->bootPushStreamBroadcaster();
         $this->bootTwilio();
         $this->bootNiN();
     }
@@ -93,8 +100,6 @@ class CoreServiceProvider extends AbstractServiceProvider
     }
 
     /**
-     * @todo ElasticSearchHandler eklenecek!
-     *
      * @return void
      */
     public function bootLogger() {
@@ -109,14 +114,37 @@ class CoreServiceProvider extends AbstractServiceProvider
 //
 //        $monolog->pushHandler( $slackHandler );
 
-        $graylogHandler = new GraylogHandler();
-        $graylogHandler->setFormatter( new GelfMessageFormatter() );
-
-        $monolog->pushHandler( $graylogHandler );
+        // @todo : Graylog aktif edilecek.
+//        $graylogHandler = new GraylogHandler();
+//        $graylogHandler->setFormatter( new GelfMessageFormatter() );
+//
+//        $monolog->pushHandler( $graylogHandler );
 
         $monolog->pushProcessor( new \Monolog\Processor\WebProcessor() );
         $monolog->pushProcessor( new \Monolog\Processor\MemoryUsageProcessor() );
         $monolog->pushProcessor( new \Monolog\Processor\MemoryPeakUsageProcessor() );
+    }
+
+    /**
+     * Nginx Push Stream
+     *
+     * @return void
+     */
+    public function bootPushStreamBroadcaster() {
+        $this->app->make( BroadcastManager::class )->extend( 'PushStream', function($app, $config) {
+            $client = new GuzzleClient( [
+                'base_uri' => $config['core.pushstream.base_url'],
+                'query'    => ! is_null( $config['core.pushstream.access_key'] ) ? [
+                    'access_key' => $config['core.pushstream.access_key'],
+                ] : null,
+            ] );
+
+            if( ! is_null( $config['core.pushstream.cert'] ) ) {
+                $client->setDefaultOption( 'verify', $config['core.pushstream.cert'] );
+            }
+
+            return new PushStreamBroadcaster( $client );
+        } );
     }
 
     /**
@@ -126,7 +154,7 @@ class CoreServiceProvider extends AbstractServiceProvider
      */
     private function bootTwilio() {
         $this->app->singleton( 'Twilio', function() {
-            return new Client( env( 'TWILIO_ACCOUNT_SID' ), env( 'TWILIO_AUTH_TOKEN' ) );
+            return new TwilioClient( env( 'TWILIO_ACCOUNT_SID' ), env( 'TWILIO_AUTH_TOKEN' ) );
         } );
     }
 
