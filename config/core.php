@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'rate_limit' => 60,
+    'rate_limit' => 6000,
 
     'country_resolver' => [
         'default' => 'TR',
