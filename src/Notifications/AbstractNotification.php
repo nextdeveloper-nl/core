@@ -27,6 +27,16 @@ class AbstractNotification extends Notification
     protected $channels = [ 'database', 'mail' ];
 
     /**
+     * @var array
+     */
+    protected $excludeChannels = [];
+
+    /**
+     * @var array
+     */
+    protected $includeChannels = [];
+
+    /**
      * @param $notifiable
      *
      * @return array
@@ -42,6 +52,14 @@ class AbstractNotification extends Notification
             if( (bool) $notifiable->getMeta( 'notification_settings.sms.is_active' ) == true ) {
                 array_push( $this->channels, TwilioChannel::class );
             }
+        }
+
+        if( count( $this->includeChannels ) ) {
+            $this->channels = collect()->make( $this->channels )->merge( $this->includeChannels )->unique()->all();
+        }
+
+        if( count( $this->excludeChannels ) ) {
+            $this->channels = collect()->make( $this->channels )->diff( $this->excludeChannels )->all();
         }
 
         return $this->channels;

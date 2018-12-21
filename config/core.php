@@ -7,6 +7,13 @@ return [
         'default' => 'TR',
     ],
 
+    'pushstream' => [
+        'driver'     => 'PushStream',
+        'base_url'   => 'https://api.plusclouds.com',
+        'access_key' => null,
+        'cert'       => null,
+    ],
+
     'exceptions' => [
         'map' => [
             'Illuminate\Auth\Access\AuthorizationException'                             => 'PlusClouds\Core\Exceptions\AuthorizationException',

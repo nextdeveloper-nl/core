@@ -11,6 +11,7 @@
 namespace PlusClouds\Core;
 
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Broadcasting\BroadcastManager;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Contracts\Debug\ExceptionHandler;
@@ -50,8 +51,8 @@ class CoreServiceProvider extends AbstractServiceProvider
         $this->bootLogger();
         $this->bootErrorHandler();
         $this->bootModelBindings();
+        $this->bootEloquentMacros();
 
-        // @todo PushStream aktif edilecek.
 //        $this->bootPushStreamBroadcaster();
         $this->bootTwilio();
         $this->bootNiN();
@@ -65,7 +66,6 @@ class CoreServiceProvider extends AbstractServiceProvider
         $this->app['Illuminate\Contracts\Routing\ResponseFactory']->macro( 'api', function() {
             return new class
             {
-
                 use Responsable;
             };
         } );
@@ -126,6 +126,52 @@ class CoreServiceProvider extends AbstractServiceProvider
     }
 
     /**
+     * @return void
+     */
+    protected function bootEloquentMacros() {
+        Builder::macro( 'toSqlWithBindings', function() {
+            $sql = $this->toSql();
+
+            foreach( $this->getBindings() as $binding ) {
+                $value = is_numeric( $binding ) ? $binding : "'$binding'";
+                $sql = preg_replace( '/\?/', $value, $sql, 1 );
+            }
+
+            return $sql;
+        } );
+
+        Builder::macro( 'dd', function() {
+            if( func_num_args() === 1 ) {
+                $message = func_get_arg( 0 );
+            }
+
+            dump( ( empty( $message ) ? "" : $message.": " ).$this->toSqlWithBindings() );
+
+            dd( $this->get() );
+        } );
+
+        Builder::macro( 'dump', function() {
+            if( func_num_args() === 1 ) {
+                $message = func_get_arg( 0 );
+            }
+
+            dump( ( empty( $message ) ? "" : $message.": " ).$this->toSqlWithBindings() );
+
+            return $this;
+        } );
+
+        Builder::macro( 'log', function() {
+            if( func_num_args() === 1 ) {
+                $message = func_get_arg( 0 );
+            }
+
+            logger()->debug( ( empty( $message ) ? "" : $message.": " ).$this->toSqlWithBindings() );
+
+            return $this;
+        } );
+    }
+
+    /**
      * Nginx Push Stream
      *
      * @return void
@@ -133,14 +179,14 @@ class CoreServiceProvider extends AbstractServiceProvider
     public function bootPushStreamBroadcaster() {
         $this->app->make( BroadcastManager::class )->extend( 'PushStream', function($app, $config) {
             $client = new GuzzleClient( [
-                'base_uri' => $config['core.pushstream.base_url'],
-                'query'    => ! is_null( $config['core.pushstream.access_key'] ) ? [
-                    'access_key' => $config['core.pushstream.access_key'],
+                'base_uri' => config( 'core.pushstream.base_url' ),
+                'query'    => ! is_null( config( 'core.pushstream.access_key' ) ) ? [
+                    'access_key' => config( 'core.pushstream.access_key' ),
                 ] : null,
             ] );
 
-            if( ! is_null( $config['core.pushstream.cert'] ) ) {
-                $client->setDefaultOption( 'verify', $config['core.pushstream.cert'] );
+            if( ! is_null( config( 'core.pushstream.cert' ) ) ) {
+                $client->setDefaultOption( 'verify', config( 'core.pushstream.cert' ) );
             }
 
             return new PushStreamBroadcaster( $client );
