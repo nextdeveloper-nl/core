@@ -46,6 +46,10 @@ class CommentTransformer extends AbstractTransformer
             'updated_at' => $this->when( ! is_null( $comment->updated_at ), optional( $comment->updated_at )->toIso8601String() ),
         ];
 
+        if( $comment->user_id == getAUUser()->id ) {
+            $payload['can_edit'] = true;
+        }
+
         if( ! $comment->children->isEmpty() ) {
             foreach( $comment->children as $key => $value ) {
                 $payload['children'][] = $this->transform( $value );
