@@ -64,7 +64,7 @@ trait Historyable
     }
 
     /**
-     * @return bool
+     * @return $this
      */
     public function enableHistory() {
         $this->enableHistory = true;
@@ -84,6 +84,7 @@ trait Historyable
      * @param bool $force
      *
      * @return bool
+     * @throws \SodiumException
      */
     protected function track(Model $model, $force = false) {
         $excludeHistoryableColumns = array_merge(
@@ -127,6 +128,7 @@ trait Historyable
 
     /**
      * @return bool
+     * @throws \SodiumException
      */
     public function verifyHistory() {
         if( $this->history->isEmpty() ) {

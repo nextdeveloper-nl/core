@@ -20,6 +20,7 @@ use PlusClouds\Core\Common\Logger\Monolog\Handler\GraylogHandler;
 use PlusClouds\Core\Common\Services\NiN\NiN;
 use PlusClouds\Core\Exceptions\Handler;
 use PlusClouds\Core\Common\Registry\Drivers\IDriver;
+use PlusClouds\Core\Helpers\DebugMode;
 use PlusClouds\Core\Http\Traits\Response\Responsable;
 use Monolog\Formatter\GelfMessageFormatter;
 use Twilio\Rest\Client as TwilioClient;
@@ -52,6 +53,9 @@ class CoreServiceProvider extends AbstractServiceProvider
         $this->bootErrorHandler();
         $this->bootModelBindings();
         $this->bootEloquentMacros();
+
+        // Debug Class initialize
+        $this->app->singleton( 'DebugMode', DebugMode::class );
 
 //        $this->bootPushStreamBroadcaster();
         $this->bootTwilio();
