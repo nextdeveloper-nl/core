@@ -215,11 +215,13 @@ abstract class AbstractTransformer extends TransformerAbstract
             $default = new MissingValue();
         }
 
+        $newValue = $value->bindTo( $resource );
+
         return $this->when(
             $resource->pivot &&
             ( $resource->pivot instanceof $table ||
                 $resource->pivot->getTable() === $table ),
-            ...[ $value, $default ]
+            ...[ $newValue, $default ]
         );
     }
 
