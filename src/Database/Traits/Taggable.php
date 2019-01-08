@@ -65,7 +65,7 @@ trait Taggable
 
         foreach( $slugs as $slug ) {
             if( $tag = Tag::where( 'slug', $slug )->first() ) {
-                $this->tags()->detach( $tag );
+                $this->tags()->detach( $tag->id );
             }
         }
 

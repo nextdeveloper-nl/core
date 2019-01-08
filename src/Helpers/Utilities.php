@@ -109,7 +109,7 @@ function buildTagArray($tags) {
 function normalizeTag($tags) {
     $tags = buildTagArray( $tags );
 
-    return array_map( 'ucwordsTr', $tags );
+    return array_map( 'trim', array_map( 'ucwordsTr', $tags ) );
 }
 
 /**

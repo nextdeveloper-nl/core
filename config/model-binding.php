@@ -14,6 +14,7 @@ use PlusClouds\Core\Database\Models\Discount;
 use PlusClouds\Core\Database\Models\Domain;
 use PlusClouds\Core\Database\Models\EmailTemplate;
 use PlusClouds\Core\Database\Models\Hook;
+use PlusClouds\Core\Database\Models\Tag;
 
 return [
     'country' => function($value) {
@@ -42,5 +43,9 @@ return [
 
     'hook' => function($value) {
         return Hook::findByRef( $value );
+    },
+
+    'tag' => function($value) {
+        return Tag::where( 'slug', $value )->firstOrFail();
     },
 ];
