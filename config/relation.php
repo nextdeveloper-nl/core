@@ -17,7 +17,7 @@ return [
 
     'address' => [
         'country' => function($self) {
-            return $self->belongsTo( 'PlusClouds\Core\Database\Models\Country' );
+            return $self->belongsTo( 'PlusClouds\Core\Database\Models\Country', 'country_id' );
         },
     ],
 
