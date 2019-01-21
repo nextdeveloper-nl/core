@@ -55,9 +55,7 @@ abstract class AbstractQueryFilter
             $name = camel_case( $name );
 
             if( method_exists( $this, $name ) && $this->checkFilterRules( $name ) ) {
-                if( count( $value = array_filter( [ $value ] ) ) ) {
-                    call_user_func_array( [ $this, $name ], $value );
-                }
+                call_user_func_array( [ $this, $name ], array_filter( [ $value ] ) );
             }
         }
 
