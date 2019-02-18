@@ -133,3 +133,13 @@ function customFilter(array $data) {
         return $v !== false && ! is_null( $v ) && ( $v != '' || $v == '0' );
     } );
 }
+
+/**
+ * @param float $min
+ * @param float $max
+ *
+ * @return float|int
+ */
+function randomFloat($min, $max) {
+    return ( $min + lcg_value() * ( abs( $max - $min ) ) );
+}
