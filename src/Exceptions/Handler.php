@@ -13,6 +13,7 @@ namespace PlusClouds\Core\Exceptions;
 use Exception;
 use Illuminate\Contracts\Container\Container;
 use InvalidArgumentException;
+use Psr\Log\LoggerInterface;
 use ReflectionClass;
 use Illuminate\Foundation\Exceptions\Handler as BaseHandler;
 
@@ -49,13 +50,15 @@ class Handler extends BaseHandler
      *
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
      *
-     * @param Exception $e
+     * @param  \Exception  $e
+     * @return mixed
      *
-     * @return mixed|void
-     * @throws Exception
+     * @throws \Exception
      */
     public function report(Exception $e) {
-        parent::report( $e );
+        if( $this->shouldntReport( $e ) ) {
+            return false;
+        }
 
         if( isLoggedIn() ) {
             $monolog = \Log::getMonolog();
@@ -66,8 +69,24 @@ class Handler extends BaseHandler
             } );
         }
 
+        if( method_exists( $e, 'report' ) ) {
+            return $e->report();
+        }
+
+        try {
+            $logger = $this->container->make( LoggerInterface::class );
+        }
+        catch( Exception $ex ) {
+            throw $e; // throw the original exception
+        }
+
         // Hatayı, saklıyoruz.
-        logger()->error( $e );
+        $logger->error(
+            $e->getMessage(),
+            array_merge( $this->context(), [ 'exception' => $e ]
+            ) );
+
+        return true;
     }
 
 
