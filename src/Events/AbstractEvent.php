@@ -17,4 +17,27 @@ namespace PlusClouds\Core\Events;
 abstract class AbstractEvent
 {
 
+    /**
+     * @var int|null
+     */
+    protected $timestamp = null;
+
+    /**
+     * @param int $value
+     *
+     * @return AbstractEvent
+     */
+    public function setTimestamp($value) {
+        $this->timestamp = $value;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getTimestamp() {
+        return $this->timestamp;
+    }
+
 }
