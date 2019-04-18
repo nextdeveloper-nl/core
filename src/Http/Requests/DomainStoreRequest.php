@@ -30,7 +30,7 @@ class DomainStoreRequest extends AbstractFormRequest
      */
     public function rules() {
         return [
-            'name' => 'required|exists:domain,name',
+            'name' => 'required',
         ];
     }
 
