@@ -20,6 +20,11 @@ abstract class AbstractModel extends Model
 {
 
     /**
+     * @var int
+     */
+    protected $perPage = 16;
+
+    /**
      * @param string $method
      * @param array $parameters
      *
