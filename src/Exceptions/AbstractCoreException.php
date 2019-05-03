@@ -51,17 +51,23 @@ abstract class AbstractCoreException extends Exception
 
     /**
      * AbstractCoreException constructor.
-     *
-     * @param Exception $e
      */
-    public function __construct(Exception $e ) {
-        $this->originalException = $e;
+    public function __construct() {
+        $args = func_get_args();
 
-        $this->code = $e->getCode();
-        $this->message = $e->getMessage();
-        $this->file = $e->getFile();
-        $this->line = $e->getLine();
-        $this->trace = $e->getTrace();
+        if( ( $e = array_get( $args, 0 ) ) instanceof \Throwable ) {
+            $this->originalException = $e;
+
+            $this->code = $e->getCode();
+            $this->message = $e->getMessage();
+            $this->file = $e->getFile();
+            $this->line = $e->getLine();
+            $this->trace = $e->getTrace();
+        } else {
+            $this->message = array_get( $args, 0 );
+            $this->code = array_get( $args, 1 );
+            $this->previous = array_get( $args, 2 );
+        }
     }
 
 }
