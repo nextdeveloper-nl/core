@@ -33,5 +33,4 @@ class DomainStoreRequest extends AbstractFormRequest
             'name' => 'required',
         ];
     }
-
 }
