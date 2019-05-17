@@ -16,6 +16,7 @@ use Illuminate\Broadcasting\BroadcastManager;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use PlusClouds\Core\Common\Broadcasting\Broadcasters\PushStreamBroadcaster;
+use PlusClouds\Core\Common\Database\MariaDB\ConnectionFactory;
 use PlusClouds\Core\Common\Logger\Monolog\Handler\GraylogHandler;
 use PlusClouds\Core\Common\Services\NiN\NiN;
 use PlusClouds\Core\Exceptions\Handler;
@@ -66,10 +67,17 @@ class CoreServiceProvider extends AbstractServiceProvider
      * @return void
      */
     public function register() {
+        $this->app->resolving( 'db', function($db, $app) {
+            $db->extend( 'mariadb', function($config, $name) use ($app) {
+                return ( new ConnectionFactory( $app ) )->make( $config, $name );
+            } );
+        } );
+
         // Register Response Api Macro
         $this->app['Illuminate\Contracts\Routing\ResponseFactory']->macro( 'api', function() {
             return new class
             {
+
                 use Responsable;
             };
         } );
@@ -117,7 +125,7 @@ class CoreServiceProvider extends AbstractServiceProvider
 //        $slackHandler->setFormatter( new \Monolog\Formatter\LineFormatter() );
 //
 //        $monolog->pushHandler( $slackHandler );
-        
+
         $graylogHandler = new GraylogHandler();
         $graylogHandler->setFormatter( new GelfMessageFormatter() );
 
