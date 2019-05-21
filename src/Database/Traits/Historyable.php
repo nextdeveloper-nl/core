@@ -109,11 +109,11 @@ trait Historyable
 
         $chain = new Blakechain();
 
-        $model->history->each( function($item) use ($model, $chain) {
-            $chain->appendData( json_encode( $item->body, JSON_NUMERIC_CHECK ) );
+        $model->history()->pluck( 'body' )->each( function($item) use ($chain) {
+            $chain->appendData( crc32( json_encode( $item, JSON_NUMERIC_CHECK ) ) );
         } );
 
-        $chain->appendData( json_encode( $data, JSON_NUMERIC_CHECK ) );
+        $chain->appendData( crc32( json_encode( $data, JSON_NUMERIC_CHECK ) ) );
 
         $model->history()->create( [
             'historyable_id'   => $model->id,
@@ -146,8 +146,9 @@ trait Historyable
 
         // Geçmiş verisini alıp zincir olarak yüklüyoruz ve hash değerlerini oluşturuyoruz.
         ( $histories = $this->history )
+            ->pluck( 'body' )
             ->each( function($item) use ($realChain) {
-                $realChain->appendData( json_encode( $item->body, JSON_NUMERIC_CHECK ) );
+                $realChain->appendData( crc32( json_encode( $item, JSON_NUMERIC_CHECK ) ) );
             } );
 
         $data = collect( $this->getOriginal() )
@@ -158,10 +159,10 @@ trait Historyable
         // hash değerlerini oluşturuyoruz.
         $histories->splice( 0, -1 )
             ->each( function($item) use ($lastChain) {
-                $lastChain->appendData( json_encode( $item->body, JSON_NUMERIC_CHECK ) );
+                $lastChain->appendData( crc32( json_encode( $item, JSON_NUMERIC_CHECK ) ) );
             } );
 
-        $lastChain->appendData( json_encode( $data, JSON_NUMERIC_CHECK ) );
+        $lastChain->appendData( crc32( json_encode( $data, JSON_NUMERIC_CHECK ) ) );
 
         // Geçmiş verisi ile DB datasını karşılaştırıyoruz.
         return ( new Verifier() )
@@ -180,6 +181,7 @@ trait Historyable
 
         if( ! is_null( $history ) ) {
             $this->forceFill( $history->body );
+
 
             return $this->save();
         }
