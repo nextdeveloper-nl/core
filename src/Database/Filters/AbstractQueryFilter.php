@@ -47,6 +47,7 @@ abstract class AbstractQueryFilter
      * @param Builder $builder
      *
      * @return Builder
+     * @throws \ReflectionException
      */
     public function apply(Builder $builder) {
         $this->builder = $builder;
@@ -55,7 +56,13 @@ abstract class AbstractQueryFilter
             $name = camel_case( $name );
 
             if( method_exists( $this, $name ) && $this->checkFilterRules( $name ) ) {
-                call_user_func_array( [ $this, $name ], array_filter( [ $value ] ) );
+                $r = new \ReflectionMethod( $this, $name );
+                $s = count( $r->getParameters() );
+
+                // "?param" ve "?param=" kontrolü
+                if( $s == 0 || ( $s > 0 && ! is_null( $value ) ) ) {
+                    call_user_func_array( [ $this, $name ], array_filter( [ $value ] ) );
+                }
             }
         }
 
