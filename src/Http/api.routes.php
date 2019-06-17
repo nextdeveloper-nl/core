@@ -27,6 +27,11 @@ Route::prefix( 'countries' )->group( function() {
     } );
 } );
 
+Route::prefix( 'generator' )->group( function() {
+    Route::get( '/password', 'PasswordGeneratorController@show' );
+    Route::get( '/uuid', 'UuidGeneratorController@show' );
+} );
+
 Route::prefix( 'domains' )->middleware( 'auth:api' )->group( function() {
     // Alan adı listesini döndürür.
     Route::get( '/', 'DomainController@index' );
