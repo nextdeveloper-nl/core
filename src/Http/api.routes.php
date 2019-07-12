@@ -8,6 +8,11 @@
  * file that was distributed with this source code.
  */
 
+Route::prefix( 'languages' )->group( function() {
+    // Dil listesini döndürür
+    Route::get( '/', 'LanguageController@index' );
+} );
+
 Route::prefix( 'countries' )->group( function() {
     // Ülke listesini döndürür.
     Route::get( '/', 'CountryController@index' );
