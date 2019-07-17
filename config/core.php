@@ -41,6 +41,7 @@ return [
 
     'policies'         => [
         'PlusClouds\Core\Database\Models\Hook' => 'PlusClouds\Core\Policies\HookPolicy',
+        'PlusClouds\Core\Database\Models\Tag'  => 'PlusClouds\Core\Policies\TagPolicy',
     ],
 
     // Registry ayarları
