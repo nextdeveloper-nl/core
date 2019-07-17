@@ -12,6 +12,7 @@ namespace PlusClouds\Core\Database\Models;
 
 
 use Cviebrock\EloquentSluggable\Sluggable;
+use PlusClouds\Core\Database\Traits\Filterable;
 
 /**
  * Class Tag
@@ -20,7 +21,7 @@ use Cviebrock\EloquentSluggable\Sluggable;
 class Tag extends AbstractModel
 {
 
-    use Sluggable;
+    use Sluggable, Filterable;
 
     /**
      * @var array

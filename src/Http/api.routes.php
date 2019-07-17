@@ -130,12 +130,16 @@ Route::prefix( 'hooks' )->middleware( 'auth:api' )->group( function() {
     Route::delete( '/{hook}', 'HookController@destroy' );
 } );
 
+Route::prefix( 'applications' )->middleware( 'auth:api' )->group( function() {
+    Route::get( '/', 'TagController@index' );
+} );
+
 Route::prefix( 'tags' )->group( function() {
     // Etiket listesini döndürür.
     Route::get( '/', 'TagController@index' );
 
-    // Etiket bilgisini döndürür.
-    Route::get( '/{tag}', 'TagController@show' );
+    // Yeni bir etiket yaratır.
+    Route::middleware( 'auth:api' )->post( '/', 'TagController@store' );
 
     // Varolan bir etiketi siler.
     Route::delete( '/{tag}', 'TagController@destroy' )->middleware( 'auth:api' );

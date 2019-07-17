@@ -11,6 +11,7 @@
 namespace PlusClouds\Core\Database\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
+use PlusClouds\Core\Common\Enums\TagType;
 use PlusClouds\Core\Database\Models\Tag;
 
 /**
@@ -34,15 +35,17 @@ trait Taggable
      * Model'e bir veya birden fazla etkiet ekler.
      *
      * @param string|array $tags
+     * @param string $type
      *
      * @return $this
      */
-    public function tag($tags) {
+    public function tag($tags, $type = TagType::SYSTEM) {
         $tags = normalizeTag( $tags );
 
         foreach( $tags as $label ) {
             $tag = Tag::firstOrCreate( [
                 'name' => $label,
+                'type' => $type,
             ] );
 
             if( ! $this->tags->contains( $tag->getKey() ) ) {
@@ -57,10 +60,11 @@ trait Taggable
      * Modelde bulunan etiketi çıkarır.
      *
      * @param string|array $tags
+     * @param string type
      *
      * @return $this
      */
-    public function untag($tags) {
+    public function untag($tags, $type = TagType::SYSTEM) {
         $slugs = $this->makeSlugs( $tags );
 
         foreach( $slugs as $slug ) {

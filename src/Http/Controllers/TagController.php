@@ -12,8 +12,12 @@ namespace PlusClouds\Core\Http\Controllers;
 
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
+use PlusClouds\Core\Database\Filters\TagQueryFilter;
 use PlusClouds\Core\Database\Models\Tag;
 use PlusClouds\Core\Http\Transformers\TagTransformer;
+use PlusClouds\Core\Http\Requests\TagStoreRequest;
+use PlusClouds\Core\Common\Enums\TagType;
 
 /**
  * Class TagController
@@ -25,11 +29,17 @@ class TagController extends AbstractController
     /**
      * Etiket listesini döndürür.
      *
+     * @param TagQueryFilter $filter
+     *
      * @return \Illuminate\Http\JsonResponse
      * @throws \Throwable
      */
-    public function index() {
-        $tags = Tag::all();
+    public function index(TagQueryFilter $filter) {
+        if( isLoggedIn() ) {
+            $tags = getAUCurrentAccount()->tags()->where( 'tags.type', TagType::APPLICATION )->get();
+        } else {
+            $tags = Tag::where( 'type', '!=', TagType::APPLICATION )->filter( $filter )->get();
+        }
 
         throw_if( $tags->isEmpty(), ModelNotFoundException::class, 'Could not find the records you are looking for.' );
 
@@ -37,14 +47,30 @@ class TagController extends AbstractController
     }
 
     /**
-     * Etiket bilgisini döndürür.
-     *
-     * @param Tag $tag
+     * @param TagStoreRequest $request
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Tag $tag) {
-        return $this->withItem( $tag, app( TagTransformer::class ) );
+    public function store(TagStoreRequest $request) {
+        $data = collect( $request->validated() )
+            ->when( ! $request->filled( 'type' ), function($collection) {
+                return $collection->put( 'type', TagType::SYSTEM );
+            } );
+
+        $data->when( $data->get( 'type' ) == TagType::APPLICATION, function($collection) {
+            return $collection->put( 'account_id', getAUCurrentAccount()->id );
+        }, function($collection) {
+            return $collection->put( 'account_id', null );
+        } )->filter();
+
+        $tag = Tag::firstOrCreate( $data->except( 'description' )->toArray() );
+
+        if( $data->has( 'description' ) ) {
+            $tag->update( $data->only( 'description' )->toArray() );
+        }
+
+        return $this->setStatusCode( 201 )
+            ->withItem( $tag->fresh(), app( TagTransformer::class ) );
     }
 
     /**

@@ -15,6 +15,12 @@ return [
         },
     ],
 
+    'account' => [
+        'tags' => function($self) {
+            return $self->hasMany( 'PlusClouds\Core\Database\Models\Tag' );
+        },
+    ],
+
     'address' => [
         'country' => function($self) {
             return $self->belongsTo( 'PlusClouds\Core\Database\Models\Country', 'country_id' );

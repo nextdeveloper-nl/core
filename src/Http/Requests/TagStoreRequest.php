@@ -11,6 +11,9 @@
 namespace PlusClouds\Core\Http\Requests;
 
 
+use BenSampo\Enum\Rules\EnumValue;
+use PlusClouds\Core\Common\Enums\TagType;
+
 /**
  * Class TagStoreRequest
  * @package PlusClouds\Core\Http\Requests
@@ -30,7 +33,9 @@ class TagStoreRequest extends AbstractFormRequest
      */
     public function rules() {
         return [
-            'name.*' => 'required|max:50',
+            'name'        => 'required|max:50',
+            'description' => 'nullable|max:500',
+            'type'        => new EnumValue( TagType::class ),
         ];
     }
 
