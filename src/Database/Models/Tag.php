@@ -46,4 +46,17 @@ class Tag extends AbstractModel
         ];
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|null
+     */
+    public function account() {
+        $class = 'PlusClouds\Account\Database\Models\Account';
+
+        if( class_exists( $class ) ) {
+            return $this->belongsTo( $class, 'account_id' );
+        }
+
+        return null;
+    }
+
 }

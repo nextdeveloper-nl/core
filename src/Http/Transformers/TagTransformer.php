@@ -11,6 +11,7 @@
 namespace PlusClouds\Core\Http\Transformers;
 
 
+use League\Fractal\ParamBag;
 use PlusClouds\Core\Database\Models\Tag;
 
 /**
@@ -19,6 +20,11 @@ use PlusClouds\Core\Database\Models\Tag;
  */
 class TagTransformer extends AbstractTransformer
 {
+
+    /**
+     * @var array
+     */
+    protected $availableIncludes = [ 'account' ];
 
     /**
      * @param Tag $tag
@@ -30,6 +36,20 @@ class TagTransformer extends AbstractTransformer
             'slug' => $tag->slug,
             'name' => $tag->name,
         ] );
+    }
+
+    /**
+     * @param Tag $tag
+     * @param ParamBag|null $paramBag
+     *
+     * @return \League\Fractal\Resource\Item
+     */
+    public function includeAccount(Tag $tag, ParamBag $paramBag = null) {
+        $class = 'PlusClouds\Account\Http\Transformers\AccountTransformer';
+
+        if( ! is_null( $tag->account ) && class_exists( $class ) ) {
+            return $this->item( $tag->account, new $class( $paramBag ) );
+        }
     }
 
 }

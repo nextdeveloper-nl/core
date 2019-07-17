@@ -82,9 +82,9 @@ class TagController extends AbstractController
      * @throws \Exception
      */
     public function destroy(Tag $tag) {
-        $tag->delete();
+        $this->authorize( 'tagDestroy', $tag );
 
-        // @todo: Gate gelecek
+        $tag->delete();
 
         return $this->noContent();
     }

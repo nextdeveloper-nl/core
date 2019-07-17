@@ -142,7 +142,7 @@ Route::prefix( 'tags' )->group( function() {
     Route::middleware( 'auth:api' )->post( '/', 'TagController@store' );
 
     // Varolan bir etiketi siler.
-    Route::delete( '/{tag}', 'TagController@destroy' )->middleware( 'auth:api' );
+    Route::middleware( 'auth:api' )->delete( '/{tag}', 'TagController@destroy' )->middleware( 'auth:api' );
 } );
 
 Route::prefix( 'mails' )->middleware( 'auth:api' )->group( function() {
