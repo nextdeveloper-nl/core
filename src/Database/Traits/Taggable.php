@@ -43,10 +43,22 @@ trait Taggable
         $tags = normalizeTag( $tags );
 
         foreach( $tags as $label ) {
-            $tag = Tag::firstOrCreate( [
+            $args = [
                 'name' => $label,
                 'type' => $type,
-            ] );
+            ];
+
+            if( $type == TagType::APPLICATION ) {
+                // Eğer etiket tipi aplikasyon ve kullanıcı giriş yapmamışsa,
+                // etiketi eklemiyor ve ilişkilendirmiyoruz.
+                if( ! isLoggedIn() ) {
+                    continue;
+                }
+
+                $args = array_merge( $args, [ 'account_id' => getAUCurrentAccount()->id ] );
+            }
+
+            $tag = Tag::firstOrCreate( $args );
 
             if( ! $this->tags->contains( $tag->getKey() ) ) {
                 $this->tags()->attach( $tag->getKey() );
@@ -60,11 +72,10 @@ trait Taggable
      * Modelde bulunan etiketi çıkarır.
      *
      * @param string|array $tags
-     * @param string type
      *
      * @return $this
      */
-    public function untag($tags, $type = TagType::SYSTEM) {
+    public function untag($tags) {
         $slugs = $this->makeSlugs( $tags );
 
         foreach( $slugs as $slug ) {
