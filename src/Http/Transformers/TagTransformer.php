@@ -24,6 +24,11 @@ class TagTransformer extends AbstractTransformer
     /**
      * @var array
      */
+    protected $visible = [ 'slug', 'name' ];
+
+    /**
+     * @var array
+     */
     protected $availableIncludes = [ 'account' ];
 
     /**
@@ -33,8 +38,9 @@ class TagTransformer extends AbstractTransformer
      */
     public function transform(Tag $tag) {
         return $this->buildPayload( [
-            'slug' => $tag->slug,
-            'name' => $tag->name,
+            'slug'        => $tag->slug,
+            'name'        => $tag->name,
+            'description' => $tag->description,
         ] );
     }
 
