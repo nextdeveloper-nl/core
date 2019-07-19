@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use PlusClouds\Core\Database\Filters\TagQueryFilter;
 use PlusClouds\Core\Database\Models\Tag;
+use PlusClouds\Core\Exceptions\UnauthorizedException;
 use PlusClouds\Core\Http\Transformers\TagTransformer;
 use PlusClouds\Core\Http\Requests\TagStoreRequest;
 use PlusClouds\Core\Common\Enums\TagType;
@@ -50,8 +51,17 @@ class TagController extends AbstractController
      * @param TagStoreRequest $request
      *
      * @return \Illuminate\Http\JsonResponse
+     * @throws UnauthorizedException
      */
     public function store(TagStoreRequest $request) {
+        if( ! getAUUser()->hasRole( [ 'super-admin', 'admin' ] ) ) {
+            if( in_array( $request->get( 'type' ), [ TagType::SYSTEM, TagType::COMMON ] ) ) {
+                throw new UnauthorizedException( 'You are not authorized to do this.' );
+            }
+        }
+
+        dd($request);
+
         $data = collect( $request->validated() );
 
         $data->when( in_array( $data->get( 'type' ), [ TagType::APPLICATION, TagType::USER ] ), function($collection) {
