@@ -33,6 +33,11 @@ final class TagType extends Enum
     /**
      * @var string
      */
+    const USER = 'user';
+
+    /**
+     * @var string
+     */
     const APPLICATION = 'application';
 
 }

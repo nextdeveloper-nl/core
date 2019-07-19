@@ -48,8 +48,8 @@ trait Taggable
                 'type' => $type,
             ];
 
-            if( $type == TagType::APPLICATION ) {
-                // Eğer etiket tipi aplikasyon ve kullanıcı giriş yapmamışsa,
+            if( in_array( $type, [ TagType::APPLICATION, TagType::USER ] ) ) {
+                // Eğer etiket tipi aplikasyon veya user ise ve kullanıcı giriş yapmamışsa,
                 // etiketi eklemiyor ve ilişkilendirmiyoruz.
                 if( ! isLoggedIn() ) {
                     continue;

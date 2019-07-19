@@ -52,12 +52,9 @@ class TagController extends AbstractController
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(TagStoreRequest $request) {
-        $data = collect( $request->validated() )
-            ->when( ! $request->filled( 'type' ), function($collection) {
-                return $collection->put( 'type', TagType::SYSTEM );
-            } );
+        $data = collect( $request->validated() );
 
-        $data->when( $data->get( 'type' ) == TagType::APPLICATION, function($collection) {
+        $data->when( in_array( $data->get( 'type' ), [ TagType::APPLICATION, TagType::USER ] ), function($collection) {
             return $collection->put( 'account_id', getAUCurrentAccount()->id );
         }, function($collection) {
             return $collection->put( 'account_id', null );

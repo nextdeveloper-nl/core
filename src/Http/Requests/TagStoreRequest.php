@@ -35,7 +35,7 @@ class TagStoreRequest extends AbstractFormRequest
         return [
             'name'        => 'required|max:50',
             'description' => 'nullable|max:500',
-            'type'        => new EnumValue( TagType::class ),
+            'type'        => [ 'required', new EnumValue( TagType::class ) ],
         ];
     }
 
