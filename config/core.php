@@ -24,6 +24,7 @@ return [
             'Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException'      => 'PlusClouds\Core\Exceptions\MethodNotAllowedException',
             'League\OAuth2\Server\Exception\OAuthServerException'                       => 'PlusClouds\Core\Exceptions\AuthenticationException',
             'PlusClouds\Cerebro\Hypervisor\XenServer\Exception\InvalidSessionException' => 'PlusClouds\Core\Exceptions\AuthenticationException',
+            'PlusClouds\Cerebro\Common\Exception\RuntimeException'                      => 'PlusClouds\Core\Exceptions\RuntimeException',
         ],
     ],
 
