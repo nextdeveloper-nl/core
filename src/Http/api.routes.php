@@ -38,6 +38,10 @@ Route::prefix( 'generator' )->group( function() {
     Route::get( '/string', 'StringGeneratorController@show' );
 } );
 
+Route::prefix( 'password' )->group( function() {
+    Route::post( '/strength-checker', 'PasswordStrengthCheckerController@show' );
+} );
+
 Route::prefix( 'domains' )->middleware( 'auth:api' )->group( function() {
     // Alan adı listesini döndürür.
     Route::get( '/', 'DomainController@index' );
