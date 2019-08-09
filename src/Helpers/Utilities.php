@@ -38,6 +38,20 @@ function generateRandomString($length = 4) {
 }
 
 /**
+ * @param int $length
+ *
+ * @return bool|int
+ */
+function generateRandomNumber($length = 4) {
+    $min = ( 10 ** $length ) / 10; // 100...
+    $max = ( 10 ** $length ) - 1;  // 999...
+
+    $rand = mt_rand( $min, $max );
+
+    return $rand;
+}
+
+/**
  * Generate new random number
  *
  * @param int $min

@@ -36,6 +36,7 @@ Route::prefix( 'generator' )->group( function() {
     Route::get( '/password', 'PasswordGeneratorController@show' );
     Route::get( '/uuid', 'UuidGeneratorController@show' );
     Route::get( '/string', 'StringGeneratorController@show' );
+    Route::get( '/number', 'NumberGeneratorController@show' );
 } );
 
 Route::prefix( 'password' )->group( function() {
