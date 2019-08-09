@@ -27,6 +27,17 @@ function generateRandomCode($length = 4) {
 }
 
 /**
+ * @param int $length
+ *
+ * @return bool|string
+ */
+function generateRandomString($length = 4) {
+    $chars = str_shuffle( 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
+
+    return substr( $chars, 1, $length );
+}
+
+/**
  * Generate new random number
  *
  * @param int $min

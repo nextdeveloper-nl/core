@@ -35,6 +35,7 @@ Route::prefix( 'countries' )->group( function() {
 Route::prefix( 'generator' )->group( function() {
     Route::get( '/password', 'PasswordGeneratorController@show' );
     Route::get( '/uuid', 'UuidGeneratorController@show' );
+    Route::get( '/string', 'StringGeneratorController@show' );
 } );
 
 Route::prefix( 'domains' )->middleware( 'auth:api' )->group( function() {
