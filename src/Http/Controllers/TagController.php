@@ -60,8 +60,6 @@ class TagController extends AbstractController
             }
         }
 
-        dd($request);
-
         $data = collect( $request->validated() );
 
         $data->when( in_array( $data->get( 'type' ), [ TagType::APPLICATION, TagType::USER ] ), function($collection) {
