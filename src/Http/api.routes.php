@@ -137,7 +137,7 @@ Route::prefix( 'hooks' )->middleware( 'auth:api' )->group( function() {
 } );
 
 Route::prefix( 'applications' )->middleware( 'auth:api' )->group( function() {
-    Route::get( '/', 'TagController@index' );
+    Route::get( '/', 'TagController@applications' );
 } );
 
 Route::prefix( 'tags' )->group( function() {

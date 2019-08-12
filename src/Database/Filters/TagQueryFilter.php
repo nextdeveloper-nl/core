@@ -27,4 +27,7 @@ class TagQueryFilter extends AbstractQueryFilter
         return $this->builder->where( 'type', $type );
     }
 
+    public function name($name) {
+        return $this->builder->where('name', $name );
+    }
 }

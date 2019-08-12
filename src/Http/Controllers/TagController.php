@@ -28,7 +28,7 @@ class TagController extends AbstractController
 {
 
     /**
-     * Etiket listesini döndürür.
+     * Returns the tag list
      *
      * @param TagQueryFilter $filter
      *
@@ -36,11 +36,12 @@ class TagController extends AbstractController
      * @throws \Throwable
      */
     public function index(TagQueryFilter $filter) {
-        if( isLoggedIn() ) {
-            $tags = getAUCurrentAccount()->tags()->where( 'tags.type', TagType::APPLICATION )->get();
-        } else {
-            $tags = Tag::where( 'type', '!=', TagType::APPLICATION )->filter( $filter )->get();
-        }
+        $tags = Tag::where( 'type', '!=', TagType::APPLICATION )->filter( $filter );
+
+        if( isLoggedIn() )
+            $tags = $tags->where('account_id', getAUCurrentAccount()->id);
+
+        $tags = $tags->get();
 
         throw_if( $tags->isEmpty(), ModelNotFoundException::class, 'Could not find the records you are looking for.' );
 
@@ -94,4 +95,24 @@ class TagController extends AbstractController
         return $this->noContent();
     }
 
+    /**
+     * Returns the list of applications
+     *
+     * @param TagQueryFilter $filter
+     *
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
+     */
+    public function applications(TagQueryFilter $filter) {
+        $tags = Tag::where( 'type', TagType::APPLICATION )->filter( $filter );
+
+        if( isLoggedIn() )
+            $tags = $tags->where('account_id', getAUCurrentAccount()->id);
+
+        $tags = $tags->get();
+
+        throw_if( $tags->isEmpty(), ModelNotFoundException::class, 'Could not find the records you are looking for.' );
+
+        return $this->withCollection( $tags, app( TagTransformer::class ) );
+    }
 }
