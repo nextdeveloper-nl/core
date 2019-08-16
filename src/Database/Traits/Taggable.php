@@ -44,7 +44,8 @@ trait Taggable
 
         foreach( $tags as $label ) {
             $args = [
-                'name' => $label
+                'name' => $label,
+                'type' => $type,
             ];
 
             if( in_array( $type, [ TagType::APPLICATION, TagType::USER ] ) ) {
