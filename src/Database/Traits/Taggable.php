@@ -55,16 +55,7 @@ trait Taggable
                 continue;
             }
 
-            //  Eğer ilgili tag application tag'i olarak veritabanında varsa relation'ı kur sonraki tag'e geç
-            if( $tag = Tag::where( 'name', $label )
-                ->where( 'type', TagType::APPLICATION )
-                ->where( 'account_id', getAUCurrentAccount()->id )
-                ->first() ){
-                $this->tags()->attach( $tag->getKey() );
-                continue;
-            }
-
-            //  Eğer ilgili tag user tag'i olarak veritabanında varsa relation'ı kur sonraki tag'e geç
+            //  Eğer ilgili tag application veya user tag'i olarak veritabanında varsa relation'ı kur sonraki tag'e geç
             if( $tag = Tag::where( 'name', $label )
                 ->where( 'account_id', getAUCurrentAccount()->id )
                 ->first() ) {
