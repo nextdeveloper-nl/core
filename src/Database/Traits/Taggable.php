@@ -35,32 +35,57 @@ trait Taggable
      * Model'e bir veya birden fazla etkiet ekler.
      *
      * @param string|array $tags
-     * @param string $type
+     * @param null|string $type
      *
      * @return $this
      */
-    public function tag($tags, $type = TagType::SYSTEM) {
+    public function tag($tags, $type = null) {
         $tags = normalizeTag( $tags );
 
         foreach( $tags as $label ) {
             $args = [
-                'name' => $label
+                'name' => $label,
             ];
 
-            if( in_array( $type, [ TagType::APPLICATION, TagType::USER ] ) ) {
-                // Eğer etiket tipi aplikasyon veya user ise ve kullanıcı giriş yapmamışsa,
-                // etiketi eklemiyor ve ilişkilendirmiyoruz.
-                if( ! isLoggedIn() ) {
-                    continue;
-                }
+            $creationProcess = true;
+            $relation = false;
 
-                $args = array_merge( $args, [ 'account_id' => getAUCurrentAccount()->id ] );
+            if( is_null( $type ) ) {
+                $type = TagType::USER;
             }
 
-            $tag = Tag::firstOrCreate( $args );
+            if( $tag = Tag::where( 'name', $label )->first() ) {
+                if( $tag->type == TagType::SYSTEM ) {
+                    $creationProcess = false;
+                    $relation = true;
+                } else {
+                    if( $tag->account_id != getAUCurrentAccount()->id ) {
+                        $creationProcess = true;
+                        $relation = true;
+                    }
+                    else{
+                        $creationProcess = false;
+                        $relation = true;
+                    }
+                }
+            }
+            else{
+                if( $type == TagType::SYSTEM && ! getAUUser()->hasRole('super-admin,admin') ){
+                    continue;
+                }
+            }
 
-            if( ! $this->tags->contains( $tag->getKey() ) ) {
-                $this->tags()->attach( $tag->getKey() );
+            if( $creationProcess ) {
+                $tag = Tag::create( array_merge( $args, [
+                    'type'       => $type,
+                    'account_id' => getAUCurrentAccount()->id,
+                ] ) );
+            }
+
+            if( $relation ) {
+                if( ! $this->tags->contains( $tag->getKey() ) ) {
+                    $this->tags()->attach( $tag->getKey() );
+                }
             }
         }
 
