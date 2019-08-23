@@ -31,7 +31,7 @@ class CurrencyController extends AbstractController
         throw_if( $currencies->isEmpty(), ModelNotFoundException::class, 'Could not find the records you are looking for.' );
 
         return $this->withArray([
-            'data' => $currencies
+            'data' => $currencies->unique()->values()
         ]);
     }
 
