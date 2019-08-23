@@ -47,46 +47,31 @@ trait Taggable
                 'name' => $label,
             ];
 
-            $creationProcess = true;
-            $relation = false;
-
-            if( is_null( $type ) ) {
-                $type = TagType::USER;
+            //  Eğer ilgili tag sistem tag'i olarak veritabanında varsa relation'ı kur sonraki tag'e geç
+            if( $tag = Tag::where( 'name', $label )
+                ->where( 'type', TagType::SYSTEM )
+                ->first() ){
+                $this->tags()->attach( $tag->getKey() );
+                continue;
             }
 
-            if( $tag = Tag::where( 'name', $label )->first() ) {
-                if( $tag->type == TagType::SYSTEM ) {
-                    $creationProcess = false;
-                    $relation = true;
-                } else {
-                    if( $tag->account_id != getAUCurrentAccount()->id ) {
-                        $creationProcess = true;
-                        $relation = true;
-                    }
-                    else{
-                        $creationProcess = false;
-                        $relation = true;
-                    }
-                }
-            }
-            else{
-                if( $type == TagType::SYSTEM && ! getAUUser()->hasRole('super-admin,admin') ){
-                    continue;
-                }
+            //  Eğer ilgili tag application veya user tag'i olarak veritabanında varsa relation'ı kur sonraki tag'e geç
+            if( $tag = Tag::where( 'name', $label )
+                ->where( 'account_id', getAUCurrentAccount()->id )
+                ->first() ) {
+                $this->tags()->attach( $tag->getKey() );
+                continue;
             }
 
-            if( $creationProcess ) {
-                $tag = Tag::create( array_merge( $args, [
-                    'type'       => $type,
-                    'account_id' => getAUCurrentAccount()->id,
-                ] ) );
-            }
+            //  Eğer ilgili tag veritabanında yoksa relation'ı kur sonraki tag'e geç
+            $type = ( $type ) ? $type : TagType::USER;
 
-            if( $relation ) {
-                if( ! $this->tags->contains( $tag->getKey() ) ) {
-                    $this->tags()->attach( $tag->getKey() );
-                }
-            }
+            $tag = Tag::create( array_merge( $args, [
+                'type'       => $type,
+                'account_id' => getAUCurrentAccount()->id,
+            ] ) );
+
+            $this->tags()->attach( $tag->getKey() );
         }
 
         return $this->load( 'tags' );
