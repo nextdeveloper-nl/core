@@ -32,6 +32,8 @@ Route::prefix( 'countries' )->group( function() {
     } );
 } );
 
+Route::get( '/currencies', 'CurrencyController@index' );
+
 Route::prefix( 'generator' )->group( function() {
     Route::get( '/password', 'PasswordGeneratorController@show' );
     Route::get( '/uuid', 'UuidGeneratorController@show' );
