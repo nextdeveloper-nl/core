@@ -11,6 +11,7 @@
 namespace PlusClouds\Core\Http\Transformers;
 
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Resources\MergeValue;
 use Illuminate\Http\Resources\MissingValue;
 use Illuminate\Http\Resources\PotentiallyMissing;
@@ -231,6 +232,22 @@ abstract class AbstractTransformer extends TransformerAbstract
      * @return array
      */
     protected function buildPayload(array $payload) {
+        $calledClass = last( explode( '\\', get_called_class() ) );
+
+        foreach( $this->fields as $key => $field ) {
+            if( strpos( $field, '.' ) !== false ) {
+                list( $transformer, $field ) = explode( '.', $field );
+
+                $transformer = sprintf( '%sTransformer', Str::studly( $transformer ) );
+
+                if( $transformer !== $calledClass ) {
+                    unset( $this->fields[ $key ] );
+                } else {
+                    $this->fields[ $key ] = $field;
+                }
+            }
+        }
+
         if( $visible = $this->visible ) {
             if( $fields = $this->fields ) {
                 $visible = array_merge( $visible, $fields );
