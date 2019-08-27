@@ -10,6 +10,7 @@
 
 namespace PlusClouds\Core\Database\Models;
 
+use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use PlusClouds\Core\Database\Traits\Filterable;
 use PlusClouds\Core\Database\Traits\GlobalScopes\WithPassive;
 
@@ -20,7 +21,7 @@ use PlusClouds\Core\Database\Traits\GlobalScopes\WithPassive;
 class Country extends AbstractModel
 {
 
-    use Filterable;
+    use Filterable, Cachable;
     use WithPassive;
 
     /**
