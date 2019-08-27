@@ -234,7 +234,7 @@ abstract class AbstractTransformer extends TransformerAbstract
     protected function buildPayload(array $payload) {
         $calledClass = last( explode( '\\', get_called_class() ) );
 
-        foreach( $this->fields as $key => $field ) {
+        collect( $this->fields )->each( function($field, $key) use ($calledClass) {
             if( strpos( $field, '.' ) !== false ) {
                 list( $transformer, $field ) = explode( '.', $field );
 
@@ -246,7 +246,7 @@ abstract class AbstractTransformer extends TransformerAbstract
                     $this->fields[ $key ] = $field;
                 }
             }
-        }
+        } );
 
         if( $visible = $this->visible ) {
             if( $fields = $this->fields ) {
