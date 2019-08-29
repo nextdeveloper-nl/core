@@ -79,7 +79,10 @@ trait Responsable
         $resource->setMeta( $meta );
 
         $manager = new Manager();
-        $manager->parseIncludes( request( 'include', [] ) );
+
+        if( request()->filled( 'include' ) ) {
+            $manager->parseIncludes( request( 'include' ) );
+        }
 
         return $this->withArray(
             $manager->createData( $resource )->toArray(),
@@ -107,7 +110,10 @@ trait Responsable
         }
 
         $manager = new Manager();
-        $manager->parseIncludes( request( 'include', [] ) );
+
+        if( request()->filled( 'include' ) ) {
+            $manager->parseIncludes( request( 'include' ) );
+        }
 
         return $this->withArray(
             $manager->createData( $resource )->toArray(),
@@ -132,7 +138,10 @@ trait Responsable
         $resource->setMeta( $meta );
 
         $manager = new Manager();
-        $manager->parseIncludes( request( 'include', [] ) );
+
+        if( request()->filled( 'include' ) ) {
+            $manager->parseIncludes( request( 'include' ) );
+        }
 
         return $this->withArray(
             $manager->createData( $resource )->toArray(),

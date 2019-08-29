@@ -48,7 +48,7 @@ abstract class AbstractServiceProvider extends ServiceProvider
     protected function bootModelBindings() {
         $bindings = require_once( $this->dir.'/../config/model-binding.php' );
 
-        if( count( $bindings ) ) {
+        if( is_array( $bindings ) && count( $bindings ) > 0 ) {
             foreach( $bindings as $key => $value ) {
                 if( is_callable( $value ) ) {
                     $this->app['router']->bind( $key, $value );
