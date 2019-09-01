@@ -8,14 +8,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PlusClouds\Core\Common\Cache\Traits;
-
-
-use Spatie\ResponseCache\Facades\ResponseCache;
+namespace PlusClouds\Core\Common\Cache\ResponseCache;
 
 /**
  * Trait ClearsResponseCache
- * @package PlusClouds\Core\Common\Cache\Traits
+ * @package PlusClouds\Core\Common\Cache\ResponseCache
  */
 trait ClearsResponseCache
 {
@@ -25,15 +22,15 @@ trait ClearsResponseCache
      */
     public static function bootClearsResponseCache() {
         self::created( function() {
-            ResponseCache::clear();
+            app( 'responsecache' )->clear( self::$response_cache_tags ?? [] );
         } );
 
         self::updated( function() {
-            ResponseCache::clear();
+            app( 'responsecache' )->clear( self::$response_cache_tags ?? [] );
         } );
 
         self::deleted( function() {
-            ResponseCache::clear();
+            app( 'responsecache' )->clear( self::$response_cache_tags ?? [] );
         } );
     }
 }

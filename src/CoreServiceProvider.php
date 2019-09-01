@@ -11,11 +11,17 @@
 namespace PlusClouds\Core;
 
 
+use Illuminate\Cache\Repository;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Broadcasting\BroadcastManager;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Container\Container;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use PlusClouds\Core\Common\Broadcasting\Broadcasters\PushStreamBroadcaster;
+use PlusClouds\Core\Common\Cache\ResponseCache\CacheProfiles\ICacheProfile;
+use PlusClouds\Core\Common\Cache\ResponseCache\Hasher\IRequestHasher;
+use PlusClouds\Core\Common\Cache\ResponseCache\ResponseCache;
+use PlusClouds\Core\Common\Cache\ResponseCache\ResponseCacheRepository;
 use PlusClouds\Core\Common\Database\MariaDB\ConnectionFactory;
 use PlusClouds\Core\Common\Logger\Monolog\Handler\GraylogHandler;
 use PlusClouds\Core\Common\Services\NiN\NiN;
@@ -57,6 +63,8 @@ class CoreServiceProvider extends AbstractServiceProvider
 
         // Debug Class initialize
         $this->app->singleton( 'DebugMode', DebugMode::class );
+
+        $this->bootResponseCache();
 
 //        $this->bootPushStreamBroadcaster();
         $this->bootTwilio();
@@ -182,6 +190,30 @@ class CoreServiceProvider extends AbstractServiceProvider
         } );
     }
 
+    public function bootResponseCache() {
+        $this->app->bind( ICacheProfile::class, function(Container $app) {
+            return $app->make( config( 'core.response_cache.cache_profile' ) );
+        } );
+
+        $this->app->bind( IRequestHasher::class, function(Container $app) {
+            return $app->make( config( 'core.response_cache.hasher' ) );
+        } );
+
+        $this->app->when( ResponseCacheRepository::class )
+            ->needs( Repository::class )
+            ->give( function() : Repository {
+                $repository = $this->app['cache']->store( config( 'core.response_cache.cache_store' ) );
+
+                if( ! empty( config( 'core.response_cache.cache_tag' ) ) ) {
+                    return $repository->tags( config( 'core.response_cache.cache_tag' ) );
+                }
+
+                return $repository;
+            } );
+
+        $this->app->singleton( 'responsecache', ResponseCache::class );
+    }
+
     /**
      * Nginx Push Stream
      *
@@ -245,6 +277,7 @@ class CoreServiceProvider extends AbstractServiceProvider
         if( $this->app->runningInConsole() ) {
             $this->commands( [
                 'PlusClouds\Core\Console\Commands\FetchDisposableEmailDomainsCommand',
+                'PlusClouds\Core\Common\Cache\ResponseCache\Commands\ClearCommand',
             ] );
         }
     }
