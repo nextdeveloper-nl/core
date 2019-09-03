@@ -13,6 +13,8 @@ namespace PlusClouds\Core\Database\Traits;
 use Illuminate\Database\Eloquent\Builder;
 use PlusClouds\Core\Common\Enums\TagType;
 use PlusClouds\Core\Database\Models\Tag;
+use PlusClouds\Core\Events\TagWasAttached;
+use PlusClouds\Core\Events\TagWasDetached;
 
 /**
  * Trait Taggable
@@ -50,7 +52,7 @@ trait Taggable
             //  Eğer ilgili tag sistem tag'i olarak veritabanında varsa relation'ı kur sonraki tag'e geç
             if( $tag = Tag::where( 'name', $label )
                 ->where( 'type', TagType::SYSTEM )
-                ->first() ){
+                ->first() ) {
                 $this->tags()->attach( $tag->getKey() );
                 continue;
             }
@@ -72,6 +74,8 @@ trait Taggable
             ] ) );
 
             $this->tags()->attach( $tag->getKey() );
+
+            event( new TagWasAttached( $this, $tag ) );
         }
 
         return $this->load( 'tags' );
@@ -88,9 +92,19 @@ trait Taggable
         $slugs = $this->makeSlugs( $tags );
 
         foreach( $slugs as $slug ) {
-            if( $tag = Tag::where( 'slug', $slug )->first() ) {
-                $this->tags()->detach( $tag->id );
-            }
+            Tag::where( 'slug', $slug )
+                ->where( function($q) {
+                    $q->when( isLoggedIn(), function($q) {
+                        $q->where( 'account_id', getAUCurrentAccount()->id )
+                            ->orWhereNull( 'account_id' );
+                    } );
+                } )
+                ->get()
+                ->each( function($tag) {
+                    $this->tags()->detach( $tag->id );
+
+                    event( new TagWasDetached( $this, $tag ) );
+                } );
         }
 
         return $this->load( 'tags' );

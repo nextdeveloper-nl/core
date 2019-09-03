@@ -26,7 +26,7 @@ class AlterTagsTable extends Migration
     public function up() {
         if( Schema::hasTable( 'tags' ) ) {
             Schema::table( 'tags', function(Blueprint $table) {
-                $table->enum( 'type', [ 'system', 'common', 'application' ] )->default( 'system' )->after( 'slug' );
+                $table->enum( 'type', [ 'system', 'common', 'application' ] )->default( 'user' )->after( 'slug' );
                 $table->unsignedBigInteger( 'account_id' )->nullable()->after( 'type' );
 
                 $table->foreign( 'account_id' )

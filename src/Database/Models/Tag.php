@@ -46,6 +46,14 @@ class Tag extends AbstractModel
         ];
     }
 
+    public function scopeWithUniqueSlugConstraints($query) {
+        if( isLoggedIn() ) {
+            return $query->where( 'account_id', getAUCurrentAccount()->id );
+        }
+
+        return $query;
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|null
      */
