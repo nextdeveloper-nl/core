@@ -22,6 +22,7 @@ use PlusClouds\Core\Common\Cache\ResponseCache\CacheProfiles\ICacheProfile;
 use PlusClouds\Core\Common\Cache\ResponseCache\Hasher\IRequestHasher;
 use PlusClouds\Core\Common\Cache\ResponseCache\ResponseCache;
 use PlusClouds\Core\Common\Cache\ResponseCache\ResponseCacheRepository;
+use PlusClouds\Core\Common\Cache\ResponseCache\Serializers\ISerializable;
 use PlusClouds\Core\Common\Database\MariaDB\ConnectionFactory;
 use PlusClouds\Core\Common\Logger\Monolog\Handler\GraylogHandler;
 use PlusClouds\Core\Common\Services\NiN\NiN;
@@ -197,6 +198,10 @@ class CoreServiceProvider extends AbstractServiceProvider
 
         $this->app->bind( IRequestHasher::class, function(Container $app) {
             return $app->make( config( 'core.response_cache.hasher' ) );
+        } );
+
+        $this->app->bind( ISerializable::class, function(Container $app) {
+            return $app->make( config( 'core.response_cache.serializer' ) );
         } );
 
         $this->app->when( ResponseCacheRepository::class )

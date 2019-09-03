@@ -112,6 +112,11 @@ return [
          */
         'hasher' => PlusClouds\Core\Common\Cache\ResponseCache\Hasher\DefaultHasher::class,
 
+        /*
+        * This class is responsible for serializing responses.
+        */
+        'serializer' => PlusClouds\Core\Common\Cache\ResponseCache\Serializers\DefaultSerializer::class,
+
     ],
 
     // Registry ayarları

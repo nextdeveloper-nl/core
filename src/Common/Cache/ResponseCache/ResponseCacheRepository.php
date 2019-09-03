@@ -12,6 +12,7 @@ namespace PlusClouds\Core\Common\Cache\ResponseCache;
 
 
 use Illuminate\Cache\Repository;
+use PlusClouds\Core\Common\Cache\ResponseCache\Serializers\ISerializable;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -30,10 +31,10 @@ class ResponseCacheRepository
     /**
      * ResponseCacheRepository constructor.
      *
-     * @param ResponseSerializer $responseSerializer
+     * @param ISerializable $responseSerializer
      * @param Repository $cache
      */
-    public function __construct(ResponseSerializer $responseSerializer, Repository $cache) {
+    public function __construct(ISerializable $responseSerializer, Repository $cache) {
         $this->cache = $cache;
         $this->responseSerializer = $responseSerializer;
     }
