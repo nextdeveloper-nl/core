@@ -31,15 +31,15 @@ return [
     'middlewares' => [
         'http' => [
             'PlusClouds\Core\Http\Middleware\XSSProtection',
-            'PlusClouds\Core\Common\Cache\Middlewares\CacheResponse',
+            'PlusClouds\Core\Common\Cache\ResponseCache\Middlewares\CacheResponse',
             'PlusClouds\Core\Http\Middleware\CountryResolver',
         ],
 
         'route' => [
             'throttle'           => 'PlusClouds\Core\Http\Middleware\ThrottleRequests',
             'etag'               => 'PlusClouds\Core\Http\Middleware\ETag',
-            'cacheResponse'      => 'PlusClouds\Core\Common\Cache\Middlewares\CacheResponse',
-            'doNotCacheResponse' => 'Spatie\ResponseCache\Middlewares\DoNotCacheResponse',
+            'cacheResponse'      => 'PlusClouds\Core\Common\Cache\ResponseCache\Middlewares\CacheResponse',
+            'doNotCacheResponse' => 'PlusClouds\Core\Common\Cache\ResponseCache\Middlewares\DoNotCacheResponse',
         ],
     ],
 
