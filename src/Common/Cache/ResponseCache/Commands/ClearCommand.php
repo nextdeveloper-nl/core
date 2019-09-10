@@ -11,6 +11,7 @@
 namespace PlusClouds\Core\Common\Cache\ResponseCache\Commands;
 
 
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Console\Command;
 use PlusClouds\Core\Common\Cache\ResponseCache\ResponseCacheRepository;
 use PlusClouds\Core\Common\Cache\ResponseCache\Events\ClearedResponseCache;
@@ -26,7 +27,9 @@ class ClearCommand extends Command
     /**
      * @var string
      */
-    protected $signature = 'response_cache:clear';
+    protected $signature = 'response_cache:clear 
+        {--tags= : Tags}
+    ';
 
     /**
      * @var string
@@ -39,7 +42,12 @@ class ClearCommand extends Command
     public function handle(ResponseCacheRepository $cache) {
         event( new ClearingResponseCache() );
 
-        $cache->clear();
+        if( is_null( $tags = $this->option( 'tags' ) ) ) {
+            $cache->clear();
+        } else {
+            Cache::tags( array_map( 'trim', explode( ',', $tags ) ) )->flush();
+        }
+
 
         event( new ClearedResponseCache() );
 

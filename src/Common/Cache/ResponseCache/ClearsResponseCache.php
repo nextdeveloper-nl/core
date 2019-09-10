@@ -10,6 +10,9 @@
 
 namespace PlusClouds\Core\Common\Cache\ResponseCache;
 
+
+use Illuminate\Support\Facades\Cache;
+
 /**
  * Trait ClearsResponseCache
  * @package PlusClouds\Core\Common\Cache\ResponseCache
@@ -22,15 +25,15 @@ trait ClearsResponseCache
      */
     public static function bootClearsResponseCache() {
         self::created( function() {
-            app( 'responsecache' )->clear( self::$response_cache_tags ?? [] );
+            Cache::tags( self::$response_cache_tags ?? [] );
         } );
 
         self::updated( function() {
-            app( 'responsecache' )->clear( self::$response_cache_tags ?? [] );
+            Cache::tags( self::$response_cache_tags ?? [] );
         } );
 
         self::deleted( function() {
-            app( 'responsecache' )->clear( self::$response_cache_tags ?? [] );
+            Cache::tags( self::$response_cache_tags ?? [] );
         } );
     }
 }
