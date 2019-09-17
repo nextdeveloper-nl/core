@@ -9,6 +9,11 @@
       "email": "semih.turna@plusclouds.com"
     }
   ],
+  "homepage": "http://gitlab.plusclouds/tech/plusclouds.software.appmodules.core",
+  "support": {
+    "issues": "http://gitlab.plusclouds/tech/plusclouds.software.appmodules.core/issues",
+    "source": "http://gitlab.plusclouds/tech/plusclouds.software.appmodules.core"
+  },
   "require": {
     "php": ">=7.1.0",
     "danielstjules/stringy": "~3.1.0",
