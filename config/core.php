@@ -7,6 +7,22 @@ return [
         'default' => 'TR',
     ],
 
+    'token' => [
+        'service' => 'PlusClouds\Account\Common\Services\Token\MailToken',
+        'sms'     => [
+            'length' => 4,
+            'ttl'    => 300, // 5 dk
+        ],
+        'email'   => [
+            'length' => 15,
+            'ttl'    => 3600, // 1 saat
+        ],
+        'vm_transfer' => [
+            'length' => 15,
+            'ttl'    => 86400, // 1 gün
+        ],
+    ],
+
     'pushstream' => [
         'driver'     => 'PushStream',
         'base_url'   => 'https://api.plusclouds.com',

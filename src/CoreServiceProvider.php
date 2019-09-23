@@ -26,6 +26,7 @@ use PlusClouds\Core\Common\Cache\ResponseCache\Serializers\ISerializable;
 use PlusClouds\Core\Common\Database\MariaDB\ConnectionFactory;
 use PlusClouds\Core\Common\Logger\Monolog\Handler\GraylogHandler;
 use PlusClouds\Core\Common\Services\NiN\NiN;
+use PlusClouds\Core\Common\Services\Token\IToken;
 use PlusClouds\Core\Exceptions\Handler;
 use PlusClouds\Core\Common\Registry\Drivers\IDriver;
 use PlusClouds\Core\Helpers\DebugMode;
@@ -96,6 +97,7 @@ class CoreServiceProvider extends AbstractServiceProvider
         $this->registerMiddlewares( 'core' );
         $this->registerRoutes();
         $this->registerCommands();
+        $this->registerTokenService();
 
         $this->mergeConfigFrom( __DIR__.'/../config/core.php', 'core' );
         $this->customMergeConfigFrom( __DIR__.'/../config/relation.php', 'relation' );
@@ -189,6 +191,11 @@ class CoreServiceProvider extends AbstractServiceProvider
 
             return $this;
         } );
+    }
+
+    private function registerTokenService() {
+        $this->app->bind( IToken::class, config( 'core.token.service' ) );
+        $this->app->bind( 'TokenService', IToken::class );
     }
 
     public function bootResponseCache() {
