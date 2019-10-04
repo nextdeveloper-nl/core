@@ -48,7 +48,6 @@ return [
         'http' => [
             'PlusClouds\Core\Http\Middleware\XSSProtection',
             'PlusClouds\Core\Common\Cache\ResponseCache\Middlewares\CacheResponse',
-            'PlusClouds\Core\Http\Middleware\CountryResolver',
         ],
 
         'route' => [

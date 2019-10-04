@@ -27,6 +27,8 @@ use PlusClouds\Core\Common\Database\MariaDB\ConnectionFactory;
 use PlusClouds\Core\Common\Logger\Monolog\Handler\GraylogHandler;
 use PlusClouds\Core\Common\Services\NiN\NiN;
 use PlusClouds\Core\Common\Services\Token\IToken;
+use PlusClouds\Core\Database\Models\Country;
+use PlusClouds\Core\Database\Models\Ip2Location;
 use PlusClouds\Core\Exceptions\Handler;
 use PlusClouds\Core\Common\Registry\Drivers\IDriver;
 use PlusClouds\Core\Helpers\DebugMode;
@@ -50,6 +52,7 @@ class CoreServiceProvider extends AbstractServiceProvider
 
     /**
      * @return void
+     * @throws \Exception
      */
     public function boot() {
         $this->publishes( [
@@ -61,12 +64,16 @@ class CoreServiceProvider extends AbstractServiceProvider
         $this->bootLogger();
         $this->bootErrorHandler();
         $this->bootModelBindings();
-        $this->bootEloquentMacros();
 
-        // Debug Class initialize
-        $this->app->singleton( 'DebugMode', DebugMode::class );
+        if( app()->isLocal() ) {
+            $this->bootEloquentMacros();
+        }
+
+        $this->bootEvents();
 
         $this->bootResponseCache();
+
+        $this->countryResolve();
 
 //        $this->bootPushStreamBroadcaster();
         $this->bootTwilio();
@@ -145,6 +152,9 @@ class CoreServiceProvider extends AbstractServiceProvider
         $monolog->pushProcessor( new \Monolog\Processor\WebProcessor() );
         $monolog->pushProcessor( new \Monolog\Processor\MemoryUsageProcessor() );
         $monolog->pushProcessor( new \Monolog\Processor\MemoryPeakUsageProcessor() );
+
+        // Debug Class initialize
+        $this->app->singleton( 'DebugMode', DebugMode::class );
     }
 
     /**
@@ -193,12 +203,36 @@ class CoreServiceProvider extends AbstractServiceProvider
         } );
     }
 
-    private function registerTokenService() {
+
+    /**
+     * @return void
+     */
+    protected function registerTokenService() {
         $this->app->bind( IToken::class, config( 'core.token.service' ) );
         $this->app->bind( 'TokenService', IToken::class );
     }
 
-    public function bootResponseCache() {
+    /**
+     * @return void
+     */
+    protected function bootEvents() {
+        $configs = config()->all();
+
+        foreach( $configs as $key => $value ) {
+            if( config()->has( $key.'.events' ) ) {
+                foreach( config( $key.'.events' ) as $event => $handlers ) {
+                    foreach( $handlers as $handler ) {
+                        $this->app['events']->listen( $event, $handler );
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * @return void
+     */
+    protected function bootResponseCache() {
         $this->app->bind( ICacheProfile::class, function(Container $app) {
             return $app->make( config( 'core.response_cache.cache_profile' ) );
         } );
@@ -231,7 +265,7 @@ class CoreServiceProvider extends AbstractServiceProvider
      *
      * @return void
      */
-    public function bootPushStreamBroadcaster() {
+    protected function bootPushStreamBroadcaster() {
         $this->app->make( BroadcastManager::class )->extend( 'PushStream', function($app, $config) {
             $client = new GuzzleClient( [
                 'base_uri' => config( 'core.pushstream.base_url' ),
@@ -253,7 +287,7 @@ class CoreServiceProvider extends AbstractServiceProvider
      *
      * @return void
      */
-    private function bootTwilio() {
+    protected function bootTwilio() {
         $this->app->singleton( 'Twilio', function() {
             return new TwilioClient( env( 'TWILIO_ACCOUNT_SID' ), env( 'TWILIO_AUTH_TOKEN' ) );
         } );
@@ -264,7 +298,7 @@ class CoreServiceProvider extends AbstractServiceProvider
      *
      * return @void
      */
-    private function bootNiN() {
+    protected function bootNiN() {
         $this->app->singleton( 'NiN', NiN::class );
     }
 
@@ -273,7 +307,7 @@ class CoreServiceProvider extends AbstractServiceProvider
      *
      * @return void
      */
-    private function registerRoutes() {
+    protected function registerRoutes() {
         if( ! $this->app->routesAreCached() ) {
             $this->app['router']->prefix( 'v2' )
                 ->middleware( [ 'api', 'team-finder' ] )
@@ -285,7 +319,7 @@ class CoreServiceProvider extends AbstractServiceProvider
     /**
      * @return void
      */
-    private function registerCommands() {
+    protected function registerCommands() {
         if( $this->app->runningInConsole() ) {
             $this->commands( [
                 'PlusClouds\Core\Console\Commands\FetchDisposableEmailDomainsCommand',
@@ -299,7 +333,7 @@ class CoreServiceProvider extends AbstractServiceProvider
      *
      * @return void
      */
-    private function registerRegistry() {
+    protected function registerRegistry() {
         $this->app->bind( IDriver::class, function($app) {
             $driver = ucfirst( config( 'core.registry.driver', 'database' ) );
             $class = sprintf( 'PlusClouds\Core\Common\Registry\Drivers\%s', $driver );
@@ -319,6 +353,38 @@ class CoreServiceProvider extends AbstractServiceProvider
         } );
 
         $this->app->singleton( 'registry', IDriver::class );
+    }
+
+    /**
+     * @throws \Exception
+     */
+    protected function countryResolve() {
+        $countryCode = config( 'core.country_resolver.default' );
+
+        if( ! app()->isLocal() ) {
+            $locationList = cache()->rememberForever( 'ipLocationList', function() {
+                return Ip2Location::all();
+            } );
+
+            $ipAddr = request()->ip();
+            $location = $locationList->where( 'ip_from', '<', ip2long( $ipAddr ) )
+                ->where( 'ip_to', '>', ip2long( $ipAddr ) )
+                ->first();
+
+            if( ! is_null( $location ) ) {
+                if( $location->country_code != '-' ) {
+                    $countryCode = $location->country_code;
+                }
+            }
+        }
+
+        $countries = cache()->rememberForever( 'countries', function() {
+            return Country::all();
+        } );
+
+        request()->attributes->set( 'country', ( $country = $countries->where( 'code', $countryCode )->first() ) );
+
+        app()->setLocale( $country->locale );
     }
 
 }
