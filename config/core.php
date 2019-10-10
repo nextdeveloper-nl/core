@@ -4,7 +4,7 @@ return [
     'rate_limit' => 60,
 
     'country_resolver' => [
-        'default' => 'TR',
+        'default' => 'US',
     ],
 
     'token' => [
