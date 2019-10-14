@@ -16,6 +16,7 @@ use Illuminate\Http\Resources\MergeValue;
 use Illuminate\Http\Resources\MissingValue;
 use Illuminate\Http\Resources\PotentiallyMissing;
 use Illuminate\Support\Traits\Macroable;
+use League\Fractal\Scope;
 use League\Fractal\TransformerAbstract;
 use League\Fractal\ParamBag;
 
@@ -120,15 +121,33 @@ abstract class AbstractTransformer extends TransformerAbstract
      * @throws \Exception
      */
     public function __construct(ParamBag $paramBag = null) {
-        $this->paramBag = $paramBag;
-
-        if( is_null( $this->paramBag ) ) {
-            $this->paramBag = new ParamBag( [] );
-        }
+        $this->paramBag = $paramBag ?? new ParamBag( [] );
 
         $this->validateIncludeParams();
 
         $this->setProperties();
+    }
+
+    public function processIncludedResources(Scope $scope, $data) {
+        // Performans sorunu yüzünden;
+        // Bir isteğe eğer "include" parametresi gönderilirse,
+        // ilgili scope'un varsayılan include değerlerini yüklemiyoruz.
+        // Rekürsif veri yüzünden oldukça performans kaydı yaşanıyor.
+        if( request()->filled( 'include' ) ) {
+            $includes = collect( explode( ',', request()->get( 'include' ) ) )
+                ->flatMap( function($values) {
+                    return explode( '.', $values );
+                } )
+                ->map( function($values) {
+                    return trim( $values );
+                } );
+
+            if( $includes->contains( $scope->getScopeIdentifier() ) ) {
+                $this->setDefaultIncludes( [] );
+            }
+        }
+
+        return parent::processIncludedResources( $scope, $data );
     }
 
     /**
