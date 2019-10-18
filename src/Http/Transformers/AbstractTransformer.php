@@ -128,6 +128,12 @@ abstract class AbstractTransformer extends TransformerAbstract
         $this->setProperties();
     }
 
+    /**
+     * @param Scope $scope
+     * @param mixed $data
+     *
+     * @return array
+     */
     public function processIncludedResources(Scope $scope, $data) {
         // Performans sorunu yüzünden;
         // Bir isteğe eğer "include" parametresi gönderilirse,
@@ -167,6 +173,15 @@ abstract class AbstractTransformer extends TransformerAbstract
         } else {
             $this->fields = $this->paramBag->get( 'fields' );
         }
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return bool
+     */
+    protected function protectedValue($value) {
+        return true;
     }
 
     /**
