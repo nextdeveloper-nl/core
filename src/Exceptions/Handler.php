@@ -60,14 +60,14 @@ class Handler extends BaseHandler
             return false;
         }
 
-//        if( isLoggedIn() ) {
-//            $monolog = \Log::getMonolog();
-//            $monolog->pushProcessor( function($item) {
-//                $item['extra']['user'] = array_only( getAUUser()->toArray(), [ 'id', 'fullname' ] );
-//
-//                return $item;
-//            } );
-//        }
+        if( isLoggedIn() ) {
+            $monolog = \Log::getMonolog();
+            $monolog->pushProcessor( function($item) {
+                $item['extra']['user'] = array_only( getAUUser()->toArray(), [ 'id', 'fullname' ] );
+
+                return $item;
+            } );
+        }
 
         if( method_exists( $e, 'report' ) ) {
             return $e->report();
