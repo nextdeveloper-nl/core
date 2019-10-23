@@ -144,10 +144,10 @@ class CoreServiceProvider extends AbstractServiceProvider
 //
 //        $monolog->pushHandler( $slackHandler );
 
-        $graylogHandler = new GraylogHandler();
-        $graylogHandler->setFormatter( new GelfMessageFormatter() );
-
-        $monolog->pushHandler( $graylogHandler );
+//        $graylogHandler = new GraylogHandler();
+//        $graylogHandler->setFormatter( new GelfMessageFormatter() );
+//
+//        $monolog->pushHandler( $graylogHandler );
 
         $monolog->pushProcessor( new \Monolog\Processor\WebProcessor() );
         $monolog->pushProcessor( new \Monolog\Processor\MemoryUsageProcessor() );
