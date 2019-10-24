@@ -12,7 +12,9 @@ namespace PlusClouds\Core\Exceptions;
 
 use Exception;
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Auth\AuthenticationException;
 use InvalidArgumentException;
+use League\OAuth2\Server\Exception\OAuthServerException;
 use Psr\Log\LoggerInterface;
 use ReflectionClass;
 use Illuminate\Foundation\Exceptions\Handler as BaseHandler;
@@ -24,6 +26,9 @@ use Illuminate\Foundation\Exceptions\Handler as BaseHandler;
 class Handler extends BaseHandler
 {
 
+    /**
+     * @var string
+     */
     protected $ref;
 
     /**
@@ -39,34 +44,27 @@ class Handler extends BaseHandler
         \Illuminate\Validation\ValidationException::class,
     ];
 
+    /**
+     * Handler constructor.
+     *
+     * @param Container $container
+     */
     public function __construct(Container $container) {
         parent::__construct( $container );
 
         $this->ref = genUuid();
     }
 
+
     /**
-     * Report or log an exception.
+     * @param Exception $e
      *
-     * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
-     *
-     * @param  \Exception  $e
-     * @return mixed
-     *
-     * @throws \Exception
+     * @return mixed|void
+     * @throws Exception
      */
     public function report(Exception $e) {
         if( $this->shouldntReport( $e ) ) {
-            return false;
-        }
-
-        if( isLoggedIn() ) {
-            $monolog = \Log::getMonolog();
-            $monolog->pushProcessor( function($item) {
-                $item['extra']['user'] = array_only( getAUUser()->toArray(), [ 'id', 'fullname' ] );
-
-                return $item;
-            } );
+            return;
         }
 
         if( method_exists( $e, 'report' ) ) {
@@ -75,24 +73,25 @@ class Handler extends BaseHandler
 
         try {
             $logger = $this->container->make( LoggerInterface::class );
+
+            if( ! $e instanceof OAuthServerException ) {
+                $logger->getMonolog()->pushProcessor( function($item) {
+                    $item['extra']['user'] = array_only( getAUUser()->toArray(), [ 'id', 'fullname' ] );
+
+                    return $item;
+                } );
+            } else {
+                throw $e;
+            }
         }
         catch( Exception $ex ) {
             throw $e; // throw the original exception
         }
 
-        // Hatayı, saklıyoruz.
-        $logger->error(
-            $e->getMessage(),
-            array_merge( $this->context(), [ 'exception' => $e ]
-            ) );
-
-        return true;
+        $logger->error( $e->getMessage(), [ 'exception' => $e ] );
     }
 
-
     /**
-     * Render an exception into an HTTP response.
-     *
      * @param \Illuminate\Http\Request $request
      * @param Exception $e
      *

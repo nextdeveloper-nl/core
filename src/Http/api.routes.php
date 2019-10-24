@@ -121,23 +121,6 @@ Route::prefix( 'email-templates' )->middleware( 'auth:api' )->group( function() 
     Route::delete( '/{template}', 'EmailTemplateController@destroy' );
 } );
 
-Route::prefix( 'hooks' )->middleware( 'auth:api' )->group( function() {
-    // Kanca listesini döndürür.
-    Route::get( '/', 'HookController@index' );
-
-    // Kanca bilgisini döndürür.
-    Route::get( '/{hook}', 'HookController@show' );
-
-    // Yeni bir kanca oluşturur.
-    Route::post( '/', 'HookController@store' );
-
-    // Varolan kanca bilgilerini günceller.
-    Route::put( '/{hook}', 'HookController@update' );
-
-    // Varolan bir kancayı siler.
-    Route::delete( '/{hook}', 'HookController@destroy' );
-} );
-
 Route::prefix( 'applications' )->middleware( 'auth:api' )->group( function() {
     Route::get( '/', 'TagController@applications' );
 } );
