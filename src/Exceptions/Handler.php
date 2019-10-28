@@ -75,11 +75,13 @@ class Handler extends BaseHandler
             $logger = $this->container->make( LoggerInterface::class );
 
             if( ! $e instanceof OAuthServerException ) {
-                $logger->getMonolog()->pushProcessor( function($item) {
-                    $item['extra']['user'] = array_only( getAUUser()->toArray(), [ 'id', 'fullname' ] );
+                if( isLoggedIn() ) {
+                    $logger->getMonolog()->pushProcessor( function($item) {
+                        $item['extra']['user'] = array_only( getAUUser()->toArray(), [ 'id', 'fullname' ] );
 
-                    return $item;
-                } );
+                        return $item;
+                    } );
+                }
             } else {
                 throw $e;
             }
