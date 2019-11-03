@@ -26,7 +26,7 @@ class SendLogFile
         $message = $event->watchableData['message'];
 
         if( is_null( $message ) ) {
-            $log = sprintf( "Id : %s", $id );
+            $log = sprintf( "WatchableId : %s", $id );
         } else {
             $log = sprintf(
                 "WatchableId : %s | %s",
