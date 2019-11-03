@@ -155,6 +155,20 @@ class CoreServiceProvider extends AbstractServiceProvider
 
         // Debug Class initialize
         $this->app->singleton( 'DebugMode', DebugMode::class );
+        $this->app->singleton( 'WatchableJobLog', function() {
+            $channel = 'watchable-jobs';
+
+            $handler = new \Monolog\Handler\StreamHandler(
+                storage_path().DIRECTORY_SEPARATOR.'logs'.DIRECTORY_SEPARATOR.$channel.'.log'
+            );
+
+            $handler->setFormatter( new \Monolog\Formatter\LineFormatter( null, null, true, true ) );
+
+            $logger = new DebugMode();
+            $logger->addChannel( $channel, $handler );
+
+            return $logger->setChannel( $channel );
+        } );
     }
 
     /**

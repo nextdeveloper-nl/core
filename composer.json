@@ -35,7 +35,8 @@
     "laravel-notification-channels/twilio": "^2.0",
     "graylog2/gelf-php": "^1.5",
     "babenkoivan/scout-elasticsearch-driver": "^4.0",
-    "ph4r05/laravel-queue-database-ph4": "^0.1.5"
+    "ph4r05/laravel-queue-database-ph4": "^0.1.5",
+    "ramsey/uuid": "^3.8"
   },
   "require-dev": {
     "illuminate/support": "5.5.*",

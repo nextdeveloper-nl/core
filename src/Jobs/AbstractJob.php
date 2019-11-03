@@ -23,5 +23,6 @@ class AbstractJob
 {
 
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Watchable;
 
 }
