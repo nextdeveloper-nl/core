@@ -31,7 +31,7 @@ final class DebugMode
     /**
      * @var string
      */
-    private $channel = 'system';
+    private $channel = 'laravel';
 
     /**
      * @param $value
