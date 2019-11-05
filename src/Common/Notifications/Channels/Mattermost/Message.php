@@ -1,0 +1,144 @@
+<?php
+/**
+ * This file is part of the PlusClouds.Core library.
+ *
+ * (c) Semih Turna <semih.turna@plusclouds.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace PlusClouds\Core\Common\Notifications\Channels\Mattermost;
+
+
+use Closure;
+
+/**
+ * Class Message
+ * @package PlusClouds\Core\Common\Notifications\Channels\Mattermost
+ */
+class Message
+{
+
+    /**
+     * The text of the message.
+     *
+     * @var string
+     */
+    public $text;
+
+    /**
+     * The printed username of the message.
+     *
+     * @var string
+     */
+    public $username;
+
+    /**
+     * The channel of the message.
+     *
+     * @var string
+     */
+    public $channel;
+
+    /**
+     * The icon of the message.
+     *
+     * @var string
+     */
+    public $iconUrl;
+
+    /**
+     * The attachments of the message.
+     *
+     * @var Attachment[]
+     */
+    public $attachments = [];
+
+    /**
+     * @param string $text
+     *
+     * @return $this
+     */
+    public function text($text) {
+        $this->text = $text;
+
+        return $this;
+    }
+
+    /**
+     * @param string $username
+     *
+     * @return $this
+     */
+    public function username($username) {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * @param string $channel
+     *
+     * @return $this
+     */
+    public function channel($channel) {
+        $this->channel = $channel;
+
+        return $this;
+    }
+
+    /**
+     * @param string $iconUrl
+     *
+     * @return $this
+     */
+    public function iconUrl($iconUrl) {
+        $this->iconUrl = $iconUrl;
+
+        return $this;
+    }
+
+    /**
+     * Override all attachments for the message.
+     *
+     * @param Attachment[] $attachments
+     *
+     * @return $this
+     */
+    public function attachments($attachments = []) {
+        $this->attachments = $attachments;
+
+        return $this;
+    }
+
+    /**
+     * Add an attachment for the message.
+     *
+     * @param \Closure $callback
+     *
+     * @return $this
+     */
+    public function attachment(Closure $callback) {
+        $this->attachments[] = $attachment = new Attachment;
+        $callback( $attachment );
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray() {
+        return array_filter( [
+            'text'        => $this->text,
+            'channel'     => $this->channel,
+            'username'    => $this->username,
+            'icon_url'    => $this->iconUrl,
+            'attachments' => array_map( function(Attachment $attachment) {
+                return $attachment->toArray();
+            }, $this->attachments ),
+        ] );
+    }
+
+}
