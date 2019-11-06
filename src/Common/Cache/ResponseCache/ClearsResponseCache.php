@@ -24,16 +24,18 @@ trait ClearsResponseCache
      * @return void
      */
     public static function bootClearsResponseCache() {
-        self::created( function() {
-            Cache::tags( self::$response_cache_tags ?? [] );
+        $tags = self::$response_cache_tags ?: [];
+
+        self::created( function() use ($tags) {
+            Cache::tags( $tags )->flush();
         } );
 
-        self::updated( function() {
-            Cache::tags( self::$response_cache_tags ?? [] );
+        self::updated( function() use ($tags) {
+            Cache::tags( $tags )->flush();
         } );
 
-        self::deleted( function() {
-            Cache::tags( self::$response_cache_tags ?? [] );
+        self::deleted( function() use ($tags) {
+            Cache::tags( $tags )->flush();
         } );
     }
 }
