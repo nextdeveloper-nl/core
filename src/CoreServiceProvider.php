@@ -12,6 +12,8 @@ namespace PlusClouds\Core;
 
 
 use Illuminate\Cache\Repository;
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Broadcasting\BroadcastManager;
 use Illuminate\Support\Facades\Log;
@@ -29,10 +31,13 @@ use PlusClouds\Core\Common\Services\NiN\NiN;
 use PlusClouds\Core\Common\Services\Token\IToken;
 use PlusClouds\Core\Database\Models\Country;
 use PlusClouds\Core\Database\Models\Ip2Location;
+use PlusClouds\Core\Events\ErrorOccurred;
 use PlusClouds\Core\Exceptions\Handler;
 use PlusClouds\Core\Common\Registry\Drivers\IDriver;
 use PlusClouds\Core\Helpers\DebugMode;
 use PlusClouds\Core\Http\Traits\Response\Responsable;
+use PlusClouds\Core\Common\Notifications\Channels\Mattermost\Mattermost;
+use PlusClouds\Core\Common\Notifications\Channels\Mattermost\Message;
 use Monolog\Formatter\GelfMessageFormatter;
 use Twilio\Rest\Client as TwilioClient;
 use GuzzleHttp\Client as GuzzleClient;
@@ -70,6 +75,8 @@ class CoreServiceProvider extends AbstractServiceProvider
         }
 
         $this->bootEvents();
+
+        $this->bootQueueLogger();
 
         $this->bootResponseCache();
 
@@ -168,6 +175,29 @@ class CoreServiceProvider extends AbstractServiceProvider
             $logger->addChannel( $channel, $handler );
 
             return $logger->setChannel( $channel );
+        } );
+    }
+
+    /**
+     * @return void
+     */
+    public function bootQueueLogger() {
+        Queue::failing( function(JobFailed $event) {
+            $mattermost = new Mattermost( new GuzzleClient );
+
+            $message = ( new Message )
+                ->text( sprintf( "```\n%s\n```", $event->exception->getTraceAsString() ) )
+                ->channel( 'Bugs' )
+                ->username( 'heisenberg' )
+                ->attachment( function($attachment) use ($event) {
+                    $attachment->title( sprintf( "%s isimli job tamamlanamadı.", $event->job->resolveName() ) )
+                        ->pretext( sprintf( "Job işlenirken bir takım sorunlar oluştu.\n\r**Connection :** %s\n**Job :** %s", $event->connectionName, $event->job->getName() ) )
+                        ->authorName( 'the last bugs bender' )
+                        ->authorIcon( 'https://img.icons8.com/nolan/64/000000/error.png' )
+                        ->text( $event->exception->getMessage() );
+                } );
+
+            $mattermost->send( $message, 'https://team.plusclouds.com/hooks/g1nhnie6z78oicfawkcs8wm9tc' );
         } );
     }
 
