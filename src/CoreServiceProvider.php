@@ -32,14 +32,10 @@ use PlusClouds\Core\Common\Services\NiN\NiN;
 use PlusClouds\Core\Common\Services\Token\IToken;
 use PlusClouds\Core\Database\Models\Country;
 use PlusClouds\Core\Database\Models\Ip2Location;
-use PlusClouds\Core\Events\ErrorOccurred;
 use PlusClouds\Core\Exceptions\Handler;
 use PlusClouds\Core\Common\Registry\Drivers\IDriver;
 use PlusClouds\Core\Helpers\DebugMode;
 use PlusClouds\Core\Http\Traits\Response\Responsable;
-
-//use PlusClouds\Core\Common\Notifications\Channels\Mattermost\Mattermost;
-//use PlusClouds\Core\Common\Notifications\Channels\Mattermost\Message;
 use Monolog\Formatter\GelfMessageFormatter;
 use PlusClouds\Core\Notifications\QueueFailed;
 use Twilio\Rest\Client as TwilioClient;
@@ -145,15 +141,6 @@ class CoreServiceProvider extends AbstractServiceProvider
     public function bootLogger() {
         $monolog = Log::getMonolog();
 
-        // @todo SlackWebHookHandler çalışmıyor!
-//        $slackHandler = new \Monolog\Handler\SlackWebhookHandler(
-//            'https://hooks.slack.com/services/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'
-//        );
-//
-//        $slackHandler->setFormatter( new \Monolog\Formatter\LineFormatter() );
-//
-//        $monolog->pushHandler( $slackHandler );
-
 //        $graylogHandler = new GraylogHandler();
 //        $graylogHandler->setFormatter( new GelfMessageFormatter() );
 //
@@ -187,21 +174,6 @@ class CoreServiceProvider extends AbstractServiceProvider
     public function bootQueueLogger() {
         Queue::failing( function(JobFailed $event) {
             Notification::route( 'mattermost', config( 'core.mattermost.queue_failed_url' ) )->notify( new QueueFailed( $event ) );
-//            $mattermost = new Mattermost( new GuzzleClient );
-//
-//            $message = ( new Message )
-//                ->text( sprintf( "```\n%s\n```", $event->exception->getTraceAsString() ) )
-//                ->channel( 'Bugs' )
-//                ->username( 'heisenberg' )
-//                ->attachment( function($attachment) use ($event) {
-//                    $attachment->title( sprintf( "%s isimli job tamamlanamadı.", $event->job->resolveName() ) )
-//                        ->pretext( sprintf( "Job işlenirken bir takım sorunlar oluştu.\n\r**Connection :** %s\n**Job :** %s", $event->connectionName, $event->job->getName() ) )
-//                        ->authorName( 'the last bugs bender' )
-//                        ->authorIcon( 'https://img.icons8.com/nolan/64/000000/error.png' )
-//                        ->text( $event->exception->getMessage() );
-//                } );
-//
-//            $mattermost->send( $message, 'https://team.plusclouds.com/hooks/g1nhnie6z78oicfawkcs8wm9tc' );
         } );
     }
 
