@@ -175,8 +175,6 @@ class CoreServiceProvider extends AbstractServiceProvider
         $mattermostUrl = config( 'core.mattermost.queue_failed_url' );
 
         Queue::failing( function(JobFailed $event) use ($mattermostUrl) {
-            dump($mattermostUrl);
-            dump($event);
             Notification::route( 'mattermost', $mattermostUrl )->notify( new QueueFailed( $event ) );
         } );
     }

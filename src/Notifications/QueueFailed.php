@@ -14,6 +14,7 @@ namespace PlusClouds\Core\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Queue\Events\JobFailed;
+use PlusClouds\Core\Common\Notifications\Channels\Mattermost\MattermostChannel;
 use PlusClouds\Core\Common\Notifications\Channels\Mattermost\Message;
 
 /**
@@ -45,7 +46,7 @@ class QueueFailed extends Notification
      * @return array
      */
     public function via($notifiable) {
-        return [ 'mattermost' ];
+        return [ MattermostChannel::class ];
     }
 
     /**
