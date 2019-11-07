@@ -12,7 +12,7 @@ namespace PlusClouds\Core;
 
 
 use Illuminate\Cache\Repository;
-use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Database\Eloquent\Builder;
@@ -172,8 +172,12 @@ class CoreServiceProvider extends AbstractServiceProvider
      * @return void
      */
     public function bootQueueLogger() {
-        Queue::failing( function(JobFailed $event) {
-            Notification::route( 'mattermost', config( 'core.mattermost.queue_failed_url' ) )->notify( new QueueFailed( $event ) );
+        $mattermostUrl = config( 'core.mattermost.queue_failed_url' );
+
+        Queue::failing( function(JobFailed $event) use ($mattermostUrl) {
+            dump($mattermostUrl);
+            dump($event);
+            Notification::route( 'mattermost', $mattermostUrl )->notify( new QueueFailed( $event ) );
         } );
     }
 
