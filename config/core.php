@@ -171,4 +171,8 @@ return [
         'delimiters' => ',',
     ],
 
+    'mattermost' => [
+        'queue_failed_url' => 'https://team.plusclouds.com/hooks/g1nhnie6z78oicfawkcs8wm9tc',
+    ],
+
 ];
