@@ -14,6 +14,7 @@ namespace PlusClouds\Core\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Queue\Events\JobFailed;
+use PlusClouds\Core\Common\Notifications\Channels\Mattermost\Attachment;
 use PlusClouds\Core\Common\Notifications\Channels\Mattermost\MattermostChannel;
 use PlusClouds\Core\Common\Notifications\Channels\Mattermost\Message;
 
@@ -59,12 +60,10 @@ class QueueFailed extends Notification
             ->text( sprintf( "%s isimli job tamamlanamadı.", $this->event->job->resolveName() ) )
             ->channel( 'Bugs' )
             ->username( 'heisenberg' )
-            ->attachment( function($attachment) {
-                $attachment->fields( [
-                    'Payload'   => $this->event->job->getRawBody(),
-                    'Exception' => $this->event->exception->getTraceAsString(),
-                    'Job'       => $this->event->job->resolveName(),
-                ] );
+            ->attachment( function(Attachment $attachment) {
+                $attachment->field( 'Job', $this->event->job->resolveName(), true );
+                $attachment->field( 'Payload', $this->event->job->getRawBody(), false );
+                $attachment->field( 'Exception', $this->event->exception->getTraceAsString(), false );
             } );
     }
 

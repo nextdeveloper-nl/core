@@ -100,7 +100,6 @@ class CoreServiceProvider extends AbstractServiceProvider
         $this->app['Illuminate\Contracts\Routing\ResponseFactory']->macro( 'api', function() {
             return new class
             {
-
                 use Responsable;
             };
         } );

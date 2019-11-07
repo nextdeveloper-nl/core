@@ -55,9 +55,11 @@ class Mattermost
                 "No default webhook configured. Please put a webhook URL as a second parameter of the constructor or of the `send` function."
             );
         }
+
         if( is_null( $webhook ) ) {
             $webhook = $this->webhook;
         }
+
         $this->mattermost->post( $webhook, [
             'json' => $message->toArray(),
         ], [
