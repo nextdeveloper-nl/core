@@ -12,8 +12,6 @@ namespace PlusClouds\Core;
 
 
 use Illuminate\Cache\Repository;
-use Illuminate\Support\Facades\Notification;
-use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Broadcasting\BroadcastManager;
 use Illuminate\Support\Facades\Log;
@@ -36,7 +34,6 @@ use PlusClouds\Core\Common\Registry\Drivers\IDriver;
 use PlusClouds\Core\Helpers\DebugMode;
 use PlusClouds\Core\Http\Traits\Response\Responsable;
 use Monolog\Formatter\GelfMessageFormatter;
-use PlusClouds\Core\Notifications\QueueFailed;
 use Twilio\Rest\Client as TwilioClient;
 use GuzzleHttp\Client as GuzzleClient;
 use InvalidArgumentException;
@@ -73,8 +70,6 @@ class CoreServiceProvider extends AbstractServiceProvider
         }
 
         $this->bootEvents();
-
-        $this->bootQueueLogger();
 
         $this->bootResponseCache();
 
@@ -164,17 +159,6 @@ class CoreServiceProvider extends AbstractServiceProvider
             $logger->addChannel( $channel, $handler );
 
             return $logger->setChannel( $channel );
-        } );
-    }
-
-    /**
-     * @return void
-     */
-    public function bootQueueLogger() {
-        $mattermostUrl = config( 'core.mattermost.queue_failed_url' );
-
-        $this->app['events']->listen( JobFailed::class, function($event) use ($mattermostUrl) {
-            Notification::route( 'mattermost', $mattermostUrl )->notify( new QueueFailed( $event ) );
         } );
     }
 
