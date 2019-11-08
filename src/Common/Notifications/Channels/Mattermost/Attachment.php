@@ -270,6 +270,12 @@ class Attachment
      * @return $this
      */
     public function field($title, $value, $short = true) {
+        $size = mb_strlen( $value, 'utf8' );
+
+        if( $size > 4000 ) {
+            $value = mb_substr( $value, 0, 3997, 'utf8' ).'...';
+        }
+
         $this->fields[] = [
             'title' => (string) $title,
             'value' => $value,
