@@ -74,7 +74,7 @@ class CoreServiceProvider extends AbstractServiceProvider
 
         $this->bootEvents();
 
-//        $this->bootQueueLogger();
+        $this->bootQueueLogger();
 
         $this->bootResponseCache();
 
