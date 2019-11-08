@@ -172,7 +172,7 @@ return [
     ],
 
     'mattermost' => [
-        'queue_failed_url' => 'https://team.plusclouds.com/hooks/g1nhnie6z78oicfawkcs8wm9tc',
+        'queue_failed_url' => 'http://10.100.0.54:8065/hooks/g1nhnie6z78oicfawkcs8wm9tc',
     ],
 
 ];
