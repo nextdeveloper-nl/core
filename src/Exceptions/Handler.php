@@ -74,17 +74,20 @@ class Handler extends BaseHandler
         try {
             $logger = $this->container->make( LoggerInterface::class );
 
-            if( ! $e instanceof OAuthServerException ) {
-                if( isLoggedIn() ) {
-                    $logger->getMonolog()->pushProcessor( function($item) {
-                        $item['extra']['user'] = array_only( getAUUser()->toArray(), [ 'id', 'fullname' ] );
-
-                        return $item;
-                    } );
-                }
-            } else {
-                throw $e;
-            }
+            // TODO : bu kısımda login kontrolü sırasında recursive bir sorun oluşuyor.
+            // Geçici bir süre bu kısım kapatıldı.
+            
+//            if( ! $e instanceof OAuthServerException ) {
+//                if( isLoggedIn() ) {
+//                    $logger->getMonolog()->pushProcessor( function($item) {
+//                        $item['extra']['user'] = array_only( getAUUser()->toArray(), [ 'id', 'fullname' ] );
+//
+//                        return $item;
+//                    } );
+//                }
+//            } else {
+//                throw $e;
+//            }
         }
         catch( Exception $ex ) {
             throw $e; // throw the original exception
