@@ -37,6 +37,7 @@ class Domain extends AbstractModel
     protected $casts = [
         'is_locked' => 'boolean',
         'is_active' => 'boolean',
+        'is_local_domain'   =>  'boolean'
     ];
 
     /**
