@@ -34,6 +34,11 @@ class CommentTransformer extends AbstractTransformer
     protected $availableIncludes = [ 'creator' ];
 
     /**
+     * @var array 
+     */
+    protected $defaultIncludes = [ 'creator' ];
+
+    /**
      * @param Comment $comment
      *
      * @return array
