@@ -149,7 +149,7 @@ trait Watchable
     public function setProgress($percentage) {
         array_set( $this->watchableData, 'progress', $percentage );
 
-        return $this->pingWatcher();
+        return $this->pingWatcher( false );
     }
 
     /**
@@ -175,14 +175,18 @@ trait Watchable
     }
 
     /**
+     * @param bool $setAsMessageNull
+     *
      * @return $this
      */
-    public function pingWatcher() {
+    public function pingWatcher($setAsMessageNull = true) {
         $this->setLastPingAt();
 
         event( new JobUpdated( $this->watchableData ) );
 
-        array_set( $this->watchableData, 'message', null );
+        if( $setAsMessageNull ) {
+            array_set( $this->watchableData, 'message', null );
+        }
 
         return $this;
     }

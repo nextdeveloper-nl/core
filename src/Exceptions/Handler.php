@@ -71,23 +71,35 @@ class Handler extends BaseHandler
             return $e->report();
         }
 
+        static $inLogger = false;
+
+        $user = [];
+
         try {
             $logger = $this->container->make( LoggerInterface::class );
 
-            // TODO : bu kısımda login kontrolü sırasında recursive bir sorun oluşuyor.
-            // Geçici bir süre bu kısım kapatıldı.
-            
-//            if( ! $e instanceof OAuthServerException ) {
-//                if( isLoggedIn() ) {
-//                    $logger->getMonolog()->pushProcessor( function($item) {
-//                        $item['extra']['user'] = array_only( getAUUser()->toArray(), [ 'id', 'fullname' ] );
-//
-//                        return $item;
-//                    } );
-//                }
-//            } else {
-//                throw $e;
-//            }
+            // Recursive çakışmayı önlemek için
+            if( ! $inLogger ) {
+                $inLogger = true;
+
+                if( isLoggedIn() ) {
+                    $user = array_only( getAUUser()->toArray(), [ 'id', 'fullname' ] );
+                }
+
+                $inLogger = false;
+            }
+
+            if( ! $e instanceof OAuthServerException ) {
+                if( count( $user ) ) {
+                    $logger->getMonolog()->pushProcessor( function($item) use ($user) {
+                        $item['extra']['user'] = $user;
+
+                        return $item;
+                    } );
+                }
+            } else {
+                throw $e;
+            }
         }
         catch( Exception $ex ) {
             throw $e; // throw the original exception

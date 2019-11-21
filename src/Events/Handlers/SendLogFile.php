@@ -35,7 +35,11 @@ class SendLogFile
             );
         }
 
-        app( 'WatchableJobLog' )->info( $log );
+        app( 'WatchableJobLog' )->info( $log, [
+            'class'    => substr( strrchr( $event->watchableData['class'], "\\" ), 1 ),
+            'status'   => $event->watchableData['status'],
+            'progress' => $event->watchableData['progress'],
+        ] );
     }
 
 }
