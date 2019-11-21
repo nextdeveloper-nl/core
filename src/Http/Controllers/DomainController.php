@@ -60,7 +60,11 @@ class DomainController extends AbstractController
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(DomainStoreRequest $request) {
-        $domain = Domain::create( $request->validated() );
+        $data = collect( $request->validated() );
+
+        $data->put('account_id', getAUCurrentAccount()->id);
+
+        $domain = Domain::create( $data->toArray() );
 
         return $this->setStatusCode( 201 )
             ->withItem( $domain->fresh(), app( DomainTransformer::class ) );

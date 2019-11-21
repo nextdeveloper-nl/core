@@ -12,6 +12,7 @@ namespace PlusClouds\Core\Http\Transformers;
 
 
 use PlusClouds\Core\Database\Models\Domain;
+use PlusClouds\IAAS\Database\Models\Network;
 
 /**
  * Class DomainTransformer
@@ -26,10 +27,15 @@ class DomainTransformer extends AbstractTransformer
      * @return array
      */
     public function transform(Domain $domain) {
+        $networks = Network::where('domain_id', $domain->id)->get();
+
         return $this->buildPayload( [
             'id'   => $domain->id_ref,
             'name' => $domain->name,
+            'core_directory_id'    =>  null,
+            'networks_attached'  =>  $networks->count(),
+            'dns_id' =>  null,
+            'netgateway_id' =>  null
         ] );
     }
-
 }
