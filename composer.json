@@ -36,7 +36,8 @@
     "graylog2/gelf-php": "^1.5",
     "babenkoivan/scout-elasticsearch-driver": "^4.0",
     "ph4r05/laravel-queue-database-ph4": "^0.1.5",
-    "ramsey/uuid": "^3.8"
+    "ramsey/uuid": "^3.8",
+    "opis/closure": "^3.4"
   },
   "require-dev": {
     "illuminate/support": "5.5.*",
