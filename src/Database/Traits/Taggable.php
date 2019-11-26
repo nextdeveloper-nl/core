@@ -53,7 +53,11 @@ trait Taggable
             if( $tag = Tag::where( 'name', $label )
                 ->where( 'type', TagType::SYSTEM )
                 ->first() ) {
-                $this->tags()->attach( $tag->getKey() );
+
+                $this->tags()->syncWithoutDetaching( $tag->getKey() );
+
+                event( new TagWasAttached( $this, $tag ) );
+
                 continue;
             }
 
@@ -61,7 +65,11 @@ trait Taggable
             if( $tag = Tag::where( 'name', $label )
                 ->where( 'account_id', getAUCurrentAccount()->id )
                 ->first() ) {
-                $this->tags()->attach( $tag->getKey() );
+
+                $this->tags()->syncWithoutDetaching( $tag->getKey() );
+
+                event( new TagWasAttached( $this, $tag ) );
+
                 continue;
             }
 
