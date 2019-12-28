@@ -32,10 +32,10 @@ class DomainTransformer extends AbstractTransformer
         return $this->buildPayload( [
             'id'   => $domain->id_ref,
             'name' => $domain->name,
-            'core_directory_id'    =>  null,
+            'iam_service_id'    =>  null,
             'networks_attached'  =>  $networks->count(),
-            'dns_id' =>  null,
-            'netgateway_id' =>  null
+            'dns_id' =>  $domain->dns_id,
+            'netgateway_id' =>  $domain->netgateway_id
         ] );
     }
 }
