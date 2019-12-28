@@ -34,8 +34,8 @@ class DomainTransformer extends AbstractTransformer
             'name' => $domain->name,
             'iam_service_id'    =>  null,
             'networks_attached'  =>  $networks->count(),
-            'dns_id' =>  $domain->dns_id,
-            'netgateway_id' =>  $domain->netgateway_id
+            'dns_domain_id' =>  $domain->dns_domain_id,
+            'dns_service_id' =>  $domain->dns_service_id
         ] );
     }
 }
