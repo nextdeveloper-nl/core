@@ -8,6 +8,13 @@
  * file that was distributed with this source code.
  */
 
+Route::get( '/', function() {
+    return [
+        "application"   =>  "leo",
+        "health"        =>  "ok"
+    ];
+} );
+
 Route::prefix( 'languages' )->group( function() {
     // Dil listesini döndürür
     Route::get( '/', 'LanguageController@index' );
