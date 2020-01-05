@@ -31,4 +31,13 @@ class DomainQueryFilter extends AbstractQueryFilter
         return $this->builder->withPassive();
     }
 
+    /**
+     * Filters domains with domain name
+     *
+     * @param $name
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function name( $name ) {
+        return $this->builder->where('name', $name);
+    }
 }
