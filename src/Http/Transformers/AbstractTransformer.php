@@ -65,6 +65,16 @@ abstract class AbstractTransformer extends TransformerAbstract
     protected $visible = [];
 
     /**
+     * @var array
+     */
+    protected $protected = [];
+
+    /**
+     * @var \Illuminate\Database\Eloquent\Model
+     */
+    protected $object;
+
+    /**
      * @var ParamBag
      */
     protected $paramBag;
@@ -176,12 +186,12 @@ abstract class AbstractTransformer extends TransformerAbstract
     }
 
     /**
-     * @param mixed $value
-     *
-     * @return bool
+     * @return \Closure
      */
-    protected function protectedValue($value) {
-        return true;
+    protected function permittedField() {
+        return function() {
+            return true;
+        };
     }
 
     /**
@@ -296,6 +306,18 @@ abstract class AbstractTransformer extends TransformerAbstract
             }
 
             $payload = array_except( $payload, $hidden );
+        }
+
+        if( $protected = $this->protected ) {
+            $permittedField = $this->permittedField();
+
+            $payload = collect( $payload )->reject( function($value, $key) use ($protected, $permittedField) {
+                if( in_array( $key, $protected ) ) {
+                    return ! $permittedField(); // İzin verilen alan ise, false döndürmek gerekiyor.
+                }
+
+                return false;
+            } )->all();
         }
 
         return $this->filter( $payload );
