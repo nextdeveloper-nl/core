@@ -24,7 +24,7 @@ class ModelNotFoundException extends AbstractCoreException
      * @return mixed
      */
     public function render($request) {
-        return response()->api()->errorNotFound( 'Could not find the records you are looking for.' );
+        return response()->api()->errorNotFound( $this->getMessage() ?: 'Could not find the records you are looking for.' );
     }
 
 }
