@@ -61,7 +61,9 @@ abstract class AbstractQueryFilter
 
                 // "?param" ve "?param=" kontrolü
                 if( $s == 0 || ( $s > 0 && ! is_null( $value ) ) ) {
-                    call_user_func_array( [ $this, $name ], array_filter( [ $value ] ) );
+                    call_user_func_array( [ $this, $name ], array_filter( [ $value ], function($v) {
+                        return isset( $v );
+                    } ) );
                 }
             }
         }
