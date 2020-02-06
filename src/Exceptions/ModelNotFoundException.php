@@ -19,12 +19,18 @@ class ModelNotFoundException extends AbstractCoreException
 {
 
     /**
-     * @param  \Illuminate\Http\Request
+     * @param \Illuminate\Http\Request
      *
      * @return mixed
      */
     public function render($request) {
-        return response()->api()->errorNotFound( $this->getMessage() ?: 'Could not find the records you are looking for.' );
-    }
+        $message = $this->getMessage();
+
+        if( str_contains( $message, 'No query results for model' ) ) {
+            $message = null;
+        }
+
+        return response()->api()->errorNotFound( $message ?: 'Could not find the records you are looking for.' );
+}
 
 }
