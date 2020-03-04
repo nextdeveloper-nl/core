@@ -19,12 +19,24 @@ class ConflictException extends AbstractCoreException
 {
 
     /**
-     * @param  \Illuminate\Http\Request
+     * @var string
+     */
+    protected $defaultMessage = 'Related records are included in your data';
+
+    /**
+     * @param \Illuminate\Http\Request
      *
      * @return mixed
      */
     public function render($request) {
-        return response()->api()->errorConflict( 'Related records are included in your data.' );
+        $message = $this->getMessage();
+
+        if( str_contains( $message, $this->defaultMessage ) ) {
+            $message = null;
+        }
+
+
+        return response()->api()->errorConflict( $message ?: $this->defaultMessage );
     }
 
 }
