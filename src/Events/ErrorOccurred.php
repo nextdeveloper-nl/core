@@ -34,21 +34,14 @@ class ErrorOccurred extends AbstractEvent
     public $message;
 
     /**
-     * @var mixed|null
-     */
-    public $exception;
-
-    /**
      * ErrorOccurred constructor.
      *
      * @param $title
      * @param $message
-     * @param null $exception
      */
-    public function __construct($title, $message, $exception = null) {
+    public function __construct($title, $message) {
         $this->title = $title;
         $this->message = $message;
-        $this->exception = $exception;
     }
 
 }
