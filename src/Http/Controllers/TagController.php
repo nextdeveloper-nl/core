@@ -43,7 +43,7 @@ class TagController extends AbstractController
 
         $tags = $tags->get();
 
-        throw_if( $tags->isEmpty(), ModelNotFoundException::class, 'Could not find the records you are looking for.' );
+        throw_if( $tags->isEmpty(), ModelNotFoundException::class, 'Could not find the tags you are looking for.' );
 
         return $this->withCollection( $tags, app( TagTransformer::class ) );
     }
@@ -111,7 +111,7 @@ class TagController extends AbstractController
 
         $tags = $tags->get();
 
-        throw_if( $tags->isEmpty(), ModelNotFoundException::class, 'Could not find the records you are looking for.' );
+        throw_if( $tags->isEmpty(), ModelNotFoundException::class, 'Could not find application tags you are looking for.' );
 
         return $this->withCollection( $tags, app( TagTransformer::class ) );
     }

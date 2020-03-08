@@ -36,7 +36,7 @@ class CategoryController extends AbstractController
     public function index(CategoryQueryFilter $filter) {
         $categories = Category::filter( $filter )->get();
 
-        throw_if( $categories->isEmpty(), ModelNotFoundException::class, 'Could not find the records you are looking for.' );
+        throw_if( $categories->isEmpty(), ModelNotFoundException::class, 'Could not find the categories you are looking for.' );
 
         return $this->withCollection( $categories->toTree(), app( CategoryTransformer::class ) );
     }

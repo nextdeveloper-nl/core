@@ -35,7 +35,7 @@ class CountryController extends AbstractController
     public function index(CountryQueryFilter $filter) {
         $countries = Country::filter( $filter )->get();
 
-        throw_if( $countries->isEmpty(), ModelNotFoundException::class, 'Could not find the records you are looking for.' );
+        throw_if( $countries->isEmpty(), ModelNotFoundException::class, 'Could not find the country you are looking for. Are you making a typo OR! a new country may have been established and we dont know about that!' );
 
         return $this->withCollection( $countries, app( CountryTransformer::class ) );
     }

@@ -33,7 +33,7 @@ class DiscountController extends AbstractController
     public function index() {
         $discounts = Discount::all();
 
-        throw_if( $discounts->isEmpty(), ModelNotFoundException::class, 'Could not find the records you are looking for.' );
+        throw_if( $discounts->isEmpty(), ModelNotFoundException::class, 'Could not find discount records you are looking for.' );
 
         return $this->withCollection( $discounts, app( DiscountTransformer::class ) );
     }

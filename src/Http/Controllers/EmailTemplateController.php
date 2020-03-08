@@ -33,7 +33,7 @@ class EmailTemplateController extends AbstractController
     public function index() {
         $templates = EmailTemplate::all();
 
-        throw_if( $templates->isEmpty(), ModelNotFoundException::class, 'Could not find the records you are looking for.' );
+        throw_if( $templates->isEmpty(), ModelNotFoundException::class, 'Could not find any email templates.' );
 
         return $this->withCollection( $templates, app( EmailTemplateTransformer::class ) );
     }

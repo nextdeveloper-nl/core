@@ -31,7 +31,7 @@ class MailController extends AbstractController
      * @throws \Throwable
      */
     public function send(MailSendRequest $request) {
-        throw_if( class_exists( ( $class = 'PlusClouds\Account\Database\Models\User' ) ), ModelNotFoundException::class, 'Could not find the records you are looking for.' );
+        throw_if( class_exists( ( $class = 'PlusClouds\Account\Database\Models\User' ) ), ModelNotFoundException::class, 'Account module do not exists..' );
 
         $user = $class::where( 'email', $request->get( 'to' ) )->firstOrFail();
 

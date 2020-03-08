@@ -19,7 +19,7 @@ use PlusClouds\Core\Database\Models\Tag;
 return [
     'country' => function($value) {
         if( ! ( $category = Country::where( 'code', strtoupper( $value ) )->first() ) ) {
-            throw new \Illuminate\Database\Eloquent\ModelNotFoundException( 'Could not find the records you are looking for.' );
+            throw new \Illuminate\Database\Eloquent\ModelNotFoundException( 'Could not find the country from its code.' );
         }
 
         return $category;

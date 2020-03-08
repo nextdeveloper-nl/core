@@ -28,7 +28,7 @@ class CurrencyController extends AbstractController
     public function index() {
         $currencies = Country::all()->pluck( 'currency_code' );
 
-        throw_if( $currencies->isEmpty(), ModelNotFoundException::class, 'Could not find the records you are looking for.' );
+        throw_if( $currencies->isEmpty(), ModelNotFoundException::class, 'Could not find the currency you are looking for. We also dont support coins :(' );
 
         return $this->withArray([
             'data' => $currencies->unique()->values()
