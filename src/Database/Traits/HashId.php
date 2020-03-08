@@ -45,7 +45,7 @@ trait HashId
     public static function getHashidConnection(Model $model) {
         $key = 'hashids.connections.table__'.$model->getTable();
 
-        return config()->has( $key ) ? 'table__'. $model->getTable() : 'main';
+        return config()->has( $key ) ? 'table__'.$model->getTable() : 'main';
     }
 
     /**
@@ -75,7 +75,11 @@ trait HashId
             return $data;
         }
 
-        throw new ModelNotFoundException( 'Could not find the records you are looking for.' );
+        $className = str_replace( '_', ' ', snake_case( camel_case( class_basename( static::class ) ) ) );
+
+        $message = sprintf( 'Could not find any %s', $className );
+
+        throw new ModelNotFoundException( $message );
     }
 
     /**
