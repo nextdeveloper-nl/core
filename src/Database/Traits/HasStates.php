@@ -54,6 +54,16 @@ trait HasStates
             throw InvalidState::create( $name );
         }
 
+        if( ! is_null( $value ) ) {
+            $latestState = $this->latestState( $name );
+
+            if( ! is_null( $latestState ) ) {
+                if( $latestState->value == $value ) {
+                    return $this;
+                }
+            }
+        }
+
         return $this->forceSetState( $name, $value, $reason );
     }
 
