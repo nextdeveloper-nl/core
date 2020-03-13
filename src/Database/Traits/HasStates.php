@@ -26,6 +26,22 @@ trait HasStates
 {
 
     /**
+     * @var bool
+     */
+    protected $overwriteState = false;
+
+    /**
+     * @param bool $overwrite
+     *
+     * @return $this
+     */
+    public function setOverwriteState($overwrite) {
+        $this->overwriteState = (bool) $overwrite;
+
+        return $this;
+    }
+
+    /**
      * @return mixed
      */
     public function states() {
@@ -45,26 +61,17 @@ trait HasStates
      * @param $name
      * @param null $value
      * @param null $reason
+     * @param bool $overwrite
      *
      * @return HasStates
      * @throws InvalidState
      */
-    public function setState($name, $value = null, $reason = null) {
+    public function setState($name, $value = null, $reason = null, $overwrite = false) {
         if( ! $this->isValidState( $name ) ) {
             throw InvalidState::create( $name );
         }
 
-        if( ! is_null( $value ) ) {
-            $latestState = $this->latestState( $name );
-
-            if( ! is_null( $latestState ) ) {
-                if( $latestState->value == $value ) {
-                    return $this;
-                }
-            }
-        }
-
-        return $this->forceSetState( $name, $value, $reason );
+        return $this->forceSetState( $name, $value, $reason, $overwrite );
     }
 
     /**
@@ -191,19 +198,53 @@ trait HasStates
      * @param $name
      * @param null $value
      * @param null $reason
+     * @param bool $overwrite
      *
      * @return $this
      */
-    public function forceSetState($name, $value = null, $reason = null) {
-        $oldState = $this->latestState();
+    public function forceSetState($name, $value = null, $reason = null, $overwrite = false) {
+        if( $overwrite !== false ) {
+            $this->setOverwriteState( $overwrite );
+        }
 
-        $newState = $this->states()->create( [
-            'name'   => $name,
-            'value'  => $value,
-            'reason' => $reason,
-        ] );
+        $newState = null;
+        $updated = false;
 
-        event( new StateUpdated( $oldState, $newState, $this ) );
+        $latestState = $this->latestState( $name );
+
+        if( $this->overwriteState ) {
+            if( is_null( $latestState ) ) {
+                goto firstRecord;
+            }
+
+            $latestState->update( [
+                'value'  => $value,
+                'reason' => $reason,
+            ] );
+
+            $updated = true;
+        } else {
+            if( ! is_null( $value ) ) {
+                if( ! is_null( $latestState ) ) {
+                    if( $latestState->value == $value ) {
+                        return $this;
+                    }
+                }
+            }
+
+            firstRecord :
+            $newState = $this->states()->create( [
+                'name'   => $name,
+                'value'  => $value,
+                'reason' => $reason,
+            ] );
+
+            $updated = true;
+        }
+
+        if( $updated ) {
+            event( new StateUpdated( $latestState, ( $newState ?? $latestState->fresh() ), $this ) );
+        }
 
         return $this;
     }
