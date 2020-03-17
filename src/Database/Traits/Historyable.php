@@ -52,6 +52,12 @@ trait Historyable
                 $model->track( $model );
             }
         } );
+
+        static::deleting( function(Model $model) {
+            if( $model->shouldHistoryEvent() ) {
+                $model->track( $model, true );
+            }
+        } );
     }
 
     /**
@@ -107,11 +113,13 @@ trait Historyable
             ->except( $excludeHistoryableColumns )
             ->toArray();
 
+        ksort( $data );
+
         $chain = new Blakechain();
 
-        $model->history()->pluck( 'body' )->each( function($item) use ($chain) {
-            $chain->appendData( crc32( json_encode( $item, JSON_NUMERIC_CHECK ) ) );
-        } );
+        if( ! is_null( $last = $model->history->last() ) ) {
+            $chain->appendData( crc32( json_encode( $last->body, JSON_NUMERIC_CHECK ) ) );
+        }
 
         $chain->appendData( crc32( json_encode( $data, JSON_NUMERIC_CHECK ) ) );
 
@@ -144,25 +152,23 @@ trait Historyable
         $realChain = new Blakechain();
         $lastChain = new Blakechain();
 
-        // Geçmiş verisini alıp zincir olarak yüklüyoruz ve hash değerlerini oluşturuyoruz.
-        ( $histories = $this->history )
-            ->pluck( 'body' )
-            ->each( function($item) use ($realChain) {
-                $realChain->appendData( crc32( json_encode( $item, JSON_NUMERIC_CHECK ) ) );
-            } );
-
         $data = collect( $this->getOriginal() )
             ->except( $excludeHistoryableColumns )
             ->toArray();
 
-        // Geçmiş kayıtlarından son veriyi çıkarıp, DB'de bulunan orjinal veriyi zincire atıp
-        // hash değerlerini oluşturuyoruz.
-        $histories->splice( 0, -1 )
-            ->each( function($item) use ($lastChain) {
-                $lastChain->appendData( crc32( json_encode( $item, JSON_NUMERIC_CHECK ) ) );
-            } );
+        ksort( $data );
 
+        $history = $this->history()->orderBy( 'id', 'DESC' )->skip( 1 )->first();
+
+        $lastChain->appendData( crc32( json_encode( $history->body, JSON_NUMERIC_CHECK ) ) );
         $lastChain->appendData( crc32( json_encode( $data, JSON_NUMERIC_CHECK ) ) );
+
+        $histories = $this->history()->orderBy( 'id', 'DESC' )->take( 2 )->get();
+
+        $histories->sortBy( 'id' )
+            ->each( function($history) use ($realChain) {
+                $realChain->appendData( crc32( json_encode( $history->body, JSON_NUMERIC_CHECK ) ) );
+            } );
 
         // Geçmiş verisi ile DB datasını karşılaştırıyoruz.
         return ( new Verifier() )
@@ -175,13 +181,10 @@ trait Historyable
      * @return bool
      */
     public function revertTo($hash) {
-        $history = $this->history->filter( function($item) use ($hash) {
-            return $item->hash === $hash;
-        } )->first();
+        $history = $this->history()->where( 'hash', $hash )->first();
 
         if( ! is_null( $history ) ) {
             $this->forceFill( $history->body );
-
 
             return $this->save();
         }
