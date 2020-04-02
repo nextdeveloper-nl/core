@@ -26,8 +26,9 @@ class Locale
      * @return mixed
      */
     public function handle($request, Closure $next) {
-        $locales = config( 'core.locale.available' );
-        $default = config( 'core.locale.default' );
+        // TODO : Bu kısım DB'de ki laguages tablosuna göre yapılacak
+        $locales = config( 'core.locales.availables' );
+        $default = config( 'core.locales.default' );
 
         if( ! $request->has( 'locale' ) ) {
             $request->merge( [ 'locale' => $default ] );
