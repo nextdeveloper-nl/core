@@ -31,7 +31,8 @@ class LocaleScope implements Scope
 
         $builder->leftJoin( $relationTable, $relation->getQualifiedForeignKeyName(), $model->getQualifiedKeyName() )
             ->whereNull( sprintf( '%s.locale', $relationTable ) )
-            ->orWhere( sprintf( '%s.locale', $relationTable ), app()->getLocale() );
+            ->orWhere( sprintf( '%s.locale', $relationTable ), app()->getLocale() )
+            ->select( sprintf( '%s.*', $model->getTable() ) );
     }
 
     /**
