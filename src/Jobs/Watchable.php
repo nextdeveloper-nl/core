@@ -27,6 +27,7 @@ trait Watchable
      * @var array
      */
     public $watchableData = [
+        'prefix'       => null,
         'id'           => null,
         'class'        => null,
         'status'       => null,
@@ -36,6 +37,17 @@ trait Watchable
         'started_at'   => null,
         'completed_at' => null,
     ];
+
+    /**
+     * @param string $prefix
+     *
+     * @return $this
+     */
+    public function setPrefix($prefix) {
+        array_set( $this->watchableData, 'prefix', $prefix );
+
+        return $this;
+    }
 
     /**
      * @return $this

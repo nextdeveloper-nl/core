@@ -22,14 +22,16 @@ class SendLogFile
      * @param $event
      */
     public function handle($event) {
+        $prefix = isset( $event->watchableData['prefix'] ) ? sprintf( '[%s] ', $event->watchableData['prefix'] ) : null;
         $id = $event->watchableData['id'];
         $message = $event->watchableData['message'];
 
         if( is_null( $message ) ) {
-            $log = sprintf( "WatchableId : %s", $id );
+            $log = sprintf( "%sWatchableId : %s", $prefix, $id );
         } else {
             $log = sprintf(
-                "WatchableId : %s | %s",
+                "%sWatchableId : %s | %s",
+                $prefix,
                 $id,
                 $message
             );
