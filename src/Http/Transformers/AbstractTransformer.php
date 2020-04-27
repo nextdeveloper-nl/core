@@ -72,7 +72,7 @@ abstract class AbstractTransformer extends TransformerAbstract
     /**
      * @var \Illuminate\Database\Eloquent\Model
      */
-    protected $object;
+    protected $resource;
 
     /**
      * @var ParamBag
