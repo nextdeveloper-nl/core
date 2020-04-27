@@ -84,16 +84,15 @@ class CoreServiceProvider extends AbstractServiceProvider
      * @return void
      */
     public function register() {
-        $this->app->resolving( 'db', function($db, $app) {
-            $db->extend( 'mariadb', function($config, $name) use ($app) {
-                return ( new ConnectionFactory( $app ) )->make( $config, $name );
-            } );
-        } );
+//        $this->app->resolving( 'db', function($db, $app) {
+//            $db->extend( 'mariadb', function($config, $name) use ($app) {
+//                return ( new ConnectionFactory( $app ) )->make( $config, $name );
+//            } );
+//        } );
 
         // Register Response Api Macro
         $this->app['Illuminate\Contracts\Routing\ResponseFactory']->macro( 'api', function() {
-            return new class
-            {
+            return new class {
 
                 use Responsable;
             };
@@ -135,10 +134,12 @@ class CoreServiceProvider extends AbstractServiceProvider
     public function bootLogger() {
         $monolog = Log::getMonolog();
 
-//        $graylogHandler = new GraylogHandler();
-//        $graylogHandler->setFormatter( new GelfMessageFormatter() );
-//
-//        $monolog->pushHandler( $graylogHandler );
+        if( (bool) env( 'GRAYLOG_ENABLED', false ) === true ) {
+            $graylogHandler = new GraylogHandler();
+            $graylogHandler->setFormatter( new GelfMessageFormatter() );
+
+            $monolog->pushHandler( $graylogHandler );
+        }
 
         $monolog->pushProcessor( new \Monolog\Processor\WebProcessor() );
         $monolog->pushProcessor( new \Monolog\Processor\MemoryUsageProcessor() );
