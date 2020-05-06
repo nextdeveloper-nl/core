@@ -27,7 +27,7 @@ class PasswordGeneratorController extends AbstractController
      */
     public function show(Request $request) {
         $request->validate( [
-            'length' => 'required|Integer|between:8,15',
+            'length' => 'required|Integer|between:8,100',
         ] );
 
         return $this->withItem( [ 'password' => generateRandomCode( $request->get( 'length' ) ) ], function($item) {
