@@ -10,31 +10,29 @@
 
 namespace PlusClouds\Core\Validation\Rules;
 
-
 use Illuminate\Contracts\Validation\Rule;
 use Zend\Validator\Hostname as ZendHostname;
 
 /**
- * Class Hostname
+ * Class Hostname.
+ *
  * @package PlusClouds\Core\Validation\Rules
  */
-class Hostname implements Rule
-{
-
+class Hostname implements Rule {
     /**
      * @param string $attribute
-     * @param mixed $value
+     * @param mixed  $value
      *
      * @return bool
      */
     public function passes($attribute, $value) {
-        $validator = new ZendHostname( [
-            'allow'       => ZendHostname::ALLOW_DNS,
+        $validator = new ZendHostname([
+            'allow'       => ZendHostname::ALLOW_DNS | ZendHostname::ALLOW_LOCAL,
             'useIdnCheck' => true,
             'useTldCheck' => true,
-        ] );
+        ]);
 
-        return $validator->isValid( $value );
+        return $validator->isValid($value);
     }
 
     /**
@@ -43,6 +41,4 @@ class Hostname implements Rule
     public function message() {
         return 'The :attribute must be a valid domain name';
     }
-
-
 }
