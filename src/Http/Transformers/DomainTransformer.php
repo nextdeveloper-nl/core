@@ -10,19 +10,17 @@
 
 namespace PlusClouds\Core\Http\Transformers;
 
-
 use League\Fractal\ParamBag;
 use PlusClouds\Account\Http\Transformers\AccountTransformer;
 use PlusClouds\Core\Database\Models\Domain;
 use PlusClouds\IAAS\Database\Models\Network;
 
 /**
- * Class DomainTransformer
+ * Class DomainTransformer.
+ *
  * @package PlusClouds\Core\Http\Transformers
  */
-class DomainTransformer extends AbstractTransformer
-{
-
+class DomainTransformer extends AbstractTransformer {
     /**
      * @var array
      */
