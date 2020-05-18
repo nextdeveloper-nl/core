@@ -1,6 +1,6 @@
 apps:
   - name: core/general
-    script: /var/www/var/www/PlusClouds.Platform-API/artisan
+    script: /var/www/artisan
     exec_mode: fork
     interpreter: php
     instances: 2
