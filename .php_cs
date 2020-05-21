@@ -14,7 +14,7 @@ return PhpCsFixer\Config::create()
         'array_syntax' => ['syntax'=>'short'],
         // Binary operators should be surrounded by space as configured.
         'binary_operator_spaces' => [
-            // 'align_equals' => true, 
+            // 'align_equals' => true,
             'align_double_arrow' => true,
         ],
         // There MUST be one blank line after the namespace declaration.
@@ -164,7 +164,7 @@ return PhpCsFixer\Config::create()
         // Logical NOT operators (`!`) should have leading and trailing whitespaces.
         'not_operator_with_space' => true,
         // Adds or removes `?` before type declarations for parameters with a default `null` value.
-        'nullable_type_declaration_for_default_null_value' => true,
+        'nullable_type_declaration_for_default_null_value' => false,
         // There should not be space before or after object `T_OBJECT_OPERATOR` `->`.
         'object_operator_without_whitespace' => true,
         // Ordering `use` statements.
