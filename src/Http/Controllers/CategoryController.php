@@ -10,35 +10,33 @@
 
 namespace PlusClouds\Core\Http\Controllers;
 
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use PlusClouds\Core\Database\Filters\CategoryQueryFilter;
 use PlusClouds\Core\Database\Models\Category;
 use PlusClouds\Core\Database\Models\Domain;
 use PlusClouds\Core\Http\Requests\CategoryStoreRequest;
 use PlusClouds\Core\Http\Requests\CategoryUpdateRequest;
-use PlusClouds\Core\Http\Transformers\CategoryTransformer;
 
 /**
- * Class CategoryController
+ * Class CategoryController.
+ *
  * @package PlusClouds\Core\Http\Controllers
  */
-class CategoryController extends AbstractController
-{
-
+class CategoryController extends AbstractController {
     /**
      * Kategori listesini döndürür.
      *
      * @param CategoryQueryFilter $filter
      *
-     * @return \Illuminate\Http\JsonResponse
      * @throws \Throwable
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index(CategoryQueryFilter $filter) {
-        $categories = Category::filter( $filter )->get();
+        $categories = Category::filter($filter)->get();
 
-        throw_if( $categories->isEmpty(), ModelNotFoundException::class, 'Could not find the categories you are looking for.' );
+        throw_if($categories->isEmpty(), 'Illuminate\Database\Eloquent\ModelNotFoundException', 'Could not find the categories you are looking for.');
 
-        return $this->withCollection( $categories->toTree(), app( CategoryTransformer::class ) );
+        return $this->withCollection($categories->toTree(), app('PlusClouds\Core\Http\Transformers\CategoryTransformer'));
     }
 
     /**
@@ -49,7 +47,7 @@ class CategoryController extends AbstractController
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(Category $category) {
-        return $this->withItem( $category, app( CategoryTransformer::class ) );
+        return $this->withItem($category, app('PlusClouds\Core\Http\Transformers\CategoryTransformer'));
     }
 
     /**
@@ -60,40 +58,52 @@ class CategoryController extends AbstractController
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(CategoryStoreRequest $request) {
-        $category = Category::create( array_merge( [ 'user_id' => getAUUser()->id ], $request->validated() ) );
+        $data = collect($request->validated())
+            ->merge([
+                'user_id'=> getAUUser()->id,
+            ])
+            ->when($request->filled('domain'), function ($collection) use ($request) {
+                return $collection->put('domain_id', Domain::findByRef($request->get('domain'))->id);
+            })
+            ->forget(['domain']);
+
+        $category = Category::create($data->toArray());
 
         // Seçilen kategorinin alt kategorisi olarak ekliyoruz.
-        if( $request->has( 'category_ref' ) ) {
-            $ancestor = Category::findByRef( $request->get( 'category_ref' ) );
-            $ancestor->appendNode( $category );
+        if ($request->file('category')) {
+            $ancestor = Category::findByRef($request->get('category'));
+            $ancestor->appendNode($category);
         }
 
-        return $this->setStatusCode( 201 )
-            ->withItem( $category->fresh(), app( CategoryTransformer::class ) );
+        return $this->setStatusCode(201)
+            ->withItem($category->fresh(), app('PlusClouds\Core\Http\Transformers\CategoryTransformer'));
     }
 
     /**
      * Varolan kategori bilgilerini günceller.
      *
      * @param CategoryUpdateRequest $request
-     * @param Category $category
+     * @param Category              $category
      *
      * @return mixed
      */
     public function update(CategoryUpdateRequest $request, Category $category) {
-        $domain = Domain::findByRef( $request->get( 'domain_ref' ) );
+        $data = collect($request->validated())
+            ->when($request->filled('domain'), function ($collection) use ($request) {
+                return $collection->put('domain_id', Domain::findByRef($request->get('domain'))->id);
+            })
+            ->filter(function ($value, $key) {
+                return isset($value);
+            })
+            ->forget(['domain']);
 
-        $category->update( [
-            'name'        => $request->get( 'name' ),
-            'description' => $request->get( 'description' ),
-            'domain_id'   => $domain,
-        ] );
+        $category->update($data->toArray());
 
-        if( $request->has( 'category_ref' ) ) {
-            $ancestor = Category::findByRef( ( $categoryRef = $request->get( 'category_ref' ) ) );
+        if ($request->filled('category')) {
+            $ancestor = Category::findByRef(($categoryRef = $request->get('category')));
 
-            if( $ancestor->id_ref !== $categoryRef ) {
-                $category->appendToNode( $ancestor )->save();
+            if ($ancestor->id_ref !== $categoryRef) {
+                $category->appendToNode($ancestor)->save();
             }
         }
 
@@ -105,15 +115,15 @@ class CategoryController extends AbstractController
      *
      * @param Category $category
      *
-     * @return mixed
      * @throws \Exception
+     *
+     * @return mixed
      */
     public function destroy(Category $category) {
-        $this->authorize( 'destroy', $category );
+        $this->authorize('destroy', $category);
 
         $category->delete();
 
         return $this->noContent();
     }
-
 }

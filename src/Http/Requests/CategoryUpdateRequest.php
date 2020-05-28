@@ -10,20 +10,18 @@
 
 namespace PlusClouds\Core\Http\Requests;
 
-
 /**
- * Class CategoryUpdateRequest
+ * Class CategoryUpdateRequest.
+ *
  * @package PlusClouds\Core\Http\Requests
  */
-class CategoryUpdateRequest extends AbstractFormRequest
-{
-
+class CategoryUpdateRequest extends AbstractFormRequest {
     /**
      * @return bool
      */
     public function authorize() {
-        return $this->user()->can( 'core.category@update' )
-            && $this->user()->id == $this->route( 'category' )->user_id;
+        return $this->user()->can('core.category@update')
+            && $this->user()->id == $this->route('category')->user_id;
     }
 
     /**
@@ -31,11 +29,10 @@ class CategoryUpdateRequest extends AbstractFormRequest
      */
     public function rules() {
         return [
-            'category_ref' => 'exists:categories,id_ref',
-            'domain_ref'   => 'required|exists:domains,id_ref',
-            'name'         => 'required',
-            'description'  => 'required',
+            'category'     => 'nullable|exists:categories,id_ref',
+            'domain'       => 'nullable|exists:domains,id_ref',
+            'name'         => 'nullable|max:255',
+            'description'  => 'nullable|max:1500',
         ];
     }
-
 }
