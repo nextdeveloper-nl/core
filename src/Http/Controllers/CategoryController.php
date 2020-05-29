@@ -65,7 +65,7 @@ class CategoryController extends AbstractController {
             ->when($request->filled('domain'), function ($collection) use ($request) {
                 return $collection->put('domain_id', Domain::findByRef($request->get('domain'))->id);
             })
-            ->forget(['domain']);
+            ->forget(['domain', 'category']);
 
         $category = Category::create($data->toArray());
 
@@ -95,7 +95,7 @@ class CategoryController extends AbstractController {
             ->filter(function ($value, $key) {
                 return isset($value);
             })
-            ->forget(['domain']);
+            ->forget(['domain', 'category']);
 
         $category->update($data->toArray());
 
