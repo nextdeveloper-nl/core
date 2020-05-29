@@ -70,7 +70,7 @@ class CategoryController extends AbstractController {
         $category = Category::create($data->toArray());
 
         // Seçilen kategorinin alt kategorisi olarak ekliyoruz.
-        if ($request->file('category')) {
+        if ($request->get('category')) {
             $ancestor = Category::findByRef($request->get('category'));
             $ancestor->appendNode($category);
         }
