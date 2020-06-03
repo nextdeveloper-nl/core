@@ -10,31 +10,28 @@
 
 namespace PlusClouds\Core\Policies;
 
-
 use Illuminate\Auth\Access\HandlesAuthorization;
 use PlusClouds\Account\Database\Models\User;
 use PlusClouds\Core\Database\Models\Category;
 
 /**
- * Class CategoryPolicy
+ * Class CategoryPolicy.
+ *
  * @package PlusClouds\Core\Policies
  */
-class CategoryPolicy
-{
-
+class CategoryPolicy {
     use HandlesAuthorization;
 
     /**
      * Aktif kullanıcı izni dahilinde bir kategoriyi silebilir.
      *
-     * @param User $authUser
+     * @param User     $authUser
      * @param Category $category
      *
      * @return bool
      */
-    public function destroy(User $authUser, Category $category) {
-        return $authUser->can( 'core.category@destroy' )
+    public function categoryDestroy(User $authUser, Category $category) {
+        return $authUser->can('core.category@destroy')
             && $authUser->id == $category->user_id;
     }
-
 }

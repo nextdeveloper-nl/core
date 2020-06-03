@@ -120,7 +120,7 @@ class CategoryController extends AbstractController {
      * @return mixed
      */
     public function destroy(Category $category) {
-        $this->authorize('destroy', $category);
+        $this->authorize('categoryDestroy', $category);
 
         $category->delete();
 

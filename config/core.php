@@ -2,7 +2,7 @@
 
 return [
     'locales' => [
-        'availables' => [ 'en', 'tr' ],
+        'availables' => ['en', 'tr'],
         'default'    => 'en',
     ],
 
@@ -53,20 +53,21 @@ return [
         'http' => [
             'PlusClouds\Core\Http\Middleware\Locale',
             'PlusClouds\Core\Http\Middleware\XSSProtection',
-//            'PlusClouds\Core\Common\Cache\ResponseCache\Middlewares\CacheResponse',
+            //            'PlusClouds\Core\Common\Cache\ResponseCache\Middlewares\CacheResponse',
         ],
 
         'route' => [
             'throttle' => 'PlusClouds\Core\Http\Middleware\ThrottleRequests',
             'etag'     => 'PlusClouds\Core\Http\Middleware\ETag',
-//            'cacheResponse'      => 'PlusClouds\Core\Common\Cache\ResponseCache\Middlewares\CacheResponse',
-//            'doNotCacheResponse' => 'PlusClouds\Core\Common\Cache\ResponseCache\Middlewares\DoNotCacheResponse',
+            //            'cacheResponse'      => 'PlusClouds\Core\Common\Cache\ResponseCache\Middlewares\CacheResponse',
+            //            'doNotCacheResponse' => 'PlusClouds\Core\Common\Cache\ResponseCache\Middlewares\DoNotCacheResponse',
         ],
     ],
 
     'policies' => [
-        'PlusClouds\Core\Database\Models\Hook' => 'PlusClouds\Core\Policies\HookPolicy',
-        'PlusClouds\Core\Database\Models\Tag'  => 'PlusClouds\Core\Policies\TagPolicy',
+        'PlusClouds\Core\Database\Models\Hook'      => 'PlusClouds\Core\Policies\HookPolicy',
+        'PlusClouds\Core\Database\Models\Tag'       => 'PlusClouds\Core\Policies\TagPolicy',
+        'PlusClouds\Core\Database\Models\Category'  => 'PlusClouds\Core\Policies\CategoryPolicy',
     ],
 
     'events' => [
@@ -76,10 +77,8 @@ return [
     ],
 
     'response_cache'   => [
-        /*
-         * Determine if the response cache middleware should be enabled.
-         */
-        'enabled'                   => env( 'RESPONSE_CACHE_ENABLED', true ),
+        // Determine if the response cache middleware should be enabled.
+        'enabled'                   => env('RESPONSE_CACHE_ENABLED', true),
 
         /*
          *  The given class will determinate if a request should be cached. The
@@ -88,40 +87,40 @@ return [
          *  You can provide your own class given that it implements the
          *  CacheProfile interface.
          */
-        'cache_profile'             => PlusClouds\Core\Common\Cache\ResponseCache\CacheProfiles\CacheAllSuccessfulGetRequests::class,
+        'cache_profile'             => 'PlusClouds\Core\Common\Cache\ResponseCache\CacheProfiles\CacheAllSuccessfulGetRequests',
 
         /*
          * When using the default CacheRequestFilter this setting controls the
          * default number of seconds responses must be cached.
          */
-        'cache_lifetime_in_seconds' => env( 'RESPONSE_CACHE_LIFETIME', 60 * 60 * 24 * 7 ),
+        'cache_lifetime_in_seconds' => env('RESPONSE_CACHE_LIFETIME', 60 * 60 * 24 * 7),
 
         /*
          * This setting determines if a http header named with the cache time
          * should be added to a cached response. This can be handy when
          * debugging.
          */
-        'add_cache_time_header'     => env( 'APP_DEBUG', true ),
+        'add_cache_time_header'     => env('APP_DEBUG', true),
 
         /*
          * This setting determines the name of the http header that contains
          * the time at which the response was cached
          */
-        'cache_time_header_name'    => env( 'RESPONSE_CACHE_HEADER_NAME', 'laravel-responsecache' ),
+        'cache_time_header_name'    => env('RESPONSE_CACHE_HEADER_NAME', 'laravel-responsecache'),
 
         /*
          * Here you may define the cache store that should be used to store
          * requests. This can be the name of any store that is
          * configured in app/config/cache.php
          */
-        'cache_store'               => env( 'RESPONSE_CACHE_DRIVER', 'file' ),
+        'cache_store'               => env('RESPONSE_CACHE_DRIVER', 'file'),
 
         /*
          * Here you may define replacers that dynamically replace content from the response.
          * Each replacer must implement the Replacer interface.
          */
         'replacers'                 => [
-            PlusClouds\Core\Common\Cache\ResponseCache\Replacers\CsrfTokenReplacer::class,
+            'PlusClouds\Core\Common\Cache\ResponseCache\Replacers\CsrfTokenReplacer',
         ],
 
         /*
@@ -137,12 +136,10 @@ return [
          * This class is responsible for generating a hash for a request. This hash
          * is used to look up an cached response.
          */
-        'hasher'                    => PlusClouds\Core\Common\Cache\ResponseCache\Hasher\DefaultHasher::class,
+        'hasher'                    => 'PlusClouds\Core\Common\Cache\ResponseCache\Hasher\DefaultHasher',
 
-        /*
-        * This class is responsible for serializing responses.
-        */
-        'serializer'                => PlusClouds\Core\Common\Cache\ResponseCache\Serializers\DefaultSerializer::class,
+        // This class is responsible for serializing responses.
+        'serializer'                => 'PlusClouds\Core\Common\Cache\ResponseCache\Serializers\DefaultSerializer',
 
     ],
 
