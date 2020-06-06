@@ -12,16 +12,14 @@ namespace PlusClouds\Core\Database\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
-use PlusClouds\Core\Database\Observers\DiscountObserver;
 use PlusClouds\Core\Database\Traits\HashId;
 
 /**
- * Class Discount
+ * Class Discount.
+ *
  * @package PlusClouds\Core\Database\Models
  */
-class Discount extends AbstractModel
-{
-
+class Discount extends AbstractModel {
     use SoftDeletes, HashId;
 
     /**
@@ -64,25 +62,38 @@ class Discount extends AbstractModel
     public static function boot() {
         parent::boot();
 
-        parent::observe( DiscountObserver::class );
+        parent::observe('PlusClouds\Core\Database\Observers\DiscountObserver');
     }
 
     /**
      * @return null|Carbon
      */
     public function getStartAtAttribute() {
-        $startAt = optional( $this->pivot )->custom_start_at ?? $this->attributes['start_at'];
+        $startAt = optional($this->pivot)->custom_start_at ?? $this->attributes['start_at'];
 
-        return ! is_null( $startAt ) ? Carbon::parse( $startAt ) : null;
+        return ! is_null($startAt) ? Carbon::parse($startAt) : null;
     }
 
     /**
      * @return null|Carbon
      */
     public function getExpiresAtAttribute() {
-        $expiresAt = optional( $this->pivot )->custom_expires_at ?? $this->attributes['expires_at'];
+        $expiresAt = optional($this->pivot)->custom_expires_at ?? $this->attributes['expires_at'];
 
-        return ! is_null( $expiresAt ) ? Carbon::parse( $expiresAt ) : null;
+        return ! is_null($expiresAt) ? Carbon::parse($expiresAt) : null;
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function account() {
+        return $this->belongsTo('PlusClouds\Account\Database\Models\Account');
+    }
+
+    /**
+     *  @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function country() {
+        return $this->belongsTo('PlusClouds\Core\Database\Models\Country');
+    }
 }
