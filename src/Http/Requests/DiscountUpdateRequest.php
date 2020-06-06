@@ -10,19 +10,17 @@
 
 namespace PlusClouds\Core\Http\Requests;
 
-
 /**
- * Class DiscountUpdateRequest
+ * Class DiscountUpdateRequest.
+ *
  * @package PlusClouds\Core\Http\Requests
  */
-class DiscountUpdateRequest extends AbstractFormRequest
-{
-
+class DiscountUpdateRequest extends AbstractFormRequest {
     /**
      * @return bool
      */
     public function authorize() {
-        return $this->user()->can( 'core.discount@update' );
+        return $this->user()->can('core.discount@update');
     }
 
     /**
@@ -30,15 +28,14 @@ class DiscountUpdateRequest extends AbstractFormRequest
      */
     public function rules() {
         return [
-            'title'           => 'required|max:255',
-            'discount_type'   => 'required|numeric',
+            'title'           => 'nuyllable|max:255',
+            'discount_type'   => 'nuyllable|numeric',
             'percentage'      => 'required_if:discount_type,0',
             'price'           => 'required_if:discount_type,1|regex:/^\d*(\.\d{1,4})?$/',
             'currency_code'   => 'required_with:price|exists:languages,currency_code',
-            'min_order_value' => 'regex:/^\d*(\.\d{1,4})?$/',
-            'start_at'        => 'date|date_format:Y-m-d h:i:s',
-            'expires_at'      => 'date|date_format:Y-m-d h:i:s',
+            'min_order_value' => 'nullable|regex:/^\d*(\.\d{1,4})?$/',
+            'start_at'        => 'nullable|date|date_format:Y-m-d h:i:s',
+            'expires_at'      => 'nullable|date|date_format:Y-m-d h:i:s',
         ];
     }
-
 }

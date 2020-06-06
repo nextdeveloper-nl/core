@@ -10,32 +10,31 @@
 
 namespace PlusClouds\Core\Http\Controllers;
 
-
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use PlusClouds\Account\Database\Models\Account;
+use PlusClouds\Core\Database\Models\Country;
 use PlusClouds\Core\Database\Models\Discount;
 use PlusClouds\Core\Http\Requests\DiscountStoreRequest;
 use PlusClouds\Core\Http\Requests\DiscountUpdateRequest;
-use PlusClouds\Core\Http\Transformers\DiscountTransformer;
 
 /**
- * Class DiscountController
+ * Class DiscountController.
+ *
  * @package PlusClouds\Core\Http\Controllers
  */
-class DiscountController extends AbstractController
-{
-
+class DiscountController extends AbstractController {
     /**
      * İndirim listesini döndürür.
      *
-     * @return \Illuminate\Http\JsonResponse
      * @throws \Throwable
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index() {
         $discounts = Discount::all();
 
-        throw_if( $discounts->isEmpty(), ModelNotFoundException::class, 'Could not find discount records you are looking for.' );
+        throw_if($discounts->isEmpty(), 'Illuminate\Database\Eloquent\ModelNotFoundException', 'Could not find discount records you are looking for.');
 
-        return $this->withCollection( $discounts, app( DiscountTransformer::class ) );
+        return $this->withCollection($discounts, app('PlusClouds\Core\Http\Transformers\DiscountTransformer'));
     }
 
     /**
@@ -46,7 +45,7 @@ class DiscountController extends AbstractController
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(Discount $discount) {
-        return $this->withItem( $discount, app( DiscountTransformer::class ) );
+        return $this->withItem($discount, app('PlusClouds\Core\Http\Transformers\DiscountTransformer'));
     }
 
     /**
@@ -57,22 +56,43 @@ class DiscountController extends AbstractController
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(DiscountStoreRequest $request) {
-        $discount = Discount::create( $request->validated() );
+        $data = collect($request->validated())
+            ->when($request->filled('account'), function ($collection) use ($request) {
+                return $collection->put('account_id', Account::findByRef($request->get('account'))->id);
+            })
+            ->when($request->filled('country_code'), function ($collection) use ($request) {
+                return $collection->put('country_id', Country::where('code', $request->get('country_code'))->firstOrFail()->id);
+            })
+            ->forget(['account', 'country_code']);
 
-        return $this->setStatusCode( 201 )
-            ->withItem( $discount->fresh(), app( DiscountTransformer::class ) );
+        $discount = Discount::create($data->toArray());
+
+        return $this->setStatusCode(201)
+            ->withItem($discount->fresh(), app('PlusClouds\Core\Http\Transformers\DiscountTransformer'));
     }
 
     /**
      * Varolan indirim bilgilerini günceller.
      *
      * @param DiscountUpdateRequest $request
-     * @param Discount $discount
+     * @param Discount              $discount
      *
      * @return mixed
      */
     public function update(DiscountUpdateRequest $request, Discount $discount) {
-        $discount->update( $request->validated() );
+        $data = collect($request->validated())
+            ->when($request->filled('account'), function ($collection) use ($request) {
+                return $collection->put('account_id', Account::findByRef($request->get('account'))->id);
+            })
+            ->when($request->filled('country_code'), function ($collection) use ($request) {
+                return $collection->put('country_id', Country::where('code', $request->get('country_code'))->firstOrFail()->id);
+            })
+            ->filter(function ($value) {
+                return ! is_null($value);
+            })
+            ->forget(['account', 'country_code']);
+
+        $discount->update($data->toArray());
 
         return $this->noContent();
     }
@@ -82,15 +102,15 @@ class DiscountController extends AbstractController
      *
      * @param Discount $discount
      *
-     * @return mixed
      * @throws \Exception
+     *
+     * @return mixed
      */
     public function delete(Discount $discount) {
-        $this->authorize( 'destroy', $discount );
+        $this->authorize('destroy', $discount);
 
         $discount->delete();
 
         return $this->noContent();
     }
-
 }
