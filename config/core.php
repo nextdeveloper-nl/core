@@ -65,9 +65,10 @@ return [
     ],
 
     'policies' => [
-        'PlusClouds\Core\Database\Models\Hook'      => 'PlusClouds\Core\Policies\HookPolicy',
-        'PlusClouds\Core\Database\Models\Tag'       => 'PlusClouds\Core\Policies\TagPolicy',
-        'PlusClouds\Core\Database\Models\Category'  => 'PlusClouds\Core\Policies\CategoryPolicy',
+        'PlusClouds\Core\Database\Models\Discount'      => 'PlusClouds\Core\Policies\DiscountPolicy',
+        'PlusClouds\Core\Database\Models\Hook'          => 'PlusClouds\Core\Policies\HookPolicy',
+        'PlusClouds\Core\Database\Models\Tag'           => 'PlusClouds\Core\Policies\TagPolicy',
+        'PlusClouds\Core\Database\Models\Category'      => 'PlusClouds\Core\Policies\CategoryPolicy',
     ],
 
     'events' => [

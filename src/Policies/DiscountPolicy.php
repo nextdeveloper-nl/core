@@ -10,30 +10,27 @@
 
 namespace PlusClouds\Core\Policies;
 
-
 use Illuminate\Auth\Access\HandlesAuthorization;
 use PlusClouds\Account\Database\Models\User;
 use PlusClouds\Core\Database\Models\Discount;
 
 /**
- * Class DiscountPolicy
+ * Class DiscountPolicy.
+ *
  * @package PlusClouds\Core\Policies
  */
-class DiscountPolicy
-{
-
+class DiscountPolicy {
     use HandlesAuthorization;
 
     /**
      * Aktif kullanıcı izni dahilinde bir indirimi silebilir.
      *
-     * @param User $authUser
+     * @param User     $authUser
      * @param Discount $discount
      *
      * @return bool
      */
-    public function destroy(User $authUser, Discount $discount) {
-        return $authUser->can( 'core.discount@destroy' );
+    public function discountDestroy(User $authUser, Discount $discount) {
+        return $authUser->can('core.discount@destroy');
     }
-
 }
