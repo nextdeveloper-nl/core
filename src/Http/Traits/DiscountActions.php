@@ -25,11 +25,24 @@ trait DiscountActions {
     }
 
     /**
+     * @throws \Throwable
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function discountList(Model $discountableModel) {
+        $discounts = $discountableModel->discounts;
+
+        throw_if($discounts->count() <= 0, 'Illuminate\Database\Eloquent\ModelNotFoundException', 'Could not find the discount or discounts.');
+
+        return $this->withCollection($discounts, app('PlusClouds\Core\Http\Transformers\DiscountTransformer'));
+    }
+
+    /**
      * @param DiscountStoreRequest $request
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createDiscount(DiscountStoreRequest $request) {
+    public function createDiscount(Model $discountableModel, DiscountStoreRequest $request) {
         $data = collect($request->validated())
             ->when($request->filled('account'), function ($collection) use ($request) {
                 return $collection->put('account_id', Account::findByRef($request->get('account'))->id);
@@ -39,7 +52,7 @@ trait DiscountActions {
             })
             ->forget(['account', 'country_code']);
 
-        $discountableObject = $this->getDiscountableModel()->createDiscount($data->toArray());
+        $discountableObject = $discountableModel->createDiscount($data->toArray());
 
         return $this->setStatusCode(201)
             ->withItem($discountableObject, app($this->getDiscountableObjectTransformer()));
