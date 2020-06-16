@@ -119,7 +119,7 @@ trait Historyable {
             }
         } else {
             // Ekleme veya silme işleminde bütün sütun verilerini alalım.
-            $dirty = (new static())->find($model->id)->toArray();
+            $dirty = (new static())->withoutGlobalScopes()->find($model->id)->toArray();
         }
 
         // Veriler içerisinden harici tutulan alanları kaldırıyoruz.
