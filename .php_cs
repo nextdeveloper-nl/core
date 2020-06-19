@@ -32,7 +32,7 @@ return PhpCsFixer\Config::create()
         // Whitespace around the keywords of a class, trait or interfaces definition should be one space.
         'class_definition' => true,
         // Converts `::class` keywords to FQCN strings.
-        'class_keyword_remove' => true,
+        'class_keyword_remove' => false,
         // Using `isset($var) &&` multiple times should be done in one call.
         'combine_consecutive_issets' => true,
         // Calling `unset` on multiple items should be done in one call.
