@@ -31,8 +31,9 @@ class CategoryUpdateRequest extends AbstractFormRequest {
         return [
             'category'     => 'nullable|exists:categories,id_ref',
             'domain'       => 'nullable|exists:domains,id_ref',
-            'name'         => 'nullable|max:255',
-            'description'  => 'nullable|max:1500',
+            'name'          =>  'required|string|max:255',
+            'url'           =>  'required|url',
+            'description'   =>  'required|string|max:1500',
         ];
     }
 }
