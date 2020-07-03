@@ -10,19 +10,17 @@
 
 namespace PlusClouds\Core\Helpers;
 
-
-use Monolog\Logger;
+use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Handler\StreamHandler;
-use Monolog\Formatter\LineFormatter;
+use Monolog\Logger;
 
 /**
- * Class DebugMode
+ * Class DebugMode.
+ *
  * @package PlusClouds\Core\Helpers
  */
-final class DebugMode
-{
-
+final class DebugMode {
     /**
      * @var array
      */
@@ -38,7 +36,7 @@ final class DebugMode
      *
      * @return $this
      */
-    public function setChannel($value){
+    public function setChannel($value) {
         $this->channel = $value;
 
         return $this;
@@ -46,49 +44,46 @@ final class DebugMode
 
     /**
      * @param string $channel
-     * @param int $level
+     * @param int    $level
      * @param string $message
-     * @param array $context
+     * @param array  $context
      *
-     * @return bool
      * @throws \Exception
+     *
+     * @return mixed
      */
     public function log($channel, $level, $message, $context = []) {
-        if( (bool) env( 'APP_DEBUG' ) ) {
-            // Add the logger if it doesn't exist
-            if( ! isset( $this->channels[ $channel ] ) ) {
-                $handler = new StreamHandler(
-                    storage_path().DIRECTORY_SEPARATOR.'logs'.DIRECTORY_SEPARATOR.$channel.'.log'
-                );
+        // Add the logger if it doesn't exist
+        if ( ! isset($this->channels[$channel])) {
+            $handler = new StreamHandler(
+                storage_path().DIRECTORY_SEPARATOR.'logs'.DIRECTORY_SEPARATOR.$channel.'.log'
+            );
 
-                $handler->setFormatter( new LineFormatter( null, null, true, true ) );
+            $handler->setFormatter(new LineFormatter(null, null, true, true));
 
-                $this->addChannel( $channel, $handler );
-            }
-
-            // LogToChannels the record
-            return $this->channels[ $channel ]->{Logger::getLevelName( $level )}( $message, $context );
+            $this->addChannel($channel, $handler);
         }
 
-        return false;
+        // LogToChannels the record
+        return $this->channels[$channel]->{Logger::getLevelName($level)}($message, $context);
     }
 
     /**
-     * @param string $channelName
+     * @param string           $channelName
      * @param HandlerInterface $handler
-     * @param string|null $path
+     * @param null|string      $path
      *
      * @throws \Exception
      */
     public function addChannel($channelName, HandlerInterface $handler, $path = null) {
-        if( isset( $this->channels[ $channelName ] ) ) {
-            throw new \Exception( 'This channel already exists' );
+        if (isset($this->channels[$channelName])) {
+            throw new \Exception('This channel already exists');
         }
 
-        $this->channels[ $channelName ] = new Logger( $channelName );
-        $this->channels[ $channelName ]->pushHandler(
+        $this->channels[$channelName] = new Logger($channelName);
+        $this->channels[$channelName]->pushHandler(
             new $handler(
-                $path === null ?
+                null === $path ?
                     storage_path().DIRECTORY_SEPARATOR.'logs'.DIRECTORY_SEPARATOR.$channelName.'.log' :
                     $path.DIRECTORY_SEPARATOR.$channelName.'.log'
             )
@@ -97,82 +92,81 @@ final class DebugMode
 
     /**
      * @param string $message
-     * @param array $context
+     * @param array  $context
      *
      * @throws \Exception
      */
     public function emergency($message, array $context = []) {
-        $this->log( $this->channel, Logger::EMERGENCY, $message, $context );
+        $this->log($this->channel, Logger::EMERGENCY, $message, $context);
     }
 
     /**
      * @param string $message
-     * @param array $context
+     * @param array  $context
      *
      * @throws \Exception
      */
     public function alert($message, array $context = []) {
-        $this->log( $this->channel, Logger::ALERT, $message, $context );
+        $this->log($this->channel, Logger::ALERT, $message, $context);
     }
 
     /**
      * @param string $message
-     * @param array $context
+     * @param array  $context
      *
      * @throws \Exception
      */
     public function critical($message, array $context = []) {
-        $this->log( $this->channel, Logger::CRITICAL, $message, $context );
+        $this->log($this->channel, Logger::CRITICAL, $message, $context);
     }
 
     /**
      * @param string $message
-     * @param array $context
+     * @param array  $context
      *
      * @throws \Exception
      */
     public function error($message, array $context = []) {
-        $this->log( $this->channel, Logger::ERROR, $message, $context );
+        $this->log($this->channel, Logger::ERROR, $message, $context);
     }
 
     /**
      * @param string $message
-     * @param array $context
+     * @param array  $context
      *
      * @throws \Exception
      */
     public function warning($message, array $context = []) {
-        $this->log( $this->channel, Logger::WARNING, $message, $context );
+        $this->log($this->channel, Logger::WARNING, $message, $context);
     }
 
     /**
      * @param string $message
-     * @param array $context
+     * @param array  $context
      *
      * @throws \Exception
      */
     public function notice($message, array $context = []) {
-        $this->log( $this->channel, Logger::NOTICE, $message, $context );
+        $this->log($this->channel, Logger::NOTICE, $message, $context);
     }
 
     /**
      * @param string $message
-     * @param array $context
+     * @param array  $context
      *
      * @throws \Exception
      */
     public function info($message, array $context = []) {
-        $this->log( $this->channel, Logger::INFO, $message, $context );
+        $this->log($this->channel, Logger::INFO, $message, $context);
     }
 
     /**
      * @param string $message
-     * @param array $context
+     * @param array  $context
      *
      * @throws \Exception
      */
     public function debug($message, array $context = []) {
-        $this->log( $this->channel, Logger::DEBUG, $message, $context );
+        $this->log($this->channel, Logger::DEBUG, $message, $context);
     }
-
 }

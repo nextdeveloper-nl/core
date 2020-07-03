@@ -28,10 +28,11 @@ class CategoryStoreRequest extends AbstractFormRequest {
      */
     public function rules() {
         return [
-            'category'     => 'nullable|exists:categories,id_ref',
-            'domain'       => 'required|exists:domains,id_ref',
-            'name'         => 'required|max:255',
-            'description'  => 'required|max:1500',
+            'category'      =>  'nullable|exists:categories,id_ref',
+            'domain'        =>  'required|exists:domains,id_ref',
+            'name'          =>  'required|string|max:255',
+            'url'           =>  'required|url',
+            'description'   =>  'required|string|max:1500',
         ];
     }
 }

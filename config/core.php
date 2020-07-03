@@ -46,6 +46,9 @@ return [
             'League\OAuth2\Server\Exception\OAuthServerException'                       => 'PlusClouds\Core\Exceptions\AuthenticationException',
             'PlusClouds\Cerebro\Hypervisor\XenServer\Exception\InvalidSessionException' => 'PlusClouds\Core\Exceptions\AuthenticationException',
             'PlusClouds\Cerebro\Common\Exception\RuntimeException'                      => 'PlusClouds\Core\Exceptions\RuntimeException',
+            'Symfony\Component\HttpKernel\Exception\HttpException'                      => 'PlusClouds\Core\Exceptions\RuntimeException',
+            'Symfony\Component\Debug\Exception\FatalThrowableError'                     => 'PlusClouds\Core\Exceptions\RuntimeException',
+            'Symfony\Component\Debug\Exception\FatalErrorException'                     => 'PlusClouds\Core\Exceptions\RuntimeException',
         ],
     ],
 

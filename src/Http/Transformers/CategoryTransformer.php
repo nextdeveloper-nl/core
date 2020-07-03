@@ -25,7 +25,7 @@ class CategoryTransformer extends AbstractTransformer
     /**
      * @var array
      */
-    protected $visible = [ 'id', 'name', 'slug', 'children' ];
+    protected $visible = [ 'id', 'name', 'description', 'url', 'slug', 'children' ];
 
     /**
      * @var array
@@ -43,6 +43,7 @@ class CategoryTransformer extends AbstractTransformer
             'slug'        => $category->slug,
             'name'        => $category->name,
             'description' => $category->description,
+            'url'         => $category->url,
             'is_active'   => $category->is_active,
         ];
 
