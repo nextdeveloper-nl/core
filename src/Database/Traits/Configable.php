@@ -10,30 +10,41 @@
 
 namespace PlusClouds\Core\Database\Traits;
 
-
 /**
- * Trait Configable
+ * Trait Configable.
+ *
  * @package PlusClouds\Core\Database\Traits
  */
-trait Configable
-{
-
+trait Configable {
     use Meta;
 
     /**
      * @return mixed
      */
     public function getAllConfig() {
-        return json_decode( json_encode( $this->getMeta( 'config' ) ), true );
+        $configs = json_decode(json_encode($this->getMeta('config')), true) ?? [];
+
+        if (isset($this->defaultConfig)) {
+            $configs = array_merge($this->defaultConfig::getDefaults(), $configs);
+        }
+
+        return $configs;
     }
 
     /**
-     * @param $key
+     * @param mixed $key
+     * @param bool  $excludeDefaultConfigs
      *
      * @return bool
      */
-    public function hasConfig($key) {
-        return $this->hasMeta( 'config.'.$key );
+    public function hasConfig($key, $excludeDefaultConfigs = false) {
+        if ( ! $this->hasMeta('config.'.$key) && ! $excludeDefaultConfigs) {
+            if (isset($this->defaultConfig) && ! array_key_exists($key, $this->defaultConfig::getDefaults())) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -41,13 +52,17 @@ trait Configable
      * @param null $default
      * @param bool $getObj
      *
-     * @return \Illuminate\Support\Collection|mixed|null
+     * @return null|\Illuminate\Support\Collection|mixed
      */
     public function getConfig($key, $default = null, $getObj = false) {
-        $config = $this->getMeta( 'config.'.$key, $default, $getObj );
+        $config = $this->getMeta('config.'.$key, $default, $getObj);
 
-        if( $config instanceof \stdClass ) {
-            $config = json_decode( json_encode( $config ), true );
+        if ($config instanceof \stdClass) {
+            $config = json_decode(json_encode($config), true);
+        }
+
+        if (is_null($config) && isset($this->defaultConfig)) {
+            $config = array_get($this->defaultConfig::getDefaults(), $key);
         }
 
         return $config;
@@ -60,7 +75,7 @@ trait Configable
      * @return mixed
      */
     public function deleteConfig($key, $value = false) {
-        return $this->deleteMeta( 'config.'.$key, $value );
+        return $this->deleteMeta('config.'.$key, $value);
     }
 
     /**
@@ -70,15 +85,15 @@ trait Configable
      * @return bool|mixed
      */
     public function addConfig($key, $value) {
-        if( ! $this->hasMeta( 'config' ) ) {
-            $this->addMeta( 'config', [] );
+        if ( ! $this->hasMeta('config')) {
+            $this->addMeta('config', []);
         }
 
-        $config = array_merge( (array) $this->getMeta( 'config' ), [
+        $config = array_merge((array)$this->getMeta('config'), [
             $key => $value,
-        ] );
+        ]);
 
-        return $this->updateMeta( 'config', $config );
+        return $this->updateMeta('config', $config);
     }
 
     /**
@@ -86,10 +101,10 @@ trait Configable
      * @param $newValue
      * @param bool $oldValue
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     public function updateConfig($key, $newValue, $oldValue = false) {
-        return $this->updateMeta( 'config.'.$key, $newValue, $oldValue );
+        return $this->updateMeta('config.'.$key, $newValue, $oldValue);
     }
 
     /**
@@ -99,7 +114,6 @@ trait Configable
      * @return mixed
      */
     public function appendConfig($key, $value) {
-        return $this->appendMeta( 'config.'.$key, $value );
+        return $this->appendMeta('config.'.$key, $value);
     }
-
 }
