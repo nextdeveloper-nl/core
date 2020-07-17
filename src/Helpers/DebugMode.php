@@ -10,10 +10,10 @@
 
 namespace PlusClouds\Core\Helpers;
 
-use Monolog\Formatter\LineFormatter;
-use Monolog\Handler\HandlerInterface;
+use Monolog\Formatter\GelfMessageFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use PlusClouds\Core\Common\Logger\Monolog\Handler\GraylogHandler;
 
 /**
  * Class DebugMode.
@@ -55,11 +55,16 @@ final class DebugMode {
     public function log($channel, $level, $message, $context = []) {
         // Add the logger if it doesn't exist
         if ( ! isset($this->channels[$channel])) {
-            $handler = new StreamHandler(
-                storage_path().DIRECTORY_SEPARATOR.'logs'.DIRECTORY_SEPARATOR.$channel.'.log'
-            );
+            if (true === (bool)env('GRAYLOG_ENABLED', false)) {
+                $handler = new GraylogHandler();
+                $handler->setFormatter(new GelfMessageFormatter());
+            } else {
+                $handler = new StreamHandler(
+                    storage_path().DIRECTORY_SEPARATOR.'logs'.DIRECTORY_SEPARATOR.$channel.'.log'
+                );
 
-            $handler->setFormatter(new LineFormatter(null, null, true, true));
+                $handler->setFormatter(new \Monolog\Formatter\LineFormatter(null, null, true, true));
+            }
 
             $this->addChannel($channel, $handler);
         }
@@ -69,25 +74,19 @@ final class DebugMode {
     }
 
     /**
-     * @param string           $channelName
-     * @param HandlerInterface $handler
-     * @param null|string      $path
+     * @param string $channelName
+     * @param $handler
+     * @param null|string $path
      *
      * @throws \Exception
      */
-    public function addChannel($channelName, HandlerInterface $handler, $path = null) {
+    public function addChannel($channelName, $handler) {
         if (isset($this->channels[$channelName])) {
             throw new \Exception('This channel already exists');
         }
 
         $this->channels[$channelName] = new Logger($channelName);
-        $this->channels[$channelName]->pushHandler(
-            new $handler(
-                null === $path ?
-                    storage_path().DIRECTORY_SEPARATOR.'logs'.DIRECTORY_SEPARATOR.$channelName.'.log' :
-                    $path.DIRECTORY_SEPARATOR.$channelName.'.log'
-            )
-        );
+        $this->channels[$channelName]->pushHandler($handler);
     }
 
     /**
