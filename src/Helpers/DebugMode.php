@@ -86,6 +86,9 @@ final class DebugMode {
         }
 
         $this->channels[$channelName] = new Logger($channelName);
+        $this->channels[$channelName]->pushProcessor(new \Monolog\Processor\WebProcessor());
+        $this->channels[$channelName]->pushProcessor(new \Monolog\Processor\MemoryUsageProcessor());
+        $this->channels[$channelName]->pushProcessor(new \Monolog\Processor\MemoryPeakUsageProcessor());
         $this->channels[$channelName]->pushHandler($handler);
     }
 

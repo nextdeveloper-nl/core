@@ -143,7 +143,7 @@ class CoreServiceProvider extends AbstractServiceProvider {
         }
 
         // Debug Class initialize
-        $this->app->singleton('DebugMode', DebugMode::class);
+        $this->app->bind('DebugMode', DebugMode::class);
         $this->app->bind('WatchableJobLog', function () {
             $channel = 'watchable-jobs';
 
