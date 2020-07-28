@@ -10,21 +10,21 @@
 
 namespace PlusClouds\Core\Exceptions;
 
-
 /**
- * Class AuthenticationException
+ * Class AuthenticationException.
+ *
  * @package PlusClouds\Core\Exceptions
  */
-class AuthenticationException extends AbstractCoreException
-{
-
+class AuthenticationException extends AbstractCoreException {
     /**
      * @param  \Illuminate\Http\Request
+     * @param mixed $request
      *
      * @return mixed
      */
     public function render($request) {
-        return response()->api()->errorUnauthorized( $this->getMessage() );
+        return $request->expectsJson()
+                    ? response()->api()->errorUnauthorized($this->getMessage())
+                    : redirect()->guest(route('login'));
     }
-
 }
