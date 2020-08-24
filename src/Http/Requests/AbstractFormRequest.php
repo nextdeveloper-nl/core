@@ -16,19 +16,24 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\ValidationException;
 
 /**
- * Class AbstractFormRequest
+ * Class AbstractFormRequest.
+ *
  * @package PlusClouds\Core\Http\Requests
  */
-abstract class AbstractFormRequest extends FormRequest
-{
-
+abstract class AbstractFormRequest extends FormRequest {
     /**
      * @param Validator $validator
      */
     protected function failedValidation(Validator $validator) {
-        $errors = ( new ValidationException( $validator ) )->errors();
+        $errors = ( new ValidationException($validator) )->errors();
 
-        throw new HttpResponseException( response()->api()->errorUnprocessable( 'Validation Failed', $errors ) );
+        throw new HttpResponseException(response()->api()->errorUnprocessable('Validation Failed', $errors));
     }
 
+    /**
+     * @return void
+     */
+    public function prepareForValidation() {
+        $this->request->remove('locale');
+    }
 }
