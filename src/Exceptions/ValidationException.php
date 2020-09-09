@@ -10,21 +10,21 @@
 
 namespace PlusClouds\Core\Exceptions;
 
-
 /**
- * Class ValidationException
+ * Class ValidationException.
+ *
  * @package PlusClouds\Core\Exceptions
  */
-class ValidationException extends AbstractCoreException
-{
-
+class ValidationException extends AbstractCoreException {
     /**
      * @param  \Illuminate\Http\Request
+     * @param mixed $request
      *
      * @return mixed
      */
     public function render($request) {
-        return response()->api()->errorUnprocessable( $this->originalException->errors() );
+        return $request->expectsJson()
+                    ? response()->api()->errorUnprocessable($this->originalException->errors())
+                    : redirect()->guest(route('login'))->withErrors($this->originalException->errors());
     }
-
 }
