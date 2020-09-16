@@ -4,6 +4,9 @@ apps:
     exec_mode: fork
     interpreter: php
     instances: 2
+    error_file: '/dev/null'
+    out_file: '/dev/null'
+    log_file: '/dev/null'
     args:
       - queue:work
       - --sleep=3
