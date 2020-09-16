@@ -23,7 +23,6 @@ use PlusClouds\Core\Database\Traits\GlobalScopes\WithPassive;
  */
 class Domain extends AbstractModel
 {
-
     use SoftDeletes, HashId, Filterable;
     use WithPassive;
 
@@ -51,19 +50,22 @@ class Domain extends AbstractModel
     /**
      * @return void
      */
-    public static function boot() {
+    public static function boot()
+    {
         parent::boot();
 
-        parent::observe( DomainObserver::class );
+        parent::observe(DomainObserver::class);
     }
 
-    public function dnsService() {
-        if( class_exists('\PlusClouds\DNS\Database\Models\DnsService') ) {
-            return $this->belongsTo( \PlusClouds\DNS\Database\Models\DnsService::class );
+    public function dnsService()
+    {
+        if (class_exists('\PlusClouds\DNS\Database\Models\DnsService')) {
+            return $this->belongsTo(\PlusClouds\DNS\Database\Models\DnsService::class);
         }
     }
 
-    public function account() {
-        return $this->belongsTo( Account::class );
+    public function account()
+    {
+        return $this->belongsTo(Account::class);
     }
 }
