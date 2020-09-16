@@ -10,7 +10,6 @@
 
 namespace PlusClouds\Core\Common\Notifications\Channels\Mattermost;
 
-
 use GuzzleHttp\Client;
 
 /**
@@ -40,7 +39,8 @@ class Mattermost
      * @param Client $mattermost
      * @param null $webhook
      */
-    public function __construct(Client $mattermost, $webhook = null) {
+    public function __construct(Client $mattermost, $webhook = null)
+    {
         $this->mattermost = $mattermost;
         $this->webhook = $webhook;
     }
@@ -49,22 +49,22 @@ class Mattermost
      * @param Message $message
      * @param null $webhook
      */
-    public function send(Message $message, $webhook = null) {
-        if( is_null( $webhook ) and is_null( $this->webhook ) ) {
+    public function send(Message $message, $webhook = null)
+    {
+        if (is_null($webhook) and is_null($this->webhook)) {
             throw new MattermostException(
                 "No default webhook configured. Please put a webhook URL as a second parameter of the constructor or of the `send` function."
             );
         }
 
-        if( is_null( $webhook ) ) {
+        if (is_null($webhook)) {
             $webhook = $this->webhook;
         }
 
-        $this->mattermost->post( $webhook, [
+        $this->mattermost->post($webhook, [
             'json' => $message->toArray(),
         ], [
             'Content-Type' => 'application/json',
-        ] );
+        ]);
     }
-
 }
