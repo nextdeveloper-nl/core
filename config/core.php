@@ -182,4 +182,19 @@ return [
         'queue_failed_url' => 'http://10.100.0.54:8065/hooks/g1nhnie6z78oicfawkcs8wm9tc',
     ],
 
+    'graylog' => [
+        'enabled' => env('GRAYLOG_ENABLED', false),
+        'host'    => env('GRAYLOG_HOST', null),
+        'udpport' => env('GRAYLOG_UDP_PORT', null),
+    ],
+
+    'configuration' => [
+        'server' => [
+            'url'      => env('CONFIGURATION_SERVER_URL'),
+            'dn'       => env('CONFIGURATION_SERVER_DN'),
+            'user'     => env('CONFIGURATION_SERVER_USERNAME'),
+            'password' => env('CONFIGURATION_SERVER_PASSWORD'),
+        ],
+    ],
+
 ];
