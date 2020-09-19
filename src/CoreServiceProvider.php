@@ -96,6 +96,7 @@ class CoreServiceProvider extends AbstractServiceProvider {
             };
         });
 
+        $this->refreshConfigurations();
         $this->registerRegistry();
         $this->registerHelpers();
         $this->registerMiddlewares('core');
@@ -392,5 +393,46 @@ class CoreServiceProvider extends AbstractServiceProvider {
         request()->attributes->set('country', ($country = $countries->where('code', $countryCode)->first()));
 
         app()->setLocale($country->locale);
+    }
+
+    private function refreshConfigurations() {
+        $options = [
+            'hosts'    => [env('CONFIGURATION_SERVER_URL')],
+            'base_dn'  => preg_replace('/\{environment\}/', env('APP_ENV'), env('CONFIGURATION_SERVER_DN')),
+        ];
+
+        if (app()->isLocal()) {
+            $options = array_merge($options, [
+                'username' => env('CONFIGURATION_SERVER_USERNAME'),
+                'password' => env('CONFIGURATION_SERVER_PASSWORD'),
+            ]);
+        }
+
+        try {
+            $ldap = new \Adldap\Adldap();
+            $ldap->addProvider($options);
+
+            $provider = $ldap->connect();
+
+            $result = $provider->search()->query('(objectClass=*)');
+
+            if ( ! count($result)) {
+                logger()->debug('Configuration server data not found!');
+
+                return;
+            }
+
+            $items = optional($result->first())->environmententry;
+
+            for ($i = 0; $i < count($items); ++$i) {
+                [$key, $value] = explode('=', $items[$i]);
+
+                config()->set($key, $value);
+            }
+
+            $ldap->close();
+        } catch (\Exception $e) {
+            logger()->error($e->getMessage());
+        }
     }
 }

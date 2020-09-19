@@ -188,4 +188,13 @@ return [
         'udpport' => env('GRAYLOG_UDP_PORT', null),
     ],
 
+    'configuration' => [
+        'server' => [
+            'url'      => env('CONFIGURATION_SERVER_URL'),
+            'dn'       => env('CONFIGURATION_SERVER_DN'),
+            'user'     => env('CONFIGURATION_SERVER_USERNAME'),
+            'password' => env('CONFIGURATION_SERVER_PASSWORD'),
+        ],
+    ],
+
 ];
