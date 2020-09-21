@@ -182,6 +182,10 @@ return [
         'queue_failed_url' => 'http://10.100.0.54:8065/hooks/g1nhnie6z78oicfawkcs8wm9tc',
     ],
 
+    'log' => [
+        'default_channel' => env('DEFAULT_LOG_CHANNEL', 'plusclouds-leo'),
+    ],
+
     'graylog' => [
         'enabled' => env('GRAYLOG_ENABLED', false),
         'host'    => env('GRAYLOG_HOST', null),
