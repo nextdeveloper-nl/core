@@ -141,6 +141,10 @@ class CoreServiceProvider extends AbstractServiceProvider {
             $handler->setFormatter(new GelfMessageFormatter());
 
             $monolog->pushHandler($handler);
+        } else {
+            $monolog->pushHandler(new \Monolog\Handler\StreamHandler(
+                storage_path().DIRECTORY_SEPARATOR.'logs'.DIRECTORY_SEPARATOR.config('core.log.default_channel').'.log'
+            ));
         }
 
         // Debug Class initialize
