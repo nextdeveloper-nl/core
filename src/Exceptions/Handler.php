@@ -12,20 +12,18 @@ namespace PlusClouds\Core\Exceptions;
 
 use Exception;
 use Illuminate\Contracts\Container\Container;
-use Illuminate\Auth\AuthenticationException;
+use Illuminate\Foundation\Exceptions\Handler as BaseHandler;
 use InvalidArgumentException;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Psr\Log\LoggerInterface;
 use ReflectionClass;
-use Illuminate\Foundation\Exceptions\Handler as BaseHandler;
 
 /**
- * Class Handler
+ * Class Handler.
+ *
  * @package PlusClouds\Core\Exceptions
  */
-class Handler extends BaseHandler
-{
-
+class Handler extends BaseHandler {
     /**
      * @var string
      */
@@ -50,24 +48,24 @@ class Handler extends BaseHandler
      * @param Container $container
      */
     public function __construct(Container $container) {
-        parent::__construct( $container );
+        parent::__construct($container);
 
         $this->ref = genUuid();
     }
 
-
     /**
      * @param Exception $e
      *
-     * @return mixed|void
      * @throws Exception
+     *
+     * @return mixed|void
      */
     public function report(Exception $e) {
-        if( $this->shouldntReport( $e ) ) {
+        if ($this->shouldntReport($e)) {
             return;
         }
 
-        if( method_exists( $e, 'report' ) ) {
+        if (method_exists($e, 'report')) {
             return $e->report();
         }
 
@@ -76,69 +74,67 @@ class Handler extends BaseHandler
         $user = [];
 
         try {
-            $logger = $this->container->make( LoggerInterface::class );
+            $logger = $this->container->make(LoggerInterface::class);
 
             // Recursive çakışmayı önlemek için
-            if( ! $inLogger ) {
+            if ( ! $inLogger) {
                 $inLogger = true;
 
-                if( isLoggedIn() ) {
-                    $user = array_only( getAUUser()->toArray(), [ 'id', 'fullname' ] );
+                if (isLoggedIn()) {
+                    $user = array_only(getAUUser()->toArray(), ['id', 'fullname']);
                 }
 
                 $inLogger = false;
             }
 
-            if( ! $e instanceof OAuthServerException ) {
-                if( count( $user ) ) {
-                    $logger->getMonolog()->pushProcessor( function($item) use ($user) {
+            if ( ! $e instanceof OAuthServerException) {
+                if (count($user)) {
+                    $logger->getMonolog()->pushProcessor(function ($item) use ($user) {
                         $item['extra']['user'] = $user;
 
                         return $item;
-                    } );
+                    });
                 }
             } else {
                 throw $e;
             }
-        }
-        catch( Exception $ex ) {
+        } catch (Exception $e) {
             throw $e; // throw the original exception
         }
 
-        $logger->error( $e->getMessage(), [ 'exception' => $e ] );
+        if (str_contains($e->getMessage(), 'Route [login] not defined.')) {
+            throw new RuntimeException('Please, add the \'accept\' header to your request. ex: \'Accept: application/json\'');
+        }
+
+        $logger->error($e->getMessage(), ['exception' => $e]);
     }
 
     /**
      * @param \Illuminate\Http\Request $request
-     * @param Exception $e
+     * @param Exception                $e
+     *
+     * @throws \ReflectionException
      *
      * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \ReflectionException
      */
     public function render($request, Exception $e) {
-        $map = config( 'core.exceptions.map' );
+        $map = config('core.exceptions.map');
 
-        foreach( $map as $coreException => $customException ) {
-            if( ! ( $e instanceof $coreException ) ) {
+        foreach ($map as $coreException => $customException) {
+            if ( ! ($e instanceof $coreException)) {
                 continue;
             }
 
-            if(
-                ! class_exists( $customException ) ||
-                ! ( new ReflectionClass( $customException ) )->isSubclassOf( new ReflectionClass( AbstractCoreException::class ) )
+            if (
+                ! class_exists($customException) ||
+                ! ( new ReflectionClass($customException) )->isSubclassOf(new ReflectionClass(AbstractCoreException::class))
             ) {
-                throw new InvalidArgumentException(
-                    sprintf(
-                        "%s is not a valid exception class.",
-                        $customException
-                    )
-                );
+                throw new InvalidArgumentException(sprintf('%s is not a valid exception class.', $customException));
             }
 
-            return parent::render( $request, new $customException( $e ) );
+            return parent::render($request, new $customException($e));
         }
 
-        return parent::render( $request, $e );
+        return parent::render($request, $e);
     }
-
 }
