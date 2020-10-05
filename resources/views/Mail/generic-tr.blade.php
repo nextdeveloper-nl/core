@@ -223,7 +223,7 @@
                             <tr>
                                 <td class="body-text">
                                     <i class="far fa-handshake f-icon"></i>
-                                    {{ template }}
+                                    {!! $template !!}
                                 </td>
                             </tr>
                         </table>
