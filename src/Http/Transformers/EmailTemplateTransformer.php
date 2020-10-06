@@ -27,6 +27,7 @@ class EmailTemplateTransformer extends AbstractTransformer
      */
     public function transform(EmailTemplate $template) {
         return $this->buildPayload( [
+        	'id'          => $template->id_ref,
             'name'        => $template->name,
             'description' => $template->description,
             'body'        => $template->body,
