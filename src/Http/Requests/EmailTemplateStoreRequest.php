@@ -22,6 +22,7 @@ class EmailTemplateStoreRequest extends AbstractFormRequest
      * @return bool
      */
     public function authorize() {
+    	return true;
         return $this->user()->can( 'core.emailtemplate@store' );
     }
 
@@ -30,10 +31,10 @@ class EmailTemplateStoreRequest extends AbstractFormRequest
      */
     public function rules() {
         return [
-            'name'        => 'required|exists:email_templates,name|max:255',
+            'name'        => 'required|max:255',
             'description' => 'required|max:255',
             'body'        => 'required',
-            'locale'      => 'required|exists:countries,locale,locale,NOT_NULL',
+            'template_locale'      => 'exists:countries,locale',
         ];
     }
 
