@@ -10,7 +10,6 @@
 
 namespace PlusClouds\Core\Http\Controllers;
 
-
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use PlusClouds\Core\Database\Models\EmailTemplate;
 use PlusClouds\Core\Http\Requests\EmailTemplateStoreRequest;
@@ -30,12 +29,13 @@ class EmailTemplateController extends AbstractController
      * @return \Illuminate\Http\JsonResponse
      * @throws \Throwable
      */
-    public function index() {
+    public function index()
+    {
         $templates = EmailTemplate::all();
 
-        throw_if( $templates->isEmpty(), ModelNotFoundException::class, 'Could not find any email templates.' );
+        throw_if($templates->isEmpty(), ModelNotFoundException::class, 'Could not find any email templates.');
 
-        return $this->withCollection( $templates, app( EmailTemplateTransformer::class ) );
+        return $this->withCollection($templates, app(EmailTemplateTransformer::class));
     }
 
     /**
@@ -45,8 +45,9 @@ class EmailTemplateController extends AbstractController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(EmailTemplate $template) {
-        return $this->withItem( $template, app( EmailTemplateTransformer::class ) );
+    public function show(EmailTemplate $template)
+    {
+        return $this->withItem($template, app(EmailTemplateTransformer::class));
     }
 
     /**
@@ -56,11 +57,16 @@ class EmailTemplateController extends AbstractController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(EmailTemplateStoreRequest $request) {
-        $template = EmailTemplate::create( $request->validated() );
+    public function store(EmailTemplateStoreRequest $request)
+    {
+    	$data = $request->validated();
+    	$data['locale'] = $data['template_locale'];
+    	unset($data['template_locale']);
 
-        return $this->setStatusCode( 201 )
-            ->withItem( $template->fresh(), app( EmailTemplateTransformer::class ) );
+        $template = EmailTemplate::create($data);
+
+        return $this->setStatusCode(201)
+            ->withItem($template->fresh(), app(EmailTemplateTransformer::class));
     }
 
     /**
@@ -71,8 +77,9 @@ class EmailTemplateController extends AbstractController
      *
      * @return mixed
      */
-    public function update(EmailTemplateUpdateRequest $request, EmailTemplate $template) {
-        $template->update( $request->validated() );
+    public function update(EmailTemplateUpdateRequest $request, EmailTemplate $template)
+    {
+        $template->update($request->validated());
 
         return $this->noContent();
     }
@@ -85,12 +92,12 @@ class EmailTemplateController extends AbstractController
      * @return mixed
      * @throws \Exception
      */
-    public function delete(EmailTemplate $template) {
-        $this->authorize( 'destroy', $template );
+    public function delete(EmailTemplate $template)
+    {
+        $this->authorize('destroy', $template);
 
         $template->delete();
 
         return $this->noContent();
     }
-
 }
