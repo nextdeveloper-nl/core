@@ -10,7 +10,6 @@
 
 namespace PlusClouds\Core\Http\Transformers;
 
-
 use PlusClouds\Core\Database\Models\EmailTemplate;
 
 /**
@@ -25,14 +24,15 @@ class EmailTemplateTransformer extends AbstractTransformer
      *
      * @return array
      */
-    public function transform(EmailTemplate $template) {
-        return $this->buildPayload( [
-        	'id'          => $template->id_ref,
+    public function transform(EmailTemplate $template)
+    {
+        return $this->buildPayload([
+            'id'          => $template->id_ref,
             'name'        => $template->name,
             'description' => $template->description,
             'body'        => $template->body,
+            'subject'     => $template->subject,
             'locale'      => $template->locale,
-        ] );
+        ]);
     }
-
 }
