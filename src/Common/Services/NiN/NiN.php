@@ -70,6 +70,8 @@ class NiN
             'DogumYili'  => $fields['year'],
         ] );
 
+        logger()->info('TCKimlik doğrulama sonucu: ' . print_r($response, true));
+
         return (bool) $response->TCKimlikNoDogrulaResult;
     }
 
