@@ -21,7 +21,7 @@ use PlusClouds\Core\Database\Models\EmailTemplate;
 function getEmailTemplate($name, $locale = null) {
     return EmailTemplate::where( 'name', $name )
         ->where( 'locale', ( $locale ?? app()->getLocale() ) )
-        ->firstOrFail();
+        ->first();
 }
 
 /**
