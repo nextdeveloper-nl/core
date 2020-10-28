@@ -25,18 +25,19 @@ class DisposableEmailObserver extends AbstractObserver
      *
      * @throws \Exception
      */
-    public function saving(Model $model) {
+    public function saving(Model $model)
+    {
         $domain = $model->domain;
-        $params = explode( '.', $domain );
+        $params = explode('.', $domain);
 
         // Eğer eklenmeye çalışılan domain, subdomain ise domain olarak ekliyoruz.
-        if( sizeof( $params ) > 2 ) {
-            if( preg_match( config( 'core.disposable_email.regex' ), $model->domain, $matches ) ) {
+        if (sizeof($params) > 2) {
+            if (preg_match(config('core.disposable_email.regex'), $model->domain, $matches)) {
                 $model->domain = $matches['domain'];
             }
         }
 
-        if( cache()->has( 'core.disposable_email.cache.key' ) ) {
+        if (cache()->has('core.disposable_email.cache.key')) {
             $this->forgetCache();
         }
     }
@@ -46,7 +47,8 @@ class DisposableEmailObserver extends AbstractObserver
      *
      * @throws \Exception
      */
-    public function saved(Model $model) {
+    public function saved(Model $model)
+    {
         $this->regenerateCache();
     }
 
@@ -55,7 +57,8 @@ class DisposableEmailObserver extends AbstractObserver
      *
      * @throws \Exception
      */
-    public function deleting(Model $model) {
+    public function deleting(Model $model)
+    {
         $this->forgetCache();
     }
 
@@ -64,33 +67,38 @@ class DisposableEmailObserver extends AbstractObserver
      *
      * @throws \Exception
      */
-    public function deleted(Model $model) {
+    public function deleted(Model $model)
+    {
         $this->regenerateCache();
     }
 
     /**
      * @throws \Exception
      */
-    private function regenerateCache() {
-        if( is_null( config( 'core.disposable_email.cache.lifetime' ) ) ) {
-            cache()->rememberForever( config( 'core.disposable_email.cache.key' ), function() {
+    private function regenerateCache()
+    {
+        if (is_null(config('core.disposable_email.cache.lifetime'))) {
+            cache()->rememberForever(config('core.disposable_email.cache.key'), function () {
                 return DisposableEmail::all();
-            } );
+            });
         } else {
             cache()->remember(
-                config( 'core.disposable_email.cache.key' ),
-                config( 'core.disposable_email.cache.lifetime'
-                ), function() {
-                return DisposableEmail::all();
-            } );
+                config('core.disposable_email.cache.key'),
+                config(
+                    'core.disposable_email.cache.lifetime'
+                ),
+                function () {
+                    return DisposableEmail::all();
+                }
+            );
         }
     }
 
     /**
      * @throws \Exception
      */
-    private function forgetCache() {
-        cache()->forget( config( 'core.disposable_email.cache.key' ) );
+    private function forgetCache()
+    {
+        cache()->forget(config('core.disposable_email.cache.key'));
     }
-
 }
