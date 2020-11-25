@@ -15,7 +15,7 @@ return [
     'token' => [
         'service'     => 'PlusClouds\Account\Common\Services\Token\MailToken',
         'sms'         => [
-            'length' => 4,
+            'length' => 6,
             'ttl'    => 300, // 5 dk
         ],
         'email'       => [
