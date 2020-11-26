@@ -120,6 +120,12 @@ class Handler extends BaseHandler {
     public function render($request, Exception $e) {
         $map = config('core.exceptions.map');
 
+        if ($request->is('v2/am-i-logged-in')) {
+            return response()->json([
+                'data' => ['is_ok' => false],
+            ], 200);
+        }
+
         foreach ($map as $coreException => $customException) {
             if ( ! ($e instanceof $coreException)) {
                 continue;
