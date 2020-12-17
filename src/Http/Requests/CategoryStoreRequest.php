@@ -31,8 +31,8 @@ class CategoryStoreRequest extends AbstractFormRequest {
             'category'      =>  'nullable|exists:categories,id_ref',
             'domain'        =>  'required|exists:domains,id_ref',
             'name'          =>  'required|string|max:255',
-            'url'           =>  'required|url',
-            'description'   =>  'required|string|max:1500',
+            'url'           =>  'url',
+            'description'   =>  'string|max:1500',
         ];
     }
 }
