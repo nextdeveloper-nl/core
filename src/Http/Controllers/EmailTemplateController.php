@@ -59,9 +59,9 @@ class EmailTemplateController extends AbstractController
      */
     public function store(EmailTemplateStoreRequest $request)
     {
-    	$data = $request->validated();
-    	$data['locale'] = $data['template_locale'];
-    	unset($data['template_locale']);
+        $data = $request->validated();
+        $data['locale'] = $data['template_locale'];
+        unset($data['template_locale']);
 
         $template = EmailTemplate::create($data);
 

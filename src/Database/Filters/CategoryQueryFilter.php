@@ -28,10 +28,11 @@ class CategoryQueryFilter extends AbstractQueryFilter
      *
      * @return mixed
      */
-    public function descendants($categoryRef) {
-        $root = Category::findByRef( $categoryRef );
+    public function descendants($categoryRef)
+    {
+        $root = Category::findByRef($categoryRef);
 
-        return $this->builder->descendantsOf( $root->id );
+        return $this->builder->descendantsOf($root->id);
     }
 
 
@@ -42,10 +43,11 @@ class CategoryQueryFilter extends AbstractQueryFilter
      *
      * @return mixed
      */
-    public function ancestors($categoryRef) {
-        $child = Category::findByRef( $categoryRef );
+    public function ancestors($categoryRef)
+    {
+        $child = Category::findByRef($categoryRef);
 
-        return $this->builder->ancestorsOf( $child->id );
+        return $this->builder->ancestorsOf($child->id);
     }
 
 
@@ -56,10 +58,10 @@ class CategoryQueryFilter extends AbstractQueryFilter
      *
      * @return mixed
      */
-    public function domain($domainRef) {
-        $domain = Domain::findByRef( $domainRef );
+    public function domain($domainRef)
+    {
+        $domain = Domain::findByRef($domainRef);
 
-        return $this->builder->where( 'domain_id', $domain->id );
+        return $this->builder->where('domain_id', $domain->id);
     }
-
 }

@@ -21,8 +21,6 @@ use Illuminate\Queue\SerializesModels;
  */
 class AbstractJob
 {
-
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     use Watchable;
-
 }
