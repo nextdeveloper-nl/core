@@ -44,6 +44,10 @@ class QueryLogger {
             return;
         }
 
+        if ( ! (bool)$this->container->get('config')->get('core.log.query_logger')) {
+            return;
+        }
+
         $this->logger->debug("{$query->connection->getName()}: ", [
             'query'    => $this->getSqlWithBindings($query),
             'bindings' => $query->bindings,

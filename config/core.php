@@ -185,7 +185,8 @@ return [
     ],
 
     'log' => [
-        'default_channel' => env('DEFAULT_LOG_CHANNEL', 'plusclouds-leo'),
+        'default_channel'  => env('DEFAULT_LOG_CHANNEL', 'plusclouds-leo'),
+        'query_logger'     => false,
     ],
 
     'graylog' => [
