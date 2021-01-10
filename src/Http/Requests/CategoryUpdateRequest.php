@@ -32,7 +32,7 @@ class CategoryUpdateRequest extends AbstractFormRequest {
             'category'     => 'nullable|exists:categories,id_ref',
             'domain'       => 'nullable|exists:domains,id_ref',
             'name'          =>  'required|string|max:255',
-            'url'           =>  'required|url',
+            'url'           =>  'url',
             'description'   =>  'required|string|max:1500',
         ];
     }
