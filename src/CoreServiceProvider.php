@@ -166,6 +166,24 @@ class CoreServiceProvider extends AbstractServiceProvider {
 
             return $logger->setChannel($channel);
         });
+
+        $this->app->bind('QueryLogger', function () {
+            $channel = 'query-log';
+
+            if (true === (bool)env('GRAYLOG_ENABLED', false)) {
+                $handler = new GraylogHandler();
+                $handler->setFormatter(new GelfMessageFormatter());
+            } else {
+                $handler = new \Monolog\Handler\StreamHandler(
+                    storage_path().DIRECTORY_SEPARATOR.'logs'.DIRECTORY_SEPARATOR.$channel.'.log'
+                );
+            }
+
+            $logger = new DebugMode();
+            $logger->addChannel($channel, $handler);
+
+            return $logger->setChannel($channel);
+        });
     }
 
     /**

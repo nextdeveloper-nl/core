@@ -10,20 +10,18 @@
 
 namespace PlusClouds\Core\Http\Transformers;
 
-
 use PlusClouds\Core\Database\Models\Country;
 
 /**
- * Class CountryTransformer
+ * Class CountryTransformer.
+ *
  * @package PlusClouds\Core\Http\Transformers
  */
-class CountryTransformer extends AbstractTransformer
-{
-
+class CountryTransformer extends AbstractTransformer {
     /**
      * @var array
      */
-    protected $visible = [ 'code', 'name', 'locale', 'currency_code', 'phone_code' ];
+    protected $visible = ['code', 'name'];
 
     /**
      * @param Country $country
@@ -31,7 +29,7 @@ class CountryTransformer extends AbstractTransformer
      * @return array
      */
     public function transform(Country $country) {
-        return $this->buildPayload( [
+        return $this->buildPayload([
             'code'           => $country->code,
             'name'           => $country->name,
             'locale'         => $country->locale,
@@ -41,7 +39,6 @@ class CountryTransformer extends AbstractTransformer
             'continent_code' => $country->continent_code,
             'geo_name_id'    => $country->geo_name_id,
             'active'         => $country->is_active,
-        ] );
+        ]);
     }
-
 }

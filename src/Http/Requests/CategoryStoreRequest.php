@@ -15,18 +15,21 @@ namespace PlusClouds\Core\Http\Requests;
  *
  * @package PlusClouds\Core\Http\Requests
  */
-class CategoryStoreRequest extends AbstractFormRequest {
+class CategoryStoreRequest extends AbstractFormRequest
+{
     /**
      * @return bool
      */
-    public function authorize() {
+    public function authorize()
+    {
         return $this->user()->can('core.category@store');
     }
 
     /**
      * @return array
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             'category'      =>  'nullable|exists:categories,id_ref',
             'domain'        =>  'required|exists:domains,id_ref',

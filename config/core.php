@@ -69,12 +69,14 @@ return [
 
     'policies' => [
         'PlusClouds\Core\Database\Models\Discount'      => 'PlusClouds\Core\Policies\DiscountPolicy',
-        'PlusClouds\Core\Database\Models\Hook'          => 'PlusClouds\Core\Policies\HookPolicy',
         'PlusClouds\Core\Database\Models\Tag'           => 'PlusClouds\Core\Policies\TagPolicy',
         'PlusClouds\Core\Database\Models\Category'      => 'PlusClouds\Core\Policies\CategoryPolicy',
     ],
 
     'events' => [
+        'Illuminate\Database\Events\QueryExecuted' => [
+            'PlusClouds\Core\Common\Logger\QueryLogger',
+        ],
         'PlusClouds\Core\Events\JobUpdated' => [
             'PlusClouds\Core\Events\Handlers\SendLogFile',
         ],
@@ -183,7 +185,8 @@ return [
     ],
 
     'log' => [
-        'default_channel' => env('DEFAULT_LOG_CHANNEL', 'plusclouds-leo'),
+        'default_channel'  => env('DEFAULT_LOG_CHANNEL', 'plusclouds-leo'),
+        'query_logger'     => false,
     ],
 
     'graylog' => [
