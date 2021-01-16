@@ -34,6 +34,7 @@ class CategoryUpdateRequest extends AbstractFormRequest {
             'name'          =>  'required|string|max:255',
             'url'           =>  'url',
             'description'   =>  'required|string|max:1500',
+	        'order'         =>  'integer'
         ];
     }
 }
