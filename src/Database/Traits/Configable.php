@@ -39,7 +39,11 @@ trait Configable {
      */
     public function hasConfig($key, $excludeDefaultConfigs = false) {
         if ( ! $this->hasMeta('config.'.$key) && ! $excludeDefaultConfigs) {
-            if (isset($this->defaultConfig) && ! array_key_exists($key, $this->defaultConfig::getDefaults())) {
+            if ( ! isset($this->defaultConfig)) {
+                return false;
+            }
+
+            if ( ! array_key_exists($key, $this->defaultConfig::getDefaults())) {
                 return false;
             }
         }
