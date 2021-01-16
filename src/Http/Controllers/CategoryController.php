@@ -32,7 +32,7 @@ class CategoryController extends AbstractController {
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(CategoryQueryFilter $filter) {
-        $categories = Category::filter($filter)->get();
+        $categories = Category::filter($filter)->orderBy('order', 'ASC')->get();
 
         throw_if($categories->isEmpty(), 'Illuminate\Database\Eloquent\ModelNotFoundException', 'Could not find the categories you are looking for.');
 
