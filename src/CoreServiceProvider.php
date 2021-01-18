@@ -70,11 +70,11 @@ class CoreServiceProvider extends AbstractServiceProvider {
 
         $this->bootEvents();
 
-//        $this->bootResponseCache();
+        // $this->bootResponseCache();
 
-        $this->countryResolve();
+        // $this->countryResolve();
 
-//        $this->bootPushStreamBroadcaster();
+        // $this->bootPushStreamBroadcaster();
         $this->bootTwilio();
         $this->bootNiN();
     }
