@@ -37,9 +37,11 @@ class Handler extends BaseHandler {
     protected $dontReport = [
         \Illuminate\Auth\AuthenticationException::class,
         \Illuminate\Auth\Access\AuthorizationException::class,
-        \Symfony\Component\HttpKernel\Exception\HttpException::class,
         \Illuminate\Database\Eloquent\ModelNotFoundException::class,
         \Illuminate\Validation\ValidationException::class,
+        \Illuminate\Session\TokenMismatchException::class,
+        \Illuminate\Http\Exceptions\HttpResponseException::class,
+        \Symfony\Component\HttpKernel\Exception\HttpException::class,
     ];
 
     /**
@@ -102,9 +104,9 @@ class Handler extends BaseHandler {
             throw $e; // throw the original exception
         }
 
-        if (str_contains($e->getMessage(), 'Route [login] not defined.')) {
-            throw new RuntimeException('Please, add the \'accept\' header to your request. ex: \'Accept: application/json\'');
-        }
+        // if (str_contains($e->getMessage(), 'Route [login] not defined.')) {
+        //     throw new RuntimeException('Please, add the \'accept\' header to your request. ex: \'Accept: application/json\'');
+        // }
 
         $logger->error($e->getMessage(), ['exception' => $e]);
     }
