@@ -10,35 +10,32 @@
 
 namespace PlusClouds\Core\Database\GlobalScopes;
 
-
-use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Scope;
 
 /**
- * Class EnabledScope
+ * Class EnabledScope.
+ *
  * @package PlusClouds\Core\Database\GlobalScopes
  */
-class EnabledScope implements Scope
-{
-
+class EnabledScope implements Scope {
     /**
      * @param Builder $builder
-     * @param Model $model
+     * @param Model   $model
      */
     public function apply(Builder $builder, Model $model) {
         $column = $model->getTable().'.is_enabled';
 
-        $builder->where( $column, true );
+        $builder->where($column, 1);
     }
 
     /**
      * @param Builder $builder
      */
     public function extend(Builder $builder) {
-        $builder->macro( 'withDisabled', function(Builder $builder) {
-            return $builder->withoutGlobalScope( $this );
-        } );
+        $builder->macro('withDisabled', function (Builder $builder) {
+            return $builder->withoutGlobalScope($this);
+        });
     }
-
 }

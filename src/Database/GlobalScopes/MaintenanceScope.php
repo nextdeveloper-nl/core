@@ -10,34 +10,32 @@
 
 namespace PlusClouds\Core\Database\GlobalScopes;
 
-use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Scope;
 
 /**
- * Class MaintenanceScope
+ * Class MaintenanceScope.
+ *
  * @package PlusClouds\Core\Database\GlobalScopes
  */
-class MaintenanceScope implements Scope
-{
-
+class MaintenanceScope implements Scope {
     /**
      * @param Builder $builder
-     * @param Model $model
+     * @param Model   $model
      */
     public function apply(Builder $builder, Model $model) {
         $column = $model->getTable().'.maintenance_mode';
 
-        $builder->where( $column, '=', false );
+        $builder->where($column, '=', 0);
     }
 
     /**
      * @param Builder $builder
      */
     public function extend(Builder $builder) {
-        $builder->macro( 'withMaintenance', function(Builder $builder) {
-            return $builder->withoutGlobalScope( $this );
-        } );
+        $builder->macro('withMaintenance', function (Builder $builder) {
+            return $builder->withoutGlobalScope($this);
+        });
     }
-
 }
