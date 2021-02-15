@@ -44,7 +44,7 @@ class MigrateExchangeRatesCommand extends Command {
 
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
-        Tcmb::where('id', '=', '294525')
+        Tcmb::where('id', '>=', $id)
             ->orderBy('id', 'ASC')
             ->chunk(10000, function ($exchangeRates) {
                 $progress = $this->output->createProgressBar($exchangeRates->count());
