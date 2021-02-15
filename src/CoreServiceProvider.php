@@ -13,6 +13,7 @@ namespace PlusClouds\Core;
 use GuzzleHttp\Client as GuzzleClient;
 use Illuminate\Broadcasting\BroadcastManager;
 use Illuminate\Cache\Repository;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Database\Eloquent\Builder;
@@ -69,6 +70,7 @@ class CoreServiceProvider extends AbstractServiceProvider {
         }
 
         $this->bootEvents();
+        $this->bootSchedule();
 
         // $this->bootResponseCache();
 
@@ -351,7 +353,9 @@ class CoreServiceProvider extends AbstractServiceProvider {
         if ($this->app->runningInConsole()) {
             $this->commands([
                 'PlusClouds\Core\Console\Commands\FetchDisposableEmailDomainsCommand',
-                'PlusClouds\Core\Common\Cache\ResponseCache\Commands\ClearCommand',
+                'PlusClouds\Core\Console\Commands\MigrateExchangeRatesCommand',
+                'PlusClouds\Core\Console\Commands\FetchExchangeRatesCommand',
+                // 'PlusClouds\Core\Common\Cache\ResponseCache\Commands\ClearCommand',
             ]);
         }
     }
@@ -383,6 +387,24 @@ class CoreServiceProvider extends AbstractServiceProvider {
         });
 
         $this->app->singleton('registry', IDriver::class);
+    }
+
+    /**
+     * @return void
+     */
+    protected function bootSchedule() {
+        $this->app->booted(function () {
+            $schedule = $this->app->make(Schedule::class);
+            $schedule->command('plusclouds:fetch-exchange-rates')
+                ->withoutOverlapping(25)
+                ->hourly()
+                ->before(function () {
+                    logger()->info('Fetches Exchange Rates starting...');
+                })
+                ->after(function () {
+                    logger()->info('Fetches Exchange Rates ended.');
+                });
+        });
     }
 
     /**
