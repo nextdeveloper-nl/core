@@ -6,6 +6,10 @@ return [
         'default'    => 'en',
     ],
 
+    'schedule' => [
+        'exchange_rate' => env('EXCHANGE_RATE_SCHEDULE', false),
+    ],
+
     'rate_limit' => 60,
 
     'country_resolver' => [
