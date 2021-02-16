@@ -398,6 +398,9 @@ class CoreServiceProvider extends AbstractServiceProvider {
             $schedule->command('plusclouds:fetch-exchange-rates')
                 ->withoutOverlapping(25)
                 ->hourly()
+                ->when(function () {
+                    return config('core.schedule.exchange_rate');
+                })
                 ->before(function () {
                     logger()->info('Fetches Exchange Rates starting...');
                 })
