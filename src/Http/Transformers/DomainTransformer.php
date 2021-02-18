@@ -80,7 +80,9 @@ class DomainTransformer extends AbstractTransformer
     public function includeDnsService(Domain $domain, ParamBag $paramBag = null)
     {
         if (class_exists('\PlusClouds\DNS\Database\Models\DnsService')) {
-            return $this->item($domain->dnsService, new \PlusClouds\DNS\Http\Transformers\DnsServiceTransformer($paramBag));
+        	if( $domain->dnsService ) {
+		        return $this->item($domain->dnsService, new \PlusClouds\DNS\Http\Transformers\DnsServiceTransformer($paramBag));
+	        }
         }
     }
 }
