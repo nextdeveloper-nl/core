@@ -20,20 +20,18 @@ use PlusClouds\IAAS\Database\Models\Network;
  *
  * @package PlusClouds\Core\Http\Transformers
  */
-class DomainTransformer extends AbstractTransformer
-{
+class DomainTransformer extends AbstractTransformer {
     /**
      * @var array
      */
-    protected $availableIncludes = [ 'account', 'dnsService' ];
+    protected $availableIncludes = ['account', 'dnsService'];
 
     /**
      * @param Domain $domain
      *
      * @return array
      */
-    public function transform(Domain $domain)
-    {
+    public function transform(Domain $domain) {
         $networkCount = 0;
 
         if (class_exists('\PlusClouds\IAAS\Database\Models\Network')) {
@@ -43,44 +41,48 @@ class DomainTransformer extends AbstractTransformer
         $dnsServiceId = null;
 
         if (class_exists('\PlusClouds\DNS\Database\Models\DnsService')) {
-        	if( $domain->dnsService ) {
-		        $dnsServiceId = $domain->dnsService->id_ref;
-	        }
+            if ($domain->dnsService) {
+                $dnsServiceId = $domain->dnsService->id_ref;
+            }
         }
 
         return $this->buildPayload([
             'id'                    => $domain->id_ref,
             'name'                  => $domain->name,
-            'iam_service_id'        =>  null,
-            'networks_attached'     =>  $networkCount,
-            'dns_domain_id'         =>  $domain->dns_domain_id,
-            'dns_service_id'        =>  $dnsServiceId
+            'iam_service_id'        => null,
+            'networks_attached'     => $networkCount,
+            'dns_domain_id'         => $domain->dns_domain_id,
+            'dns_service_id'        => $dnsServiceId,
         ]);
     }
 
     /**
-     * @param MasterNode $masterNode
-     * @param ParamBag|null $paramBag
+     * @param MasterNode    $masterNode
+     * @param null|ParamBag $paramBag
+     *
+     * @throws \Exception
      *
      * @return \League\Fractal\Resource\Item
-     * @throws \Exception
      */
-    public function includeAccount(Domain $domain, ParamBag $paramBag = null)
-    {
+    public function includeAccount(Domain $domain, ParamBag $paramBag = null) {
         return $this->item($domain->account, new AccountTransformer($paramBag));
     }
 
     /**
-     * @param MasterNode $masterNode
-     * @param ParamBag|null $paramBag
+     * @param MasterNode    $masterNode
+     * @param null|ParamBag $paramBag
+     *
+     * @throws \Exception
      *
      * @return \League\Fractal\Resource\Item
-     * @throws \Exception
      */
-    public function includeDnsService(Domain $domain, ParamBag $paramBag = null)
-    {
+    public function includeDnsService(Domain $domain, ParamBag $paramBag = null) {
         if (class_exists('\PlusClouds\DNS\Database\Models\DnsService')) {
-            return $this->item($domain->dnsService, new \PlusClouds\DNS\Http\Transformers\DnsServiceTransformer($paramBag));
+            if ( ! is_null($domain->dnsService)) {
+                return $this->item($domain->dnsService, new \PlusClouds\DNS\Http\Transformers\DnsServiceTransformer($paramBag));
+            }
         }
+
+        return $this->null();
     }
 }
