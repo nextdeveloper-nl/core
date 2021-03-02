@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Carbon;
 use PlusClouds\Core\Database\Models\ExchangeRate;
 
 /**
@@ -173,18 +174,19 @@ function randomFloat($min, $max) {
 }
 
 /**
- * @param float  $price
- * @param string $foreignCurrencyCode
- * @param string $domesticCurrencyCode
+ * @param float       $price
+ * @param string      $foreignCurrencyCode
+ * @param string      $domesticCurrencyCode
+ * @param null|string $date
  *
  * @return float
  */
-function currencyConverter($price, $foreignCurrencyCode, $domesticCurrencyCode) {
+function currencyConverter($price, $foreignCurrencyCode, $domesticCurrencyCode, $date = null) {
     if ($foreignCurrencyCode != $domesticCurrencyCode) {
-        $date = now()->subDay()->format('Y-m-d');
+        $date = (Carbon::parse($date) ?? now())->subDay()->format('Y-m-d');
 
         $domesticCurrency = ExchangeRate::where('code', $domesticCurrencyCode)
-            ->whereDate('last_modified', '>=', $date)
+            ->whereRaw("DATE_FORMAT(last_modified, '%Y-%m-%d') = '{$date}'")
             ->orderBy('id', 'DESC')
             ->first();
 
@@ -192,7 +194,7 @@ function currencyConverter($price, $foreignCurrencyCode, $domesticCurrencyCode) 
 
         if ('TRY' != $foreignCurrencyCode) {
             $foreignCurrency = ExchangeRate::where('code', $foreignCurrencyCode)
-                ->whereDate('last_modified', '>=', $date)
+                ->whereRaw("DATE_FORMAT(last_modified, '%Y-%m-%d') = '{$date}'")
                 ->orderBy('id', 'DESC')
                 ->first();
 
