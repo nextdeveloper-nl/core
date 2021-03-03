@@ -186,7 +186,8 @@ function currencyConverter($price, $foreignCurrencyCode, $domesticCurrencyCode, 
         $date = (Carbon::parse($date) ?? now())->subDay()->format('Y-m-d');
 
         $domesticCurrency = ExchangeRate::where('code', $domesticCurrencyCode)
-            ->whereRaw("DATE_FORMAT(last_modified, '%Y-%m-%d') = '{$date}'")
+            ->whereRaw("DATE_FORMAT(last_modified, '%Y-%m-%d') <= '{$date}'")
+            ->orderBy('last_modified', 'DESC')
             ->orderBy('id', 'DESC')
             ->first();
 
@@ -194,7 +195,8 @@ function currencyConverter($price, $foreignCurrencyCode, $domesticCurrencyCode, 
 
         if ('TRY' != $foreignCurrencyCode) {
             $foreignCurrency = ExchangeRate::where('code', $foreignCurrencyCode)
-                ->whereRaw("DATE_FORMAT(last_modified, '%Y-%m-%d') = '{$date}'")
+                ->whereRaw("DATE_FORMAT(last_modified, '%Y-%m-%d') <= '{$date}'")
+                ->orderBy('last_modified', 'DESC')
                 ->orderBy('id', 'DESC')
                 ->first();
 
