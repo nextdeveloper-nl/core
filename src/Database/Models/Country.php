@@ -14,12 +14,11 @@ use PlusClouds\Core\Database\Traits\Filterable;
 use PlusClouds\Core\Database\Traits\GlobalScopes\WithPassive;
 
 /**
- * Class Country
+ * Class Country.
+ *
  * @package PlusClouds\Core\Database\Models
  */
-class Country extends AbstractModel
-{
-
+class Country extends AbstractModel {
     use Filterable;
     use WithPassive;
 
@@ -36,11 +35,23 @@ class Country extends AbstractModel
     /**
      * @var array
      */
+    protected $appends = ['vat'];
+
+    /**
+     * @var array
+     */
     protected $casts = [
         'phone_code' => 'integer',
         'rate'       => 'double',
         'is_active'  => 'boolean',
     ];
+
+    /**
+     * @return float
+     */
+    public function getVatAttribute() {
+        return (float)$this->attributes['rate'];
+    }
 
     /**
      * Ülke koduna göre kayıt getirir.
@@ -51,15 +62,15 @@ class Country extends AbstractModel
      * @return mixed
      */
     public function scopeCode($query, $code) {
-        $code = strtoupper( $code );
+        $code = strtoupper($code);
 
         $q = clone $query;
 
-        if( $q->where( 'code', $code )->count() > 0 ) {
-            return $query->where( 'code', $code );
-        } else {
-            return $query->where( 'code', config( 'core.country_resolver.default' ) );
+        if ($q->where('code', $code)->count() > 0) {
+            return $query->where('code', $code);
         }
+
+        return $query->where('code', config('core.country_resolver.default'));
     }
 
     /**
@@ -71,7 +82,7 @@ class Country extends AbstractModel
      * @return mixed
      */
     public function scopeLocale($query, $locale) {
-        return $query->where( 'locale', strtoupper( $locale ) );
+        return $query->where('locale', strtoupper($locale));
     }
 
     /**
@@ -83,7 +94,6 @@ class Country extends AbstractModel
      * @return mixed
      */
     public function scopePhoneCode($query, $phoneCode) {
-        return $query->where( 'phone_code', $phoneCode );
+        return $query->where('phone_code', $phoneCode);
     }
-
 }
