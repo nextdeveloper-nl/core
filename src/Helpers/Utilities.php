@@ -182,23 +182,30 @@ function randomFloat($min, $max) {
  * @return float
  */
 function currencyConverter($price, $foreignCurrencyCode, $domesticCurrencyCode, $date = null) {
-    if ($foreignCurrencyCode != $domesticCurrencyCode) {
-        $date = (Carbon::parse($date) ?? now())->subDay()->format('Y-m-d');
+    $start = microtime(true);
 
-        $domesticCurrency = ExchangeRate::where('code', $domesticCurrencyCode)
-            ->whereRaw("DATE_FORMAT(last_modified, '%Y-%m-%d') <= '{$date}'")
-            ->orderBy('last_modified', 'DESC')
-            ->orderBy('id', 'DESC')
-            ->first();
+    if ($foreignCurrencyCode != $domesticCurrencyCode) {
+        $date = (Carbon::parse($date) ?? now())->format('Y-m-d');
+
+        // $domesticCurrency = \DB::table('exchange_rates')
+        //     ->where('code', $domesticCurrencyCode)
+        //     ->whereRaw("DATE_FORMAT(last_modified, '%Y-%m-%d') <= '{$date}'")
+        //     ->orderBy('id', 'DESC')
+        //     ->first();
+
+        $domesticCurrency = \DB::select("SELECT * FROM exchange_rates WHERE code = '{$domesticCurrencyCode}' AND DATE_FORMAT(last_modified, '%Y-%m-%d') <= '{$date}' ORDER BY id DESC LIMIT 1");
+        $domesticCurrency = array_first($domesticCurrency);
 
         $domesticCurrencyRate = optional($domesticCurrency)->rate ?? 1;
 
         if ('TRY' != $foreignCurrencyCode) {
-            $foreignCurrency = ExchangeRate::where('code', $foreignCurrencyCode)
-                ->whereRaw("DATE_FORMAT(last_modified, '%Y-%m-%d') <= '{$date}'")
-                ->orderBy('last_modified', 'DESC')
-                ->orderBy('id', 'DESC')
-                ->first();
+            // $foreignCurrency = ExchangeRate::where('code', $foreignCurrencyCode)
+            //     ->whereRaw("DATE_FORMAT(last_modified, '%Y-%m-%d') <= '{$date}'")
+            //     ->orderBy('id', 'DESC')
+            //     ->first();
+
+            $foreignCurrency = \DB::select("SELECT * FROM exchange_rates WHERE code = '{$foreignCurrencyCode}' AND DATE_FORMAT(last_modified, '%Y-%m-%d') <= '{$date}' ORDER BY id DESC LIMIT 1");
+            $foreignCurrency = array_first($foreignCurrency);
 
             $foreignCurrencyRate = optional($foreignCurrency)->rate ?? 1;
         } else {
@@ -208,6 +215,10 @@ function currencyConverter($price, $foreignCurrencyCode, $domesticCurrencyCode, 
         $parity = $foreignCurrencyRate / $domesticCurrencyRate;
         $price *= $parity;
     }
+
+    $time = microtime(true) - $start;
+
+    dump('Ended : '.$time);
 
     return $price;
 }
