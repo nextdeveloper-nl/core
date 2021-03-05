@@ -218,7 +218,7 @@ function currencyConverter($price, $foreignCurrencyCode, $domesticCurrencyCode, 
 
     $time = microtime(true) - $start;
 
-    dump('Ended : '.$time);
+    logger()->info('Currency convertion took: ' . $time);
 
     return $price;
 }
