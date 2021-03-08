@@ -23,8 +23,4 @@ class AbstractJob
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     use Watchable;
-
-	public function failed($exception) {
-		logger()->error('An exception came: ' . print_r($exception, true));
-	}
 }
