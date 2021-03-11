@@ -23,4 +23,18 @@ class AbstractJob
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     use Watchable;
+
+    public function failed(\Exception $exception) {
+    	switch ($exception->getMessage()) {
+		    //  This is a possible bugfix for redis queue problems
+		    case "fclose(): supplied resource is not a valid stream resource":
+		    	logger()->error('[AbstractJob|Failed] Redis probably is dead and job tries to retry again. So we are basicly logging this and failing the job.');
+		    	return;
+	    }
+
+    	switch ($exception->getCode()) {
+		    case 0:
+		    	throw $exception;
+	    }
+    }
 }
