@@ -13,12 +13,11 @@ namespace PlusClouds\Core\Http\Middleware;
 use Closure;
 
 /**
- * Class Locale
+ * Class Locale.
+ *
  * @package PlusClouds\Core\Http\Middleware
  */
-class Locale
-{
-
+class Locale {
     /**
      * @param $request
      * @param Closure $next
@@ -26,23 +25,21 @@ class Locale
      * @return mixed
      */
     public function handle($request, Closure $next) {
-        // TODO : Bu kısım DB'de ki laguages tablosuna göre yapılacak
-        $locales = config( 'core.locales.availables' );
-        $default = config( 'core.locales.default' );
+        $locales = config('core.locales.availables');
+        $userLocale = optional(getAUUser())->default_locale ?? config('core.locales.default');
 
-        if( ! $request->has( 'locale' ) ) {
-            $request->merge( [ 'locale' => $default ] );
+        if ( ! $request->has('locale')) {
+            $request->merge(['locale' => $userLocale]);
         }
 
-        $locale = $request->get( 'locale' );
+        $locale = $request->get('locale');
 
-        if( ! in_array( $locale, $locales ) ) {
-            $locale = $default;
+        if ( ! in_array($locale, $locales)) {
+            $locale = $userLocale;
         }
 
-        app()->setLocale( strtolower( $locale ) );
+        app()->setLocale(strtolower($locale));
 
-        return $next( $request );
+        return $next($request);
     }
-
 }
