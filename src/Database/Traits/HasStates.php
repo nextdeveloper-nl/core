@@ -17,6 +17,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Facades\DB;
 use PlusClouds\Core\Events\StateUpdated;
 use PlusClouds\Core\Exceptions\InvalidState;
+use PlusClouds\Core\Http\Transformers\StateTransformer;
 
 /**
  * Trait HasStates
