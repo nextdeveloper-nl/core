@@ -218,7 +218,21 @@ function currencyConverter($price, $foreignCurrencyCode, $domesticCurrencyCode, 
 
     $time = microtime(true) - $start;
 
-    logger()->info('Currency convertion took: ' . $time);
+    logger()->info('Currency convertion took: '.$time);
 
     return $price;
+}
+
+/**
+ * @param float       $num
+ * @param int         $decimals
+ * @param null|string $decimalSeparator
+ * @param null|string $thousandsSeparator
+ *
+ * @return float
+ */
+function formatNumber($num, $decimals = 0, $decimalSeparator = '.', $thousandsSeparator = ',') {
+    $num = number_format($num, $decimals, $decimalSeparator, $thousandsSeparator);
+
+    return (float)filter_var($num, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 }
