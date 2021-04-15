@@ -2,8 +2,8 @@
 
 return [
     'locales' => [
-        'availables' => ['en', 'tr'],
-        'default'    => 'en',
+        'availables' => ['en', 'tr', 'nl'],
+        'locale'     => env('DEFAULT_LOCALE', 'en'),
     ],
 
     'schedule' => [
