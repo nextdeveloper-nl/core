@@ -165,8 +165,8 @@
                             font-size: 0px;
                             border: 0px;
                           "
-                                                src="https://plusclouds.com.tr/assets/dark.png"
-                                                alt="plusclouds-logo"
+                                                src="{{ Config::get('core.mails.logo') }}"
+                                                alt="{{ Config::get('core.mails.logo_alt) }}"
                                         /></a>
                                 </td>
                             </tr>
@@ -273,7 +273,7 @@
                         >
                             <tr>
                                 <td align="center" style="color:#ffffff">
-                                    © 2013-2020 PlusClouds - Şef Bilişim Hizmetleri A.Ş. All rights reserved
+                                    {{ Config::get('core.mails.footer') }}
                                 </td>
                             </tr>
                         </table>
