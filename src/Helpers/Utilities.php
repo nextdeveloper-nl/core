@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use PlusClouds\Core\Database\Models\ExchangeRate;
 
 /**
@@ -193,7 +194,8 @@ function currencyConverter($price, $foreignCurrencyCode, $domesticCurrencyCode, 
         //     ->orderBy('id', 'DESC')
         //     ->first();
 
-        $domesticCurrency = \DB::select("SELECT * FROM exchange_rates WHERE code = '{$domesticCurrencyCode}' AND DATE_FORMAT(last_modified, '%Y-%m-%d') <= '{$date}' ORDER BY id DESC LIMIT 1");
+	    //  Removed \ because it was creating problems with IDE. IDE dont recognize Laravel Facade classes!!!
+        $domesticCurrency = DB::select("SELECT * FROM exchange_rates WHERE code = '{$domesticCurrencyCode}' AND DATE_FORMAT(last_modified, '%Y-%m-%d') <= '{$date}' ORDER BY id DESC LIMIT 1");
         $domesticCurrency = array_first($domesticCurrency);
 
         $domesticCurrencyRate = optional($domesticCurrency)->rate ?? 1;
@@ -204,7 +206,8 @@ function currencyConverter($price, $foreignCurrencyCode, $domesticCurrencyCode, 
             //     ->orderBy('id', 'DESC')
             //     ->first();
 
-            $foreignCurrency = \DB::select("SELECT * FROM exchange_rates WHERE code = '{$foreignCurrencyCode}' AND DATE_FORMAT(last_modified, '%Y-%m-%d') <= '{$date}' ORDER BY id DESC LIMIT 1");
+	        //  Removed \ because it was creating problems with IDE. IDE dont recognize Laravel Facade classes!!!
+            $foreignCurrency = DB::select("SELECT * FROM exchange_rates WHERE code = '{$foreignCurrencyCode}' AND DATE_FORMAT(last_modified, '%Y-%m-%d') <= '{$date}' ORDER BY id DESC LIMIT 1");
             $foreignCurrency = array_first($foreignCurrency);
 
             $foreignCurrencyRate = optional($foreignCurrency)->rate ?? 1;
