@@ -26,19 +26,17 @@ class Locale {
      */
     public function handle($request, Closure $next) {
         $locales = config('core.locales.availables');
-        $userLocale = optional(getAUUser())->default_locale ?? config('core.locales.default');
+        $locale = optional(getAUUser())->default_locale ?? config('core.locales.default');
 
-        if ( ! $request->has('locale')) {
-            $request->merge(['locale' => $userLocale]);
+        if ($request->filled('locale')) {
+            if (in_array($request->get('locale'), $locales)) {
+                $locale = strtolower($request->get('locale'));
+            }
         }
 
-        $locale = $request->get('locale');
+        $request->merge(['locale' => $locale]);
 
-        if ( ! in_array($locale, $locales)) {
-            $locale = $userLocale;
-        }
-
-        app()->setLocale(strtolower($locale));
+        app()->setLocale($locale);
 
         return $next($request);
     }
