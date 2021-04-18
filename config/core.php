@@ -10,6 +10,12 @@ return [
         'exchange_rate' => env('EXCHANGE_RATE_SCHEDULE', false),
     ],
 
+	'mails' =>  [
+		'logo'  =>  'https://plusclouds.com.tr/assets/dark.png',
+		'logo_alt'  =>  'PlusClouds Logo',
+		'footer'    =>  '© 2013-2021 PlusClouds - Şef Bilişim Hizmetleri A.Ş. All rights reserved'
+	],
+
     'rate_limit' => 60,
 
     'country_resolver' => [

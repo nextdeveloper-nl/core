@@ -166,7 +166,7 @@
                             border: 0px;
                           "
                                                 src="https://plusclouds.com.tr/assets/dark.png"
-                                                alt="plusclouds-logo"
+                                                alt="PlusClouds Logo"
                                         /></a>
                                 </td>
                             </tr>
@@ -273,7 +273,7 @@
                         >
                             <tr>
                                 <td align="center" style="color:#ffffff">
-                                    © 2013-2020 PlusClouds - Şef Bilişim Hizmetleri A.Ş. All rights reserved
+                                    © 2013-2021 PlusClouds - Şef Bilişim Hizmetleri A.Ş. All rights reserved
                                 </td>
                             </tr>
                         </table>
