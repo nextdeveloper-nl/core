@@ -17,20 +17,19 @@ use PlusClouds\Core\Http\Requests\EmailTemplateUpdateRequest;
 use PlusClouds\Core\Http\Transformers\EmailTemplateTransformer;
 
 /**
- * Class EmailTemplateController
+ * Class EmailTemplateController.
+ *
  * @package PlusClouds\Core\Http\Controllers
  */
-class EmailTemplateController extends AbstractController
-{
-
+class EmailTemplateController extends AbstractController {
     /**
      * E-posta şablon listesini döndürür.
      *
-     * @return \Illuminate\Http\JsonResponse
      * @throws \Throwable
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
-    {
+    public function index() {
         $templates = EmailTemplate::all();
 
         throw_if($templates->isEmpty(), ModelNotFoundException::class, 'Could not find any email templates.');
@@ -45,8 +44,7 @@ class EmailTemplateController extends AbstractController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(EmailTemplate $template)
-    {
+    public function show(EmailTemplate $template) {
         return $this->withItem($template, app(EmailTemplateTransformer::class));
     }
 
@@ -57,13 +55,21 @@ class EmailTemplateController extends AbstractController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(EmailTemplateStoreRequest $request)
-    {
-        $data = $request->validated();
-        $data['locale'] = $data['template_locale'];
-        unset($data['template_locale']);
+    public function store(EmailTemplateStoreRequest $request) {
+        $data = collect($request->validated())
+            ->when($request->filled('_locale'), function ($collection) use ($request) {
+                return $collection->put('locale', $request->get('_locale'));
+            })
+            ->transform(function ($value, $key) {
+                if ('subject' == $key || 'body' == $key) {
+                    return htmlspecialchars_decode($value, ENT_QUOTES | ENT_HTML5);
+                }
 
-        $template = EmailTemplate::create($data);
+                return $value;
+            })
+            ->forget('_locale');
+
+        $template = EmailTemplate::create($data->toArray());
 
         return $this->setStatusCode(201)
             ->withItem($template->fresh(), app(EmailTemplateTransformer::class));
@@ -73,12 +79,11 @@ class EmailTemplateController extends AbstractController
      * Varolan e-posta şablon bilgilerini günceller.
      *
      * @param EmailTemplateUpdateRequest $request
-     * @param EmailTemplate $template
+     * @param EmailTemplate              $template
      *
      * @return mixed
      */
-    public function update(EmailTemplateUpdateRequest $request, EmailTemplate $template)
-    {
+    public function update(EmailTemplateUpdateRequest $request, EmailTemplate $template) {
         $template->update($request->validated());
 
         return $this->noContent();
@@ -89,11 +94,11 @@ class EmailTemplateController extends AbstractController
      *
      * @param EmailTemplate $template
      *
-     * @return mixed
      * @throws \Exception
+     *
+     * @return mixed
      */
-    public function delete(EmailTemplate $template)
-    {
+    public function delete(EmailTemplate $template) {
         $this->authorize('destroy', $template);
 
         $template->delete();
