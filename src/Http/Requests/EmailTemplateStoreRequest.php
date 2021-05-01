@@ -11,32 +11,30 @@
 namespace PlusClouds\Core\Http\Requests;
 
 /**
- * Class EmailTemplateStoreRequest
+ * Class EmailTemplateStoreRequest.
+ *
  * @package PlusClouds\Core\Http\Requests
  */
-class EmailTemplateStoreRequest extends AbstractFormRequest
-{
-
+class EmailTemplateStoreRequest extends AbstractFormRequest {
     /**
      * @return bool
      */
-    public function authorize()
-    {
+    public function authorize() {
         return true;
+
         return $this->user()->can('core.emailtemplate@store');
     }
 
     /**
      * @return array
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-            'name'        => 'required|max:255',
-            'description' => 'required|max:255',
-            'body'        => 'required',
-            'subject'     =>  'required',
-            'template_locale'      => 'exists:countries,locale',
+            'name'         => 'required|max:255',
+            'description'  => 'required|max:255',
+            'body'         => 'required',
+            'subject'      => 'required',
+            '_locale'      => 'nullable|exists:countries,locale',
         ];
     }
 }

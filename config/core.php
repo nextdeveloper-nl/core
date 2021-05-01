@@ -3,7 +3,7 @@
 return [
     'locales' => [
         'availables' => ['en', 'tr', 'nl'],
-        'locale'     => env('DEFAULT_LOCALE', 'en'),
+        'default'    => env('DEFAULT_LOCALE', 'en'),
     ],
 
     'schedule' => [
