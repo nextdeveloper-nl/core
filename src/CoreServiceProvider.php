@@ -355,6 +355,7 @@ class CoreServiceProvider extends AbstractServiceProvider {
                 'PlusClouds\Core\Console\Commands\FetchDisposableEmailDomainsCommand',
                 'PlusClouds\Core\Console\Commands\MigrateExchangeRatesCommand',
                 'PlusClouds\Core\Console\Commands\FetchExchangeRatesCommand',
+                'PlusClouds\Core\Console\Commands\ObfuscateAccountDataCommand',
                 // 'PlusClouds\Core\Common\Cache\ResponseCache\Commands\ClearCommand',
             ]);
         }
