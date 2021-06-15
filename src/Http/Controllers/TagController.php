@@ -133,6 +133,9 @@ class TagController extends AbstractController
 	     * Bu sayede eğer bize virtual-machine objesi gelirse bu model'in tag'lenmesi gerektiğini bileceğiz.
 	     * Bu noktada sonra dilersen tabloya doğrudan insert'de yapabilirsin yada model'i dinamik olarak generate
 	     * edip ($model)->attach($tag) de yapabirlisin. Sana kalmış.
+	     *
+	     * Bu arada tag'ler virgül ile ayrılmış vaziyette gelecek. Yani name = 'tag1,tag2,tag3,tag4' şeklinde gelecek.
+	     * Bunları parçalarına ayırıp öyle çalıştırman lazım.
 	     */
     }
 

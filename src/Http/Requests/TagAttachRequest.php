@@ -33,7 +33,7 @@ class TagAttachRequest extends AbstractFormRequest
      */
     public function rules() {
         return [
-            'name'        => 'required|max:50',
+            'name'        => 'required|string',
             'object'      => 'required|string'
         ];
     }
