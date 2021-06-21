@@ -16,6 +16,8 @@ use Illuminate\Http\Request;
 use PlusClouds\Core\Database\Filters\TagQueryFilter;
 use PlusClouds\Core\Database\Models\Tag;
 use PlusClouds\Core\Exceptions\UnauthorizedException;
+use PlusClouds\Core\Http\Requests\TagAttachRequest;
+use PlusClouds\Core\Http\Requests\TagDetachRequest;
 use PlusClouds\Core\Http\Transformers\TagTransformer;
 use PlusClouds\Core\Http\Requests\TagStoreRequest;
 use PlusClouds\Core\Common\Enums\TagType;
@@ -114,5 +116,32 @@ class TagController extends AbstractController
         throw_if( $tags->isEmpty(), ModelNotFoundException::class, 'Could not find application tags you are looking for.' );
 
         return $this->withCollection( $tags, app( TagTransformer::class ) );
+    }
+
+    public function attach(TagAttachRequest $request) {
+	    /*
+	     * Burada hangi tag'in ve hangi model'in tag'leneceğine request'e bakarak karar vereceğiz ve ilgili model'i
+	     * tag'leyeceğiz.
+	     *
+	     * Model bize object adıyla gelecek ancak objenin tam yerini bilmediğimiz için core configurasyonu içerisinde
+	     * bir de model-tag-relation diye bir alan açmamız ve altına şöyle bir array eklememiz gerek;
+	     *
+	     * 'model-tag-relation' =>  [
+	     *      'virtual-machine'   =>  'PlusClouds\IaaS\Database\Models\VirtualMachines'
+	     * ]
+	     *
+	     * Bu sayede eğer bize virtual-machine objesi gelirse bu model'in tag'lenmesi gerektiğini bileceğiz.
+	     * Bu noktada sonra dilersen tabloya doğrudan insert'de yapabilirsin yada model'i dinamik olarak generate
+	     * edip ($model)->attach($tag) de yapabirlisin. Sana kalmış.
+	     *
+	     * Bu arada tag'ler virgül ile ayrılmış vaziyette gelecek. Yani name = 'tag1,tag2,tag3,tag4' şeklinde gelecek.
+	     * Bunları parçalarına ayırıp öyle çalıştırman lazım.
+	     */
+    }
+
+    public function detach(TagDetachRequest $request) {
+	    /*
+	     * Tıpkısının aynısının detach'i :)
+	     */
     }
 }
