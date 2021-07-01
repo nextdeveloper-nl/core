@@ -68,6 +68,8 @@ class Country extends AbstractModel {
 
         if ($q->where('code', $code)->count() > 0) {
             return $query->where('code', $code);
+        } else {
+        	logger()->error('[CountryCode] Cannot find the code you have given or the country is not active');
         }
 
         return $query->where('code', config('core.country_resolver.default'));
