@@ -415,6 +415,10 @@ class CoreServiceProvider extends AbstractServiceProvider {
      * @throws \Exception
      */
     protected function countryResolve() {
+        if ( ! $this->checkDatabaseConnection()) {
+            return false;
+        }
+
         $countryCode = config('core.country_resolver.default');
 
         if ( ! app()->isLocal()) {
@@ -482,5 +486,22 @@ class CoreServiceProvider extends AbstractServiceProvider {
         } catch (\Exception $e) {
             logger()->error($e->getMessage());
         }
+    }
+
+    /**
+     * @return void
+     */
+    private function checkDatabaseConnection() {
+        $isSuccessfull = false;
+
+        try {
+            \DB::connection()->getPdo();
+
+            $isSuccessfull = true;
+        } catch (\Exception $e) {
+            die('Could not connect to the database. Please check your configuration. error:'.$e);
+        }
+
+        return $isSuccessfull;
     }
 }
