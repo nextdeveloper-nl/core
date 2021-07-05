@@ -12,6 +12,7 @@ namespace PlusClouds\Core\Database\Models;
 
 use PlusClouds\Core\Database\Traits\Filterable;
 use PlusClouds\Core\Database\Traits\GlobalScopes\WithPassive;
+use PlusClouds\Core\Exceptions\NotFoundException;
 
 /**
  * Class Country.
@@ -68,6 +69,8 @@ class Country extends AbstractModel {
 
         if ($q->where('code', $code)->count() > 0) {
             return $query->where('code', $code);
+        } else {
+        	logger()->error('[CountryCode] Cannot find the code you have given or the country is not active');
         }
 
         return $query->where('code', config('core.country_resolver.default'));
@@ -82,7 +85,13 @@ class Country extends AbstractModel {
      * @return mixed
      */
     public function scopeLocale($query, $locale) {
-        return $query->where('locale', strtoupper($locale));
+	    $q = clone $query;
+
+	    if ($q->where('locale', strtoupper($locale))->count() > 0) {
+		    return $query->where('locale', strtoupper($locale));
+	    } else {
+	    	throw new NotFoundException('[CountryLocale] Cannot find the locale you have given or the country is not active');
+	    }
     }
 
     /**
