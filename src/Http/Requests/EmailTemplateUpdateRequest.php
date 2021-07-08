@@ -33,6 +33,7 @@ class EmailTemplateUpdateRequest extends AbstractFormRequest
             'name'        => 'required|exists:email_templates,name|max:255',
             'description' => 'required|max:255',
             'body'        => 'required',
+	        'subject'      => 'required',
             'locale'      => 'required|exists:countries,locale,locale,NOT_NULL',
         ];
     }

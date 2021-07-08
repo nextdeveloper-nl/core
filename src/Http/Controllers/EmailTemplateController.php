@@ -84,7 +84,16 @@ class EmailTemplateController extends AbstractController {
      * @return mixed
      */
     public function update(EmailTemplateUpdateRequest $request, EmailTemplate $template) {
-        $template->update($request->validated());
+	    $data = collect($request->validated())
+		    ->transform(function ($value, $key) {
+		    if ('subject' == $key || 'body' == $key) {
+			    return htmlspecialchars_decode($value, ENT_QUOTES | ENT_HTML5);
+		    }
+
+		    return $value;
+	    });
+
+        $template->update($data->toArray());
 
         return $this->noContent();
     }
