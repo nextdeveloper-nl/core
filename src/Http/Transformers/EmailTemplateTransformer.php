@@ -10,6 +10,7 @@
 
 namespace PlusClouds\Core\Http\Transformers;
 
+use PharIo\Manifest\Email;
 use PlusClouds\Core\Database\Models\EmailTemplate;
 
 /**
@@ -26,6 +27,27 @@ class EmailTemplateTransformer extends AbstractTransformer
      */
     public function transform(EmailTemplate $template)
     {
+    	//  @todo: Burası daha sonra database'den gelmeli
+
+    	$locales = config('core.locales.availables');
+
+	    $availableLocales = [];
+	    $unavailableLocales = [];
+
+    	foreach ($locales as $locale) {
+    		if($template->locale == $locale) {
+			    $availableLocales[] = $locale;
+			    continue;
+		    }
+
+    		$emailTemplate = EmailTemplate::where('name', $template->name)->where('locale', $locale)->first();
+
+    		if($emailTemplate)
+    			$availableLocales[] = $locale;
+    		else
+    			$unavailableLocales[] = $locale;
+	    }
+
         return $this->buildPayload([
             'id'          => $template->id_ref,
             'name'        => $template->name,
@@ -33,6 +55,8 @@ class EmailTemplateTransformer extends AbstractTransformer
             'body'        => $template->body,
             'subject'     => $template->subject,
             'locale'      => $template->locale,
+	        'available_locales'  =>  $availableLocales,
+	        'unavailable_locales'   =>  $unavailableLocales
         ]);
     }
 }
