@@ -36,14 +36,18 @@ class EmailTemplateTransformer extends AbstractTransformer
 
     	foreach ($locales as $locale) {
     		if($template->locale == $locale) {
-			    $availableLocales[] = $locale;
+			    $availableLocales[] = [
+				    $locale =>  $template->id_ref
+			    ];
 			    continue;
 		    }
 
     		$emailTemplate = EmailTemplate::where('name', $template->name)->where('locale', $locale)->first();
 
     		if($emailTemplate)
-    			$availableLocales[] = $locale;
+    			$availableLocales[] = [
+				    $locale => $emailTemplate->id_ref
+			    ];
     		else
     			$unavailableLocales[] = $locale;
 	    }
