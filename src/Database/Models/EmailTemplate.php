@@ -43,9 +43,11 @@ class EmailTemplate extends AbstractModel
      *
      * @return mixed
      */
+    /*
     public function scopeByName($query, $name, $locale = null) {
         return $query->where( 'name', $name )
             ->where( 'locale', ( $locale ?? app()->getLocale() ) );
     }
+    */
 
 }
