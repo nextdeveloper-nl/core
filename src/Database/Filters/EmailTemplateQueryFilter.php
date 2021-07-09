@@ -10,30 +10,28 @@
 
 namespace PlusClouds\Core\Database\Filters;
 
-
-use PlusClouds\Core\Database\GlobalScopes\ActiveScope;
-
 /**
- * Class CountryQueryFilter
+ * Class CountryQueryFilter.
+ *
  * @package PlusClouds\Core\Database\Filters
  */
-class EmailTemplateQueryFilter extends AbstractQueryFilter
-{
-
+class EmailTemplateQueryFilter extends AbstractQueryFilter {
     /**
      * @param $code
+     * @param mixed $name
      *
      * @return mixed
      */
     public function name($name) {
-        return $this->builder->where( 'name', '%' . $name . '%' );
+        return $this->builder->where('name', '\'%'.$name.'%\'');
     }
 
     /**
+     * @param mixed $locale
+     *
      * @return mixed
      */
     public function locale($locale) {
-	    return $this->builder->where( 'locale', '%' . $locale . '%' );
+        return $this->builder->where('locale', $locale);
     }
-
 }
