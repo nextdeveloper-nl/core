@@ -23,7 +23,7 @@ class EmailTemplateQueryFilter extends AbstractQueryFilter {
      * @return mixed
      */
     public function name($name) {
-        return $this->builder->where('name', '\'%'.$name.'%\'');
+        return $this->builder->where('name', 'like', '%'.$name.'%');
     }
 
     /**
