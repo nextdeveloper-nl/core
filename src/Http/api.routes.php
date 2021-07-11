@@ -7,146 +7,149 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-Route::get( '/', function() {
+Route::get('/', function () {
     return [
-        "application"   =>  env('APP_NAME'),
-        "health"        =>  "ok"
+        'application'   => env('APP_NAME'),
+        'health'        => 'ok',
     ];
-} );
+});
 
-Route::prefix( 'languages' )->group( function() {
+Route::prefix('languages')->group(function () {
     // Dil listesini döndürür
-    Route::get( '/', 'LanguageController@index' );
-} );
+    Route::get('/', 'LanguageController@index');
+});
 
-Route::prefix( 'countries' )->group( function() {
+Route::prefix('countries')->group(function () {
     // Ülke listesini döndürür.
-    Route::get( '/', 'CountryController@index' );
+    Route::get('/', 'CountryController@index');
 
     // Ülke bilgisini döndürür.
-    Route::get( '/{country}', 'CountryController@show' );
+    Route::get('/{country}', 'CountryController@show');
 
-    Route::middleware( 'auth:api' )->group( function() {
+    Route::middleware('auth:api')->group(function () {
         // Yeni bir ülke oluşturur.
-        Route::post( '/', 'CountryController@store' );
+        Route::post('/', 'CountryController@store');
 
         // Varolan ülke bilgilerini günceller.
-        Route::put( '/{country}', 'CountryController@update' );
+        Route::put('/{country}', 'CountryController@update');
 
         // Varolan bir ülkeyi siler.
-        Route::delete( '/{country}', 'CountryController@destroy' );
-    } );
-} );
+        Route::delete('/{country}', 'CountryController@destroy');
+    });
+});
 
-Route::get( '/currencies', 'CurrencyController@index' );
+Route::get('/currencies', 'CurrencyController@index');
 
-Route::prefix( 'generator' )->group( function() {
-    Route::get( '/password', 'PasswordGeneratorController@show' );
-    Route::get( '/uuid', 'UuidGeneratorController@show' );
-    Route::get( '/string', 'StringGeneratorController@show' );
-    Route::get( '/number', 'NumberGeneratorController@show' );
-} );
+Route::prefix('generator')->group(function () {
+    Route::get('/password', 'PasswordGeneratorController@show');
+    Route::get('/uuid', 'UuidGeneratorController@show');
+    Route::get('/string', 'StringGeneratorController@show');
+    Route::get('/number', 'NumberGeneratorController@show');
+});
 
-Route::prefix( 'password' )->group( function() {
-    Route::post( '/strength-checker', 'PasswordStrengthCheckerController@show' );
-} );
+Route::prefix('password')->group(function () {
+    Route::post('/strength-checker', 'PasswordStrengthCheckerController@show');
+});
 
-Route::prefix( 'domains' )->middleware( 'auth:api' )->group( function() {
+Route::prefix('tests')->middleware('auth:api')->group(function () {
+    Route::get('/broadcast', 'TestBroadcastController@test');
+});
+
+Route::prefix('domains')->middleware('auth:api')->group(function () {
     // Alan adı listesini döndürür.
-    Route::get( '/', 'DomainController@index' );
+    Route::get('/', 'DomainController@index');
 
     // Alan adı bilgisini döndürür.
-    Route::get( '/{domain}', 'DomainController@show' );
+    Route::get('/{domain}', 'DomainController@show');
 
     // Yeni bir alan adı oluşturur.
-    Route::post( '/', 'DomainController@store' );
+    Route::post('/', 'DomainController@store');
 
     // Varolan alan adı bilgilerini günceller.
-    Route::put( '/{domain}', 'DomainController@update' );
+    Route::put('/{domain}', 'DomainController@update');
 
     // Varolan bir alan adını siler.
-    Route::delete( '/{domain}', 'DomainController@destroy' );
+    Route::delete('/{domain}', 'DomainController@destroy');
 
     // Alan adını kullanıma kapatır.
-    Route::put( '/{domain}/lock', 'LockedDomainsController@update' );
+    Route::put('/{domain}/lock', 'LockedDomainsController@update');
 
     // Alan adını kullanıma açar.
-    Route::delete( '/{domain}/unlock', 'LockedDomainsController@destroy' );
-} );
+    Route::delete('/{domain}/unlock', 'LockedDomainsController@destroy');
+});
 
-Route::prefix( 'categories' )->group( function() {
+Route::prefix('categories')->group(function () {
     // Kategori listesini döndürür.
-    Route::get( '/', 'CategoryController@index' );
+    Route::get('/', 'CategoryController@index');
 
     // Kategori bilgisini döndürür.
-    Route::get( '/{category}', 'CategoryController@show' );
+    Route::get('/{category}', 'CategoryController@show');
 
-    Route::middleware( 'auth:api' )->group( function() {
+    Route::middleware('auth:api')->group(function () {
         // Yeni bir kategori oluşturur.
-        Route::post( '/', 'CategoryController@store' );
+        Route::post('/', 'CategoryController@store');
 
         // Varolan kategori bilgilerini günceller.
-        Route::put( '/{category}', 'CategoryController@update' );
+        Route::put('/{category}', 'CategoryController@update');
 
         // Varolan bir kategoriyi siler.
-        Route::delete( '/{category}', 'CategoryController@destroy' );
-    } );
-} );
+        Route::delete('/{category}', 'CategoryController@destroy');
+    });
+});
 
-Route::prefix( 'discounts' )->middleware( 'auth:api' )->group( function() {
+Route::prefix('discounts')->middleware('auth:api')->group(function () {
     // İndirim listesini döndürür.
-    Route::get( '/', 'DiscountController@index' );
+    Route::get('/', 'DiscountController@index');
 
     // İndirim bilgisini döndürür.
-    Route::get( '/{discount}', 'DiscountController@show' );
+    Route::get('/{discount}', 'DiscountController@show');
 
     // Yeni bir indirim oluşturur.
-    Route::post( '/', 'DiscountController@store' );
+    Route::post('/', 'DiscountController@store');
 
     // Varolan indirim bilgilerini günceller.
-    Route::put( '/{discount}', 'DiscountController@update' );
+    Route::put('/{discount}', 'DiscountController@update');
 
     // Varolan bir indirimi siler.
-    Route::delete( '/{discount}', 'DiscountController@destroy' );
-} );
+    Route::delete('/{discount}', 'DiscountController@destroy');
+});
 
-Route::prefix( 'email-templates' )->middleware( 'auth:api' )->group( function() {
+Route::prefix('email-templates')->middleware('auth:api')->group(function () {
     // E-posta şablon listesini döndürür.
-    Route::get( '/', 'EmailTemplateController@index' );
+    Route::get('/', 'EmailTemplateController@index');
 
     // E-posta şablon bilgisini döndürür.
-    Route::get( '/{template}', 'EmailTemplateController@show' );
+    Route::get('/{template}', 'EmailTemplateController@show');
 
     // Yeni bir e-posta şablonu oluşturur.
-    Route::post( '/', 'EmailTemplateController@store' );
+    Route::post('/', 'EmailTemplateController@store');
 
     // Varolan e-posta şablon bilgilerini günceller.
-    Route::put( '/{template}', 'EmailTemplateController@update' );
+    Route::put('/{template}', 'EmailTemplateController@update');
 
     // Varolan bir e-posta şablonunu siler.
-    Route::delete( '/{template}', 'EmailTemplateController@destroy' );
-} );
+    Route::delete('/{template}', 'EmailTemplateController@destroy');
+});
 
-Route::prefix( 'applications' )->middleware( 'auth:api' )->group( function() {
-    Route::get( '/', 'TagController@applications' );
-} );
+Route::prefix('applications')->middleware('auth:api')->group(function () {
+    Route::get('/', 'TagController@applications');
+});
 
-Route::prefix( 'tags' )->group( function() {
+Route::prefix('tags')->group(function () {
     // Etiket listesini döndürür.
-    Route::get( '/', 'TagController@index' );
+    Route::get('/', 'TagController@index');
 
     // Yeni bir etiket yaratır.
-    Route::middleware( 'auth:api' )->post( '/', 'TagController@store' );
+    Route::middleware('auth:api')->post('/', 'TagController@store');
 
     // Varolan bir etiketi siler.
-    Route::middleware( 'auth:api' )->delete( '/{tag}', 'TagController@destroy' )->middleware( 'auth:api' );
-} );
+    Route::middleware('auth:api')->delete('/{tag}', 'TagController@destroy')->middleware('auth:api');
+});
 
-Route::prefix( 'mails' )->middleware( 'auth:api' )->group( function() {
+Route::prefix('mails')->middleware('auth:api')->group(function () {
     // Bir kullanıcıya e-posta gönderir.
-    Route::post( '/send', 'MailController@send' );
+    Route::post('/send', 'MailController@send');
 
     // Toplu e-posta gönderimi yapar.
-    Route::post( '/batch-send', 'MailController@batchSend' );
-} );
+    Route::post('/batch-send', 'MailController@batchSend');
+});
