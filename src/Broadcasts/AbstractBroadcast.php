@@ -11,6 +11,7 @@
 namespace PlusClouds\Core\Broadcasts;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
 /**
@@ -19,7 +20,7 @@ use Illuminate\Queue\SerializesModels;
  * @package PlusClouds\Core\Broadcasts
  */
 abstract class AbstractBroadcast implements IBroadcast {
-    use InteractsWithSockets, SerializesModels;
+    use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
      * @var null|string
