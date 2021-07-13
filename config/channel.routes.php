@@ -9,8 +9,7 @@
  */
 
 use Illuminate\Support\Facades\Broadcast;
-use PlusClouds\Account\Database\Models\Account;
 
-Broadcast::channel('broadcast.test', function ($authUser, Account $account) {
-    return hasAccount($authUser, $account) || isTeammate($authUser, $account);
+Broadcast::channel('broadcast.test', function ($authUser) {
+    return ! is_null($authUser);
 });
