@@ -11,12 +11,12 @@
 namespace PlusClouds\Core\Broadcasts;
 
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 /**
  * @internal
  */
-class TestBroadcast extends AbstractBroadcast implements ShouldBroadcastNow {
+class TestBroadcast extends AbstractBroadcast implements ShouldBroadcast {
     /**
      * @return \Illuminate\Broadcasting\Channel|\Illuminate\Broadcasting\Channel[]|PrivateChannel
      */
