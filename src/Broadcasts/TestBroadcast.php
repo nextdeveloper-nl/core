@@ -12,19 +12,11 @@ namespace PlusClouds\Core\Broadcasts;
 
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
-use PlusClouds\Core\Events\TestEvent;
 
 /**
  * @internal
  */
 class TestBroadcast extends AbstractBroadcast implements ShouldBroadcastNow {
-    public $eventLogObject = TestEvent::class;
-
-    /**
-     * @var string
-     */
-    public $eventLogMessage = 'Test Event Log Message';
-
     /**
      * @return \Illuminate\Broadcasting\Channel|\Illuminate\Broadcasting\Channel[]|PrivateChannel
      */
