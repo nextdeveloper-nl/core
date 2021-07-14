@@ -59,6 +59,8 @@ class CoreServiceProvider extends AbstractServiceProvider {
             __DIR__.'/../config/core.php' => config_path('core.php'),
         ], 'config');
 
+        $this->bootChannelRoutes();
+
         $this->loadViewsFrom($this->dir.'/../resources/views', 'Core');
 
         $this->bootLogger();
@@ -127,6 +129,15 @@ class CoreServiceProvider extends AbstractServiceProvider {
             ExceptionHandler::class,
             Handler::class
         );
+    }
+
+    /**
+     * @return void
+     */
+    private function bootChannelRoutes() {
+        if (file_exists(($file = $this->dir.'/../config/channel.routes.php'))) {
+            require_once $file;
+        }
     }
 
     /**

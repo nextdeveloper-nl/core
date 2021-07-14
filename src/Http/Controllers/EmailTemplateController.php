@@ -11,6 +11,7 @@
 namespace PlusClouds\Core\Http\Controllers;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use PlusClouds\Core\Database\Filters\EmailTemplateQueryFilter;
 use PlusClouds\Core\Database\Models\EmailTemplate;
 use PlusClouds\Core\Http\Requests\EmailTemplateStoreRequest;
 use PlusClouds\Core\Http\Requests\EmailTemplateUpdateRequest;
@@ -29,12 +30,12 @@ class EmailTemplateController extends AbstractController {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index() {
-        $templates = EmailTemplate::all();
+    public function index(EmailTemplateQueryFilter $filter) {
+        $templates = EmailTemplate::filter($filter)->paginate();
 
         throw_if($templates->isEmpty(), ModelNotFoundException::class, 'Could not find any email templates.');
 
-        return $this->withCollection($templates, app(EmailTemplateTransformer::class));
+        return $this->withPaginator($templates, app(EmailTemplateTransformer::class));
     }
 
     /**
@@ -84,7 +85,16 @@ class EmailTemplateController extends AbstractController {
      * @return mixed
      */
     public function update(EmailTemplateUpdateRequest $request, EmailTemplate $template) {
-        $template->update($request->validated());
+        $data = collect($request->validated())
+            ->transform(function ($value, $key) {
+                if ('subject' == $key || 'body' == $key) {
+                    return htmlspecialchars_decode($value, ENT_QUOTES | ENT_HTML5);
+                }
+
+                return $value;
+            });
+
+        $template->update($data->toArray());
 
         return $this->noContent();
     }
