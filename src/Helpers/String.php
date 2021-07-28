@@ -17,11 +17,11 @@ use Stringy\StaticStringy as S;
  * @return string
  */
 function slugify($str, $replacement = '-') {
-    return S::slugify( $str, $replacement );
+    return S::slugify($str, $replacement);
 }
 
 /**
- * Turkish characters formats
+ * Turkish characters formats.
  *
  * @param string $string
  *
@@ -38,11 +38,11 @@ function ucwordsTr($string) {
         'i' => 'İ',
     ];
 
-    return mb_convert_case( strtr( $string, $chars ), MB_CASE_TITLE, 'UTF-8' );
+    return mb_convert_case(strtr($string, $chars), MB_CASE_TITLE, 'UTF-8');
 }
 
 /**
- * Turkish characters formats
+ * Turkish characters formats.
  *
  * @param string $string
  *
@@ -59,11 +59,11 @@ function upperCaseTr($string) {
         'i' => 'İ',
     ];
 
-    return mb_convert_case( strtr( $string, $chars ), MB_CASE_UPPER, 'UTF-8' );
+    return mb_convert_case(strtr($string, $chars), MB_CASE_UPPER, 'UTF-8');
 }
 
 /**
- * Turkish characters formats
+ * Turkish characters formats.
  *
  * @param string $string
  *
@@ -80,11 +80,11 @@ function lowerCaseTr($string) {
         'İ' => 'i',
     ];
 
-    return mb_convert_case( strtr( $string, $chars ), MB_CASE_LOWER, 'UTF-8' );
+    return mb_convert_case(strtr($string, $chars), MB_CASE_LOWER, 'UTF-8');
 }
 
 /**
- * Masks of the credit card number
+ * Masks of the credit card number.
  *
  * @param string $cardNumber
  * @param string $maskingChar
@@ -92,32 +92,32 @@ function lowerCaseTr($string) {
  * @return string
  */
 function maskCreditCard($cardNumber, $maskingChar = 'x') {
-    $numbers = str_split( $cardNumber, 4 );
-    $length = sizeof( $numbers );
+    $numbers = str_split($cardNumber, 4);
+    $length = sizeof($numbers);
 
-    foreach( $numbers as $key => $number ) {
-        if( $key === 0 ) {
-            $numbers[ $key ] = substr( $number, 0, 1 ).str_repeat( $maskingChar, ( strlen( $number ) - 1 ) );
+    foreach ($numbers as $key => $number) {
+        if (0 === $key) {
+            $numbers[$key] = substr($number, 0, 1).str_repeat($maskingChar, (strlen($number) - 1));
         } else {
-            if( $key !== ( $length - 1 ) ) {
-                $numbers[ $key ] = str_repeat( $maskingChar, strlen( $number ) );
+            if ($key !== ($length - 1)) {
+                $numbers[$key] = str_repeat($maskingChar, strlen($number));
             }
         }
     }
 
-    return implode( '-', $numbers );
+    return implode('-', $numbers);
 }
 
 /**
  * @param $string
- * @param int $width
- * @param bool $cut
+ * @param int    $width
+ * @param bool   $cut
  * @param string $break
  *
- * @return \Illuminate\Support\Collection|null
+ * @return null|\Illuminate\Support\Collection
  */
 function utf8_wordwrap($string, $width = 75, $cut = false, $break = "\n") {
-    if( $cut ) {
+    if ($cut) {
         // Match anything 1 to $width chars long followed by whitespace or EOS,
         // otherwise match anything $width chars long
         $search = '/(.{1,'.$width.'})(?:\s|$)|(.{'.$width.'})/uS';
@@ -129,32 +129,47 @@ function utf8_wordwrap($string, $width = 75, $cut = false, $break = "\n") {
         $replace = '$1'.$break;
     }
 
-    $lines = collect( explode( $break, rtrim( preg_replace( $search, $replace, $string ), $break ) ) )->map( function($line) {
-        return trim( $line );
-    } )->filter( function($line) {
-        return ! empty( $line );
-    } );
+    $lines = collect(explode($break, rtrim(preg_replace($search, $replace, $string), $break)))->map(function ($line) {
+        return trim($line);
+    })->filter(function ($line) {
+        return ! empty($line);
+    });
 
     return $lines->count() > 0 ? $lines : null;
 }
 
 /**
- * @param string|array|object $input
+ * @param array|object|string $input
  */
 function utf8_encode_deep(&$input) {
-    if( is_string( $input ) ) {
-        $input = utf8_encode( $input );
-    } else if( is_array( $input ) ) {
-        foreach( $input as &$value ) {
-            utf8_encode_deep( $value );
+    if (is_string($input)) {
+        $input = utf8_encode($input);
+    } elseif (is_array($input)) {
+        foreach ($input as &$value) {
+            utf8_encode_deep($value);
         }
 
-        unset( $value );
-    } else if( is_object( $input ) ) {
-        $vars = array_keys( get_object_vars( $input ) );
+        unset($value);
+    } elseif (is_object($input)) {
+        $vars = array_keys(get_object_vars($input));
 
-        foreach( $vars as $var ) {
-            utf8_encode_deep( $input->$var );
+        foreach ($vars as $var) {
+            utf8_encode_deep($input->{$var});
         }
     }
+}
+
+/**
+ * @param mixed $param
+ *
+ * @return bool
+ */
+function isJsonString($param) {
+    if (is_string($param)) {
+        @json_decode($param);
+
+        return JSON_ERROR_NONE == json_last_error();
+    }
+
+    return false;
 }

@@ -65,7 +65,7 @@ return [
     'middlewares' => [
         'http' => [
             'PlusClouds\Core\Http\Middleware\Locale',
-            // 'PlusClouds\Core\Http\Middleware\XSSProtection',
+            'PlusClouds\Core\Http\Middleware\XSSProtection',
             //            'PlusClouds\Core\Common\Cache\ResponseCache\Middlewares\CacheResponse',
         ],
 
