@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Traits\Macroable;
 use PlusClouds\Core\Database\GlobalScopes\OrderScope;
+use PlusClouds\Core\Helpers\ColumnNameSanitizer;
 
 /**
  * Class AbstractQueryFilter.
@@ -74,7 +75,7 @@ abstract class AbstractQueryFilter {
         $this->builder = $builder;
 
         foreach ($this->filters() as $name => $value) {
-            $name = camel_case($name);
+            $name = ColumnNameSanitizer::sanitize(camel_case($name));
 
             if (method_exists($this, $name) && $this->checkFilterRules($name)) {
                 $r = new \ReflectionMethod($this, $name);
@@ -118,7 +119,7 @@ abstract class AbstractQueryFilter {
             }
 
             $this->builder->withoutGlobalScope(OrderScope::class)
-                ->orderBy($column, $direction);
+                ->orderBy(ColumnNameSanitizer::sanitize($column), $direction);
         }
 
         return $this->builder;
