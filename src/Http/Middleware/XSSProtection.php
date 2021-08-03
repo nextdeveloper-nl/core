@@ -38,7 +38,10 @@ class XSSProtection {
         $walk = function ($input) use (&$walk) {
             array_walk_recursive($input, function (&$input, $walk) {
                 if ( ! is_array($input)) {
-                    $input = htmlspecialchars($input, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                    // Gelen değer json ise htmlspecialchars fonksiyonundan geçirmiyoruz.
+                    if ( ! isJsonString($input)) {
+                        $input = htmlspecialchars($input, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                    }
                 } else {
                     $walk($input);
                 }

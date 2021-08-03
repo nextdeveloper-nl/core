@@ -15,26 +15,25 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Vinkla\Hashids\Facades\Hashids;
 
 /**
- * Trait HashId
+ * Trait HashId.
+ *
  * @package PlusClouds\Core\Database\Traits
  */
-trait HashId
-{
-
+trait HashId {
     /**
-     * return @void
+     * return @void.
      */
     public static function bootHashid() {
-        static::created( function($model) {
-            $model->attributes[ static::getHashidsColumn() ] = Hashids::connection( static::getHashidConnection( $model ) )
-                ->encode( static::getHashidEncodingValue( $model ) );
+        static::created(function ($model) {
+            $model->attributes[static::getHashidsColumn()] = Hashids::connection(static::getHashidConnection($model))
+                ->encode(static::getHashidEncodingValue($model));
 
             $dispatcher = $model->getEventDispatcher();
 
             $model->unsetEventDispatcher();
             $model->save();
-            $model->setEventDispatcher( $dispatcher );
-        } );
+            $model->setEventDispatcher($dispatcher);
+        });
     }
 
     /**
@@ -45,7 +44,7 @@ trait HashId
     public static function getHashidConnection(Model $model) {
         $key = 'hashids.connections.table__'.$model->getTable();
 
-        return config()->has( $key ) ? 'table__'.$model->getTable() : 'main';
+        return config()->has($key) ? 'table__'.$model->getTable() : 'main';
     }
 
     /**
@@ -67,19 +66,24 @@ trait HashId
     /**
      * @param $ref
      *
-     * @return mixed
      * @throws ModelNotFoundException
+     *
+     * @return mixed
      */
     public static function findByRef($ref) {
-        if( ! is_null( $data = static::whereRaw( static::getHashidsColumn().' = \''.$ref.'\' COLLATE utf8_bin' )->first() ) ) {
+        if ( ! is_null($data = static::whereRaw(static::getHashidsColumn().' COLLATE utf8_bin = ?', [$ref])->first())) {
             return $data;
         }
 
-        $className = str_replace( '_', ' ', snake_case( camel_case( class_basename( static::class ) ) ) );
+        // if ( ! is_null($data = static::whereRaw(static::getHashidsColumn().' = \''.$ref.'\' COLLATE utf8_bin')->first())) {
+        //     return $data;
+        // }
 
-        $message = sprintf( 'Could not find any %s', $className );
+        $className = str_replace('_', ' ', snake_case(camel_case(class_basename(static::class))));
 
-        throw new ModelNotFoundException( $message );
+        $message = sprintf('Could not find any %s', $className);
+
+        throw new ModelNotFoundException($message);
     }
 
     /**
@@ -89,7 +93,8 @@ trait HashId
      * @return mixed
      */
     public function scopeByRef($query, $ref) {
-        return $query->whereRaw( static::getHashidsColumn().' = \''.$ref.'\' COLLATE utf8_bin' );
-    }
+        return $query->whereRaw(static::getHashidsColumn().' COLLATE utf8_bin = ?', [$ref]);
 
+        // return $query->whereRaw(static::getHashidsColumn().' = \''.$ref.'\' COLLATE utf8_bin');
+    }
 }
