@@ -14,6 +14,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Queue;
 
 /**
  * Class AbstractJob
@@ -37,4 +38,26 @@ class AbstractJob
 		    	throw $exception;
 	    }
     }
+
+	public function checkQueue($maxQueueItem = 100) {
+		$queue = $this->queue;
+
+		if(is_null($queue))
+			$queue = 'general';
+
+		$queueSize = Queue::size( $this->queue );
+
+		if( $queueSize ) {
+			if( $queueSize > $this->$maxQueueItem ) {
+				logger()->info('[Queue: ' . $queue . '] Too many jobs (' . $queueSize . ') are in the queue, quiting.');
+				$this->markAsJobCompleted();
+			} else {
+				$maxQueueItem -= $queueSize;
+
+				logger()->info('[Queue: ' . $queue . '] Max scan size is reduced to: ' . $maxQueueItem);
+			}
+		}
+
+		return $maxQueueItem;
+	}
 }
