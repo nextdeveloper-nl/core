@@ -48,7 +48,7 @@ class AbstractJob
 		$queueSize = Queue::size( $this->queue );
 
 		if( $queueSize ) {
-			if( $queueSize > $this->$maxQueueItem ) {
+			if( $queueSize > $maxQueueItem ) {
 				logger()->info('[Queue: ' . $queue . '] Too many jobs (' . $queueSize . ') are in the queue, quiting.');
 				$this->markAsJobCompleted();
 			} else {
