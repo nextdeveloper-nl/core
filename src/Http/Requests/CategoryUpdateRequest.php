@@ -20,8 +20,7 @@ class CategoryUpdateRequest extends AbstractFormRequest {
      * @return bool
      */
     public function authorize() {
-        return $this->user()->can('core.category@update')
-            && $this->user()->id == $this->route('category')->user_id;
+        return $this->user()->can('core.category@update');
     }
 
     /**
@@ -34,6 +33,7 @@ class CategoryUpdateRequest extends AbstractFormRequest {
             'name'          =>  'required|string|max:255',
             'url'           =>  'url',
             'description'   =>  'required|string|max:1500',
+	        'slug'          =>  'required|string|max:250',
 	        'order'         =>  'integer'
         ];
     }

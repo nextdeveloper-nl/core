@@ -13,6 +13,7 @@ namespace PlusClouds\Core\Http\Controllers;
 use PlusClouds\Core\Database\Filters\CategoryQueryFilter;
 use PlusClouds\Core\Database\Models\Category;
 use PlusClouds\Core\Database\Models\Domain;
+use PlusClouds\Core\Exceptions\DuplicateModelFoundException;
 use PlusClouds\Core\Http\Requests\CategoryStoreRequest;
 use PlusClouds\Core\Http\Requests\CategoryUpdateRequest;
 
@@ -97,6 +98,10 @@ class CategoryController extends AbstractController {
             })
             ->forget(['domain', 'category']);
 
+	    $slugCheck = Category::where('slug', $request->get('slug'))->first();
+
+	    throw_if($slugCheck, DuplicateModelFoundException::class, 'We have a category with this slug in our database. Please change the slug.');
+
         $category->update($data->toArray());
 
         if ($request->filled('category')) {
@@ -107,7 +112,8 @@ class CategoryController extends AbstractController {
             }
         }
 
-        return $this->noContent();
+	    return $this->setStatusCode(201)
+		    ->withItem($category->fresh(), app('PlusClouds\Core\Http\Transformers\CategoryTransformer'));
     }
 
     /**
