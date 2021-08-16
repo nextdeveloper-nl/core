@@ -36,7 +36,8 @@ class CategoryStoreRequest extends AbstractFormRequest
             'name'          =>  'required|string|max:255',
             'url'           =>  'url',
             'description'   =>  'string|max:1500',
-	        'order'         =>  'integer'
+	        'order'         =>  'integer',
+	        'slug'          =>  'string|max:250'
         ];
     }
 }

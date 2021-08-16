@@ -25,8 +25,7 @@ use Kalnoy\Nestedset\NodeTrait;
  */
 class Category extends AbstractModel
 {
-
-    use SoftDeletes, HashId, Filterable, WithPassive;
+    use HashId, Filterable, WithPassive;
     use NodeTrait, Sluggable {
         Sluggable::replicate insteadof NodeTrait;
     }
