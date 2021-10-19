@@ -101,6 +101,8 @@ abstract class AbstractQueryFilter {
     }
 
     /**
+     * TODO : will be deprecated.
+     *
      * @param string $value
      *
      * @return Builder
@@ -123,6 +125,15 @@ abstract class AbstractQueryFilter {
         }
 
         return $this->builder;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return Builder
+     */
+    protected function orderBy($value) {
+        return $this->position($value);
     }
 
     /**
