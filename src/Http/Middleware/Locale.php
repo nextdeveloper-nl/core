@@ -28,13 +28,25 @@ class Locale {
         $locales = config('core.locales.availables');
         $locale = optional(getAUUser())->default_locale ?? config('core.locales.default');
 
-        if ($request->filled('locale')) {
-            if (in_array($request->get('locale'), $locales)) {
-                $locale = strtolower($request->get('locale'));
-            }
-        }
+        $payload = collect($request->all())
+            ->map(function ($value, $key) {
+                if (in_array($key, ['locale', '_locale'])) {
+                    return strtolower($value);
+                }
 
-        $request->merge(['locale' => $locale]);
+                return $value;
+            })
+            ->when($request->filled('locale'), function ($collection) use (&$locale, $locales) {
+                if (in_array($collection->get('locale'), $locales)) {
+                    $locale = $collection->get('locale');
+                } else {
+                    $collection->put('locale', $locale);
+                }
+
+                return $collection;
+            });
+
+        $request->merge($payload->toArray());
 
         app()->setLocale($locale);
 
