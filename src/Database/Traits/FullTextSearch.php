@@ -5,9 +5,9 @@ namespace PlusClouds\CRM\Helpers\Traits;
 trait FullTextSearch
 {
 
-    public function scopeFullTextSearch($query, $term,array $colums)
+    public function scopeFullTextSearch($query, $term)
     {
-        $str = implode(',',$colums);
+        $str = implode(',',$this->fullTextFields);
         $query->whereRaw("MATCH ($str) AGAINST (? IN BOOLEAN MODE)" , fullTextWildcards($term));
         return $query;
     }
