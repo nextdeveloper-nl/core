@@ -239,3 +239,26 @@ function formatNumber($num, $decimals = 0, $decimalSeparator = '.', $thousandsSe
 
     return (float)filter_var($num, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 }
+
+function fullTextWildcards($term)
+{
+    // semboller varsa kaldırıyoruz
+    $reservedSymbols = ['-', '+', '<', '>', '@', '(', ')', '~'];
+    $term = str_replace($reservedSymbols, '', $term);
+
+    $words = explode(' ', $term);
+
+    foreach ($words as $key => $word) {
+        /*
+         * büyük cümleler için araya * gerekli çünkü mysql küçükleri indekslemez
+         *
+         */
+        if (strlen($word) >= 3) {
+            $words[$key] = '*' . $word . '*';
+        }
+    }
+
+    $searchTerm = implode(' ', $words);
+
+    return $searchTerm;
+}
