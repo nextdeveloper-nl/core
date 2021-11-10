@@ -21,7 +21,8 @@ class CountryTransformer extends AbstractTransformer {
     /**
      * @var array
      */
-    protected $visible = ['code', 'name'];
+    //  Çok gereksizdi kaldırdım (cevatkelle)
+    //protected $visible = ['code', 'name', 'locale'];
 
     /**
      * @param Country $country

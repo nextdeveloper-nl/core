@@ -37,4 +37,13 @@ class CountryQueryFilter extends AbstractQueryFilter
             ->where( 'is_active', false );
     }
 
+	/**
+	 * Filters the country with phone code
+	 *
+	 * @param $phoneCode
+	 * @return \Illuminate\Database\Eloquent\Builder
+	 */
+    public function phoneCode($phoneCode) {
+    	return $this->builder->where('phone_code', $phoneCode);
+    }
 }
