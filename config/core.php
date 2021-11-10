@@ -6,6 +6,12 @@ return [
         'default'    => env('DEFAULT_LOCALE', 'en'),
     ],
 
+	'apiUrl'    =>  [
+		'dev'   =>  'apiv2.yenibosna.plusclouds',
+		'local' =>  'apiv2.yenibosna.plusclouds',
+		'production' =>  'leo.yenibosna.plusclouds'
+	],
+
     'schedule' => [
         'exchange_rate' => env('EXCHANGE_RATE_SCHEDULE', false),
     ],
