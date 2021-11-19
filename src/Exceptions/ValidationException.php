@@ -25,6 +25,6 @@ class ValidationException extends AbstractCoreException {
     public function render($request) {
         return $request->expectsJson()
                     ? response()->api()->errorUnprocessable(optional($this->originalException)->errors() ?? $this->getMessage())
-                    : redirect()->guest(route('login'))->withErrors(optional($this->originalException)->errors() ?? $this->getMessage());
+                    : redirect()->guest(route('login', ['locale' => app()->getLocale()]))->withErrors(optional($this->originalException)->errors() ?? $this->getMessage());
     }
 }
