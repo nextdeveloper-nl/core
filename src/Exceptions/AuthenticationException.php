@@ -25,6 +25,6 @@ class AuthenticationException extends AbstractCoreException {
     public function render($request) {
         return $request->expectsJson()
                     ? response()->api()->errorUnauthorized($this->getMessage())
-                    : redirect()->guest(route('login'));
+                    : redirect()->guest(route('login', ['locale' => app()->getLocale()]));
     }
 }
