@@ -142,6 +142,12 @@ Route::prefix('tags')->group(function () {
     // Yeni bir etiket yaratır.
     Route::middleware('auth:api')->post('/', 'TagController@store');
 
+    // İlgili Modele Bir Tag Atar
+    Route::put('/attach', 'TagController@attach');
+
+    // İlgili Modele Bir Tag Çıkartır
+    Route::put('/detach', 'TagController@detach');
+
     // Varolan bir etiketi siler.
     Route::middleware('auth:api')->delete('/{tag}', 'TagController@destroy')->middleware('auth:api');
 });
