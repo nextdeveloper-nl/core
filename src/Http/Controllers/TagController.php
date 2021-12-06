@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use PlusClouds\Core\Database\Filters\TagQueryFilter;
 use PlusClouds\Core\Database\Models\Tag;
+use PlusClouds\Core\Database\Models\Taggables;
 use PlusClouds\Core\Exceptions\UnauthorizedException;
 use PlusClouds\Core\Http\Requests\TagAttachRequest;
 use PlusClouds\Core\Http\Requests\TagDetachRequest;
@@ -119,29 +120,86 @@ class TagController extends AbstractController
     }
 
     public function attach(TagAttachRequest $request) {
-	    /*
-	     * Burada hangi tag'in ve hangi model'in tag'leneceğine request'e bakarak karar vereceğiz ve ilgili model'i
-	     * tag'leyeceğiz.
-	     *
-	     * Model bize object adıyla gelecek ancak objenin tam yerini bilmediğimiz için core configurasyonu içerisinde
-	     * bir de model-tag-relation diye bir alan açmamız ve altına şöyle bir array eklememiz gerek;
-	     *
-	     * 'model-tag-relation' =>  [
-	     *      'virtual-machine'   =>  'PlusClouds\IaaS\Database\Models\VirtualMachines'
-	     * ]
-	     *
-	     * Bu sayede eğer bize virtual-machine objesi gelirse bu model'in tag'lenmesi gerektiğini bileceğiz.
-	     * Bu noktada sonra dilersen tabloya doğrudan insert'de yapabilirsin yada model'i dinamik olarak generate
-	     * edip ($model)->attach($tag) de yapabirlisin. Sana kalmış.
-	     *
-	     * Bu arada tag'ler virgül ile ayrılmış vaziyette gelecek. Yani name = 'tag1,tag2,tag3,tag4' şeklinde gelecek.
-	     * Bunları parçalarına ayırıp öyle çalıştırman lazım.
-	     */
+
+        $data = $request->validated();
+
+        $classArr = $this->findObjectFromClassName($data['object'],$data['object_id']);
+
+        if(empty($classArr)){
+
+            logger()->error('[Tag|Attach] Object Not Found');
+
+            throw new \Exception('Object Not Found');
+        }
+
+        $tag = Tag::firstOrCreate(['name' => $data['tag']]);
+
+	    Taggables::create([
+           'taggable_type' => $classArr[0],
+           'taggable_id'   => $classArr[1],
+           'tag_id'        => $tag->id,
+        ]);
+
+        return $this->noContent();
     }
 
     public function detach(TagDetachRequest $request) {
-	    /*
-	     * Tıpkısının aynısının detach'i :)
-	     */
+        $data = $request->validated();
+
+        $classArr = $this->findObjectFromClassName($data['object'],$data['object_id']);
+
+        $tag = Tag::find($data['tag_id']);
+
+        Taggables::where([['tag_id',$tag->id],['taggable_id',$classArr[1]],['taggable_type',$classArr[0]]])->delete();
+
+        return $this->noContent();
     }
+
+    private function findObjectFromClassName($object,$objectId):array{
+
+        //composer dosyasına erişiyoruz
+        $content = file_get_contents('../composer.json');
+
+        //composer dosyasını okuyoruz
+        $loadedLibs = array_keys(json_decode($content,true)['require']);
+
+        foreach ($loadedLibs as $pckName){
+
+            //require edilen plusclouds paketlerini buluyoruz
+            if (substr($pckName,0,4) === 'plus'){
+
+                //bulunan pakette adını alıyoruz
+                $moduleName = ucfirst(explode('/',$pckName)[1]);
+
+                //sonra bu paketin olabilecek pathini ayarlıyoruz
+                $path = sprintf('PlusClouds\%s\Database\Models\%s',$moduleName,dashesToCamelCase($object,true));
+
+                //ayarladığımız path gerçekten var moı diye bakıyoruz
+                if (class_exists($path)){
+
+                    $class = new $path();
+
+                    //ayaraldığımız path var ise ve bu path taggable ise ilgili modeli buluyoruz
+                    if (array_key_exists('PlusClouds\Core\Database\Traits\Taggable',class_uses_recursive($class))){
+
+                        $objectId =  $class->findByRef($objectId)->id;
+
+                        $object = $path;
+
+                        return [$object,$objectId];
+
+                    }else{
+
+                        logger()->error('[Tag|Attach] attaching failed because provided object not available for this action');
+
+                        throw new \Exception('Provided object not available for this action');
+
+                    }
+                }
+            }
+        }
+
+       return [];
+    }
+
 }
