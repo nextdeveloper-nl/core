@@ -13,6 +13,8 @@ namespace PlusClouds\Core\Http\Controllers;
 use PlusClouds\Account\Database\Models\Account;
 use PlusClouds\Core\Database\Models\Country;
 use PlusClouds\Core\Database\Models\Discount;
+use PlusClouds\Core\Database\Models\Discountable;
+use PlusClouds\Core\Http\Requests\DiscountableStoreRequest;
 use PlusClouds\Core\Http\Requests\DiscountStoreRequest;
 use PlusClouds\Core\Http\Requests\DiscountUpdateRequest;
 
@@ -110,6 +112,40 @@ class DiscountController extends AbstractController {
         $this->authorize('destroy', $discount);
 
         $discount->delete();
+
+        return $this->noContent();
+    }
+
+    public function attach(DiscountableStoreRequest $request) {
+
+        $data = $request->validated();
+
+        $classArr = findObjectFromClassName($data['object'],$data['object_id'],'Discountable');
+
+        if(empty($classArr)){
+
+            logger()->error('[Discount|Attach] Object Not Found');
+
+            throw new \Exception('Object Not Found');
+        }
+
+        $discount = Discount::findByRef($data['discount_id']);
+
+        Discountable::create([
+            'discountable_id'     => $classArr[1],
+            'discountable_type'   => $classArr[0],
+            'discount_id'         => $discount->id,
+        ]);
+
+        return $this->noContent();
+    }
+
+    public function detach(DiscountableStoreRequest $request) {
+        $data = $request->validated();
+
+        $classArr = findObjectFromClassName($data['object'],$data['object_id'],'Discountable');
+
+        Discountable::where([['discount_id',$data['discount_id']],['discountable_id',$classArr[1]],['discountable_type',$classArr[0]]])->delete();
 
         return $this->noContent();
     }
