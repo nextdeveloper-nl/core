@@ -10,32 +10,30 @@
 
 namespace PlusClouds\Core\Http\Controllers;
 
+
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-
-
 use PlusClouds\Core\Database\Models\Meta;
-use PlusClouds\Core\Http\Requests\Meta\MetaStoreRequest;
-use PlusClouds\Core\Http\Requests\Meta\MetaUpdateRequest;
-
+use PlusClouds\Core\Http\Requests\Config\ConfigStoreRequest;
+use PlusClouds\Core\Http\Requests\Config\ConfigUpdateRequest;
 
 /**
- * Class DiscountableController.
- *
+ * Class ConfigController
  * @package PlusClouds\Core\Http\Controllers
  */
-class MetableController extends AbstractController
+class ConfigController extends AbstractController
 {
 
-    public function store(MetaStoreRequest $request)
+    public function store(ConfigStoreRequest $request)
     {
 
         $data = $request->validated();
 
-        $objectArr = findObjectFromClassName($data['object'], $data['object_id'], 'Meta');
+        $objectArr = findObjectFromClassName($data['object'], $data['object_id'], 'Configable');
 
         Meta::create([
             'value' => $data['value'],
-            'key' => $data['key'],
+            'key' => 'config.'.$data['key'],
             'metable_type' => $objectArr[0],
             'metable_id' => $objectArr[1]
         ]);
@@ -43,7 +41,7 @@ class MetableController extends AbstractController
         return $this->noContent();
     }
 
-    public function update(MetaUpdateRequest $request, Meta $meta)
+    public function update(ConfigUpdateRequest $request, Meta $meta)
     {
 
         $meta->value = $request->validated()['value'];
@@ -60,6 +58,4 @@ class MetableController extends AbstractController
 
         return $this->noContent();
     }
-
-
 }

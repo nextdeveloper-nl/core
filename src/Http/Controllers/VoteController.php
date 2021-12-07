@@ -10,23 +10,21 @@
 
 namespace PlusClouds\Core\Http\Controllers;
 
+
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-
-
 use PlusClouds\Core\Database\Models\Meta;
-use PlusClouds\Core\Http\Requests\Meta\MetaStoreRequest;
-use PlusClouds\Core\Http\Requests\Meta\MetaUpdateRequest;
-
+use PlusClouds\Core\Http\Requests\Vote\VoteStoreRequest;
+use PlusClouds\Core\Http\Requests\Vote\VoteUpdateRequest;
 
 /**
- * Class DiscountableController.
- *
+ * Class StateController
  * @package PlusClouds\Core\Http\Controllers
  */
-class MetableController extends AbstractController
+class VoteController extends AbstractController
 {
 
-    public function store(MetaStoreRequest $request)
+    public function store(VoteStoreRequest $request)
     {
 
         $data = $request->validated();
@@ -43,7 +41,7 @@ class MetableController extends AbstractController
         return $this->noContent();
     }
 
-    public function update(MetaUpdateRequest $request, Meta $meta)
+    public function update(VoteUpdateRequest $request, Meta $meta)
     {
 
         $meta->value = $request->validated()['value'];
