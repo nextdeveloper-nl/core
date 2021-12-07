@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 
+use PlusClouds\Core\Database\Models\Comment;
 use PlusClouds\Core\Database\Models\Country;
 use PlusClouds\Core\Database\Models\Category;
 use PlusClouds\Core\Database\Models\Discount;
@@ -47,5 +48,9 @@ return [
 
     'tag' => function($value) {
         return Tag::where( 'slug', $value )->firstOrFail();
+    },
+
+    'comment' => function($value) {
+        return Comment::findByRef( $value );
     },
 ];
