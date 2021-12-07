@@ -262,3 +262,56 @@ function fullTextWildcards($term)
 
     return $searchTerm;
 }
+
+
+function findObjectFromClassName($object,$objectId,$trait):array{
+
+    //composer dosyasına erişiyoruz
+    $content = file_get_contents('../composer.json');
+
+    //composer dosyasını okuyoruz
+    $loadedLibs = array_keys(json_decode($content,true)['require']);
+
+    foreach ($loadedLibs as $pckName){
+
+        //require edilen plusclouds paketlerini buluyoruz
+        if (substr($pckName,0,4) === 'plus'){
+
+            //bulunan pakette adını alıyoruz
+            $moduleName = ucfirst(explode('/',$pckName)[1]);
+
+            //crm komple uppercase yazıldığından dolayı crm gelirse komple büyük yazıyoruz
+            if ($moduleName === 'Crm'){
+                $moduleName = 'CRM';
+            }
+
+            //sonra bu paketin olabilecek pathini ayarlıyoruz
+            $path = sprintf('PlusClouds\%s\Database\Models\%s',$moduleName,dashesToCamelCase($object,true));
+
+            //ayarladığımız path gerçekten var moı diye bakıyoruz
+            if (class_exists($path)){
+
+                $class = new $path();
+
+                //ayaraldığımız path var ise ve bu path taggable ise ilgili modeli buluyoruz
+                if (array_key_exists(sprintf('PlusClouds\Core\Database\Traits\%s',$trait),class_uses_recursive($class))){
+
+                    $objectId =  $class->findByRef($objectId)->id;
+
+                    $object = $path;
+
+                    return [$object,$objectId];
+
+                }else{
+
+                    logger()->error('[Tag|Attach] attaching failed because provided object not available for this action');
+
+                    throw new \Exception('Provided object not available for this action');
+
+                }
+            }
+        }
+    }
+
+    return [];
+}
