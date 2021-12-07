@@ -12,7 +12,7 @@ namespace PlusClouds\Core\Http\Controllers;
 
 use Illuminate\Http\Request;
 use PlusClouds\Core\Database\Models\Comment;
-use PlusClouds\Core\Http\Requests\Comment\MetaStoreRequest;
+use PlusClouds\Core\Http\Requests\Comment\CommentStoreRequest;
 use PlusClouds\Core\Http\Requests\Comment\CommentUpdateRequest;
 
 /**
@@ -23,7 +23,7 @@ use PlusClouds\Core\Http\Requests\Comment\CommentUpdateRequest;
 class CommentController extends AbstractController
 {
 
-    public function store(MetaStoreRequest $request)
+    public function store(CommentStoreRequest $request)
     {
         $data = $request->validated();
         $objectArr = findObjectFromClassName($data['object'], $data['object_id'], 'Commentable');
