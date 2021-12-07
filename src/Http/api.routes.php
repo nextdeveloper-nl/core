@@ -159,3 +159,7 @@ Route::prefix('mails')->middleware('auth:api')->group(function () {
     // Toplu e-posta gönderimi yapar.
     Route::post('/batch-send', 'MailController@batchSend');
 });
+
+
+Route::resource('comment','CommentController')->middleware('auth:api');
+Route::resource('meta','MetableController')->middleware('auth:api');
