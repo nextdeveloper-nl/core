@@ -112,6 +112,10 @@ Route::prefix('discounts')->middleware('auth:api')->group(function () {
 
     // Varolan bir indirimi siler.
     Route::delete('/{discount}', 'DiscountController@destroy');
+
+    Route::post('/attach', 'DiscountController@attach');
+
+    Route::post('/detach', 'DiscountController@detach');
 });
 
 Route::prefix('email-templates')->middleware('auth:api')->group(function () {
