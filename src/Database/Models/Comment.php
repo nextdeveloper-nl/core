@@ -24,6 +24,10 @@ class Comment extends AbstractModel
 
     use SoftDeletes, HashId, NodeTrait;
 
+    protected $fillable = [
+      'user_id','body','commentable_id','commentable_type'
+    ];
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
