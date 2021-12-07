@@ -165,5 +165,53 @@ Route::prefix('mails')->middleware('auth:api')->group(function () {
 });
 
 
-Route::resource('comment','CommentController')->middleware('auth:api');
-Route::resource('meta','MetableController')->middleware('auth:api');
+Route::prefix('comments')->middleware('auth:api')->group(function () {
+
+    Route::post('/', 'CommentController@store');
+
+    Route::put('/{comment}', 'CommentController@update');
+
+    Route::delete('/{comment}', 'CommentController@destroy');
+});
+
+
+Route::prefix('metas')->middleware('auth:api')->group(function () {
+
+    Route::post('/', 'MetableController@store');
+
+    Route::put('/{meta}', 'MetableController@update');
+
+    Route::delete('/{meta}', 'MetableController@destroy');
+
+});
+
+
+Route::prefix('states')->middleware('auth:api')->group(function () {
+
+    Route::post('/', 'StateController@store');
+
+    Route::put('/{state}', 'StateController@update');
+
+    Route::delete('/{state}', 'StateController@destroy');
+
+});
+
+Route::prefix('votes')->middleware('auth:api')->group(function () {
+
+    Route::post('/', 'VoteController@store');
+
+    Route::put('/{vote}', 'VoteController@update');
+
+    Route::delete('/{vote}', 'VoteController@destroy');
+
+});
+
+Route::prefix('configs')->middleware('auth:api')->group(function () {
+
+    Route::post('/', 'ConfigController@store');
+
+    Route::put('/{config}', 'ConfigController@update');
+
+    Route::delete('/{config}', 'ConfigController@destroy');
+
+});
