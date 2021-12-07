@@ -275,7 +275,7 @@ function findObjectFromClassName($object,$objectId,$trait):array{
     foreach ($loadedLibs as $pckName){
 
         //require edilen plusclouds paketlerini buluyoruz
-        if (substr($pckName,0,4) === 'plus'){
+        if (substr($pckName,0,10) === 'plusclouds'){
 
             //bulunan pakette adını alıyoruz
             $moduleName = ucfirst(explode('/',$pckName)[1]);
@@ -288,12 +288,12 @@ function findObjectFromClassName($object,$objectId,$trait):array{
             //sonra bu paketin olabilecek pathini ayarlıyoruz
             $path = sprintf('PlusClouds\%s\Database\Models\%s',$moduleName,dashesToCamelCase($object,true));
 
-            //ayarladığımız path gerçekten var moı diye bakıyoruz
+            //ayarladığımız path gerçekten var mı diye bakıyoruz
             if (class_exists($path)){
 
                 $class = new $path();
 
-                //ayaraldığımız path var ise ve bu path taggable ise ilgili modeli buluyoruz
+                //ayarladığımız path var ise ve bu path taggable ise ilgili modeli buluyoruz
                 if (array_key_exists(sprintf('PlusClouds\Core\Database\Traits\%s',$trait),class_uses_recursive($class))){
 
                     $objectId =  $class->findByRef($objectId)->id;
@@ -304,7 +304,7 @@ function findObjectFromClassName($object,$objectId,$trait):array{
 
                 }else{
 
-                    logger()->error('[Tag|Attach] attaching failed because provided object not available for this action');
+                    logger()->error('[Util|findObjectFromClassName] Provided object not available for this action');
 
                     throw new \Exception('Provided object not available for this action');
 
