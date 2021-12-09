@@ -112,6 +112,10 @@ Route::prefix('discounts')->middleware('auth:api')->group(function () {
 
     // Varolan bir indirimi siler.
     Route::delete('/{discount}', 'DiscountController@destroy');
+
+    Route::post('/attach', 'DiscountController@attach');
+
+    Route::post('/detach', 'DiscountController@detach');
 });
 
 Route::prefix('email-templates')->middleware('auth:api')->group(function () {
@@ -142,6 +146,12 @@ Route::prefix('tags')->group(function () {
     // Yeni bir etiket yaratır.
     Route::middleware('auth:api')->post('/', 'TagController@store');
 
+    // İlgili Modele Bir Tag Atar
+    Route::put('/attach', 'TagController@attach');
+
+    // İlgili Modele Bir Tag Çıkartır
+    Route::put('/detach', 'TagController@detach');
+
     // Varolan bir etiketi siler.
     Route::middleware('auth:api')->delete('/{tag}', 'TagController@destroy')->middleware('auth:api');
 });
@@ -152,4 +162,56 @@ Route::prefix('mails')->middleware('auth:api')->group(function () {
 
     // Toplu e-posta gönderimi yapar.
     Route::post('/batch-send', 'MailController@batchSend');
+});
+
+
+Route::prefix('comments')->middleware('auth:api')->group(function () {
+
+    Route::post('/', 'CommentController@store');
+
+    Route::put('/{comment}', 'CommentController@update');
+
+    Route::delete('/{comment}', 'CommentController@destroy');
+});
+
+
+Route::prefix('metas')->middleware('auth:api')->group(function () {
+
+    Route::post('/', 'MetableController@store');
+
+    Route::put('/{meta}', 'MetableController@update');
+
+    Route::delete('/{meta}', 'MetableController@destroy');
+
+});
+
+
+Route::prefix('states')->middleware('auth:api')->group(function () {
+
+    Route::post('/', 'StateController@store');
+
+    Route::put('/{state}', 'StateController@update');
+
+    Route::delete('/{state}', 'StateController@destroy');
+
+});
+
+Route::prefix('votes')->middleware('auth:api')->group(function () {
+
+    Route::post('/', 'VoteController@store');
+
+    Route::put('/{vote}', 'VoteController@update');
+
+    Route::delete('/{vote}', 'VoteController@destroy');
+
+});
+
+Route::prefix('configs')->middleware('auth:api')->group(function () {
+
+    Route::post('/', 'ConfigController@store');
+
+    Route::put('/{config}', 'ConfigController@update');
+
+    Route::delete('/{config}', 'ConfigController@destroy');
+
 });
