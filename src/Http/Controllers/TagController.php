@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use PlusClouds\Core\Database\Filters\TagQueryFilter;
 use PlusClouds\Core\Database\Models\Tag;
+use PlusClouds\Core\Database\Models\Taggables;
 use PlusClouds\Core\Exceptions\UnauthorizedException;
 use PlusClouds\Core\Http\Requests\TagAttachRequest;
 use PlusClouds\Core\Http\Requests\TagDetachRequest;
@@ -119,29 +120,39 @@ class TagController extends AbstractController
     }
 
     public function attach(TagAttachRequest $request) {
-	    /*
-	     * Burada hangi tag'in ve hangi model'in tag'leneceğine request'e bakarak karar vereceğiz ve ilgili model'i
-	     * tag'leyeceğiz.
-	     *
-	     * Model bize object adıyla gelecek ancak objenin tam yerini bilmediğimiz için core configurasyonu içerisinde
-	     * bir de model-tag-relation diye bir alan açmamız ve altına şöyle bir array eklememiz gerek;
-	     *
-	     * 'model-tag-relation' =>  [
-	     *      'virtual-machine'   =>  'PlusClouds\IaaS\Database\Models\VirtualMachines'
-	     * ]
-	     *
-	     * Bu sayede eğer bize virtual-machine objesi gelirse bu model'in tag'lenmesi gerektiğini bileceğiz.
-	     * Bu noktada sonra dilersen tabloya doğrudan insert'de yapabilirsin yada model'i dinamik olarak generate
-	     * edip ($model)->attach($tag) de yapabirlisin. Sana kalmış.
-	     *
-	     * Bu arada tag'ler virgül ile ayrılmış vaziyette gelecek. Yani name = 'tag1,tag2,tag3,tag4' şeklinde gelecek.
-	     * Bunları parçalarına ayırıp öyle çalıştırman lazım.
-	     */
+
+        $data = $request->validated();
+
+        $classArr = findObjectFromClassName($data['object'],$data['object_id'],'Taggable');
+
+        if(empty($classArr)){
+
+            logger()->error('[Tag|Attach] Object Not Found');
+
+            throw new \Exception('Object Not Found');
+        }
+
+        $tag = Tag::firstOrCreate(['name' => $data['tag']]);
+
+	    Taggables::create([
+           'taggable_type' => $classArr[0],
+           'taggable_id'   => $classArr[1],
+           'tag_id'        => $tag->id,
+        ]);
+
+        return $this->noContent();
     }
 
     public function detach(TagDetachRequest $request) {
-	    /*
-	     * Tıpkısının aynısının detach'i :)
-	     */
+        $data = $request->validated();
+
+        $classArr = findObjectFromClassName($data['object'],$data['object_id'],'Taggable');
+
+        $tag = Tag::find($data['tag_id']);
+
+        Taggables::where([['tag_id',$tag->id],['taggable_id',$classArr[1]],['taggable_type',$classArr[0]]])->delete();
+
+        return $this->noContent();
     }
+
 }

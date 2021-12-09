@@ -8,17 +8,17 @@
  * file that was distributed with this source code.
  */
 
-namespace PlusClouds\Core\Http\Requests;
+namespace PlusClouds\Core\Http\Requests\Vote;
 
 
 use BenSampo\Enum\Rules\EnumValue;
-use PlusClouds\Core\Common\Enums\TagType;
+use PlusClouds\Core\Http\Requests\AbstractFormRequest;
 
 /**
- * Class TagStoreRequest
+ * Class StateStoreRequest
  * @package PlusClouds\Core\Http\Requests
  */
-class TagDetachRequest extends AbstractFormRequest
+class VoteUpdateRequest extends AbstractFormRequest
 {
 
     /**
@@ -33,9 +33,7 @@ class TagDetachRequest extends AbstractFormRequest
      */
     public function rules() {
         return [
-            'object_id'      => 'required|string',
-            'object'         => 'required|string',
-            'tag_id'         => 'required|string',
+            'value'        => 'required|numeric'
         ];
     }
 

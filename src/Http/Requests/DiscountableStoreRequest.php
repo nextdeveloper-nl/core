@@ -10,33 +10,32 @@
 
 namespace PlusClouds\Core\Http\Requests;
 
-
-use BenSampo\Enum\Rules\EnumValue;
-use PlusClouds\Core\Common\Enums\TagType;
+use PlusClouds\Core\Http\Requests\AbstractFormRequest;
 
 /**
- * Class TagStoreRequest
+ * Class CategoryStoreRequest.
+ *
  * @package PlusClouds\Core\Http\Requests
  */
-class TagDetachRequest extends AbstractFormRequest
+class DiscountableStoreRequest extends AbstractFormRequest
 {
-
     /**
      * @return bool
      */
-    public function authorize() {
+    public function authorize()
+    {
         return true;
     }
 
     /**
      * @return array
      */
-    public function rules() {
+    public function rules()
+    {
         return [
-            'object_id'      => 'required|string',
-            'object'         => 'required|string',
-            'tag_id'         => 'required|string',
+            'discount_id'  =>  'required|string',
+            'object'       =>  'required|string',
+            'object_id'    =>  'required|string',
         ];
     }
-
 }

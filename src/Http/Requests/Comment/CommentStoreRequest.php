@@ -8,35 +8,34 @@
  * file that was distributed with this source code.
  */
 
-namespace PlusClouds\Core\Http\Requests;
+namespace PlusClouds\Core\Http\Requests\Comment;
 
-
-use BenSampo\Enum\Rules\EnumValue;
-use PlusClouds\Core\Common\Enums\TagType;
+use PlusClouds\Core\Http\Requests\AbstractFormRequest;
 
 /**
- * Class TagStoreRequest
+ * Class CategoryStoreRequest.
+ *
  * @package PlusClouds\Core\Http\Requests
  */
-class TagDetachRequest extends AbstractFormRequest
+class CommentStoreRequest extends AbstractFormRequest
 {
-
     /**
      * @return bool
      */
-    public function authorize() {
+    public function authorize()
+    {
         return true;
     }
 
     /**
      * @return array
      */
-    public function rules() {
+    public function rules()
+    {
         return [
-            'object_id'      => 'required|string',
-            'object'         => 'required|string',
-            'tag_id'         => 'required|string',
+            'comment'  =>  'required|string|max:255',
+            'object'   =>  'required|string',
+            'object_id' =>  'required|string',
         ];
     }
-
 }

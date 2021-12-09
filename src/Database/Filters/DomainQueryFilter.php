@@ -38,6 +38,6 @@ class DomainQueryFilter extends AbstractQueryFilter
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function name( $name ) {
-        return $this->builder->where('name', $name);
+        return $this->builder->where('name', '%' . $name . '%');
     }
 }
