@@ -215,3 +215,13 @@ Route::prefix('configs')->middleware('auth:api')->group(function () {
     Route::delete('/{config}', 'ConfigController@destroy');
 
 });
+
+Route::prefix('addresses')->middleware('auth:api')->group(function () {
+
+    Route::post('/', 'AddressController@store');
+
+    Route::put('/{address}', 'AddressController@update');
+
+    Route::delete('/{address}', 'AddressController@destroy');
+
+});
