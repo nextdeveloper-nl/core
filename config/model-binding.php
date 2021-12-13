@@ -53,4 +53,8 @@ return [
     'comment' => function($value) {
         return Comment::findByRef( $value );
     },
+
+    'address' => function($value) {
+        return \PlusClouds\Core\Database\Models\Address::findByRef( $value );
+    },
 ];
