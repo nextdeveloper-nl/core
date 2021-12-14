@@ -31,6 +31,7 @@ class CountryTransformer extends AbstractTransformer {
      */
     public function transform(Country $country) {
         return $this->buildPayload([
+            'id'             => $country->id_ref,
             'code'           => $country->code,
             'name'           => $country->name,
             'locale'         => $country->locale,
