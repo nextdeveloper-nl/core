@@ -14,8 +14,10 @@ namespace PlusClouds\Core\Http\Controllers;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use PlusClouds\Core\Database\Models\Address;
+use PlusClouds\Core\Database\Models\Country;
 use PlusClouds\Core\Http\Requests\Address\AddressStoreRequest;
 use PlusClouds\Core\Http\Requests\Address\AddressUpdateRequest;
+use PlusClouds\CRM\Database\Models\Organization;
 
 /**
  * Class AddressController
@@ -26,24 +28,43 @@ class AddressController extends AbstractController
 
     public function store(AddressStoreRequest $request)
     {
-
         $data = $request->validated();
 
         $objectArr = findObjectFromClassName($data['object'], $data['object_id'], 'Addressable');
 
-
-        Address::create(collect($request->validated())->merge([
+        $data = collect($data)->merge([
             'addressable_type' => $objectArr[0],
-            'addressable_id'   => $objectArr[1],
-        ])->forget(['object','object_id'])->toArray());
+            'addressable_id' => $objectArr[1],
+        ])->forget(['object', 'object_id'])->toArray();
+
+        if ($request->has('country_id')) {
+            $data = array_merge(
+                $data,
+                [
+                    'country_id' => Country::where('id_ref', $request->get('country_id'))->first()->id
+                ]
+            );
+        }
+
+        Address::create($data);
 
         return $this->noContent();
     }
 
-    public function update(AddressUpdateRequest $request,Address $address)
+    public function update(AddressUpdateRequest $request, Address $address)
     {
+        $data = collect($request->validated())->forget(['addressable_id'])->toArray();
 
-        $address->update(collect($request->validated())->forget(['addressable_id'])->toArray());
+        if ($request->has('country_id')) {
+            $data = array_merge(
+                $data,
+                [
+                    'country_id' => Country::where('id_ref', $request->get('country_id'))->first()->id
+                ]
+            );
+        }
+
+        $address->update($data);
         return $this->noContent();
     }
 
