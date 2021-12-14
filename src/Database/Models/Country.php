@@ -12,6 +12,7 @@ namespace PlusClouds\Core\Database\Models;
 
 use PlusClouds\Core\Database\Traits\Filterable;
 use PlusClouds\Core\Database\Traits\GlobalScopes\WithPassive;
+use PlusClouds\Core\Database\Traits\UuidId;
 use PlusClouds\Core\Exceptions\NotFoundException;
 
 /**
@@ -20,8 +21,7 @@ use PlusClouds\Core\Exceptions\NotFoundException;
  * @package PlusClouds\Core\Database\Models
  */
 class Country extends AbstractModel {
-    use Filterable;
-    use WithPassive;
+    use Filterable,WithPassive,UuidId;
 
     /**
      * @var bool
