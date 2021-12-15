@@ -41,7 +41,7 @@ class AddressUpdateRequest extends AbstractFormRequest
             'state_code'          =>  'numeric',
             'postcode'            =>  'numeric',
             'is_invoice_address'  =>  'boolean',
-            'country_id'          =>  'string',
+            'country_id'          =>  'exists:countries,id_ref',
             'email_address'       =>  'email',
             'addressable_id'       => 'string',
         ];

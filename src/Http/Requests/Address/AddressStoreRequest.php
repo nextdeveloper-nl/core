@@ -41,7 +41,7 @@ class AddressStoreRequest extends AbstractFormRequest
             'state_code'          =>  'numeric',
             'postcode'            =>  'numeric',
             'is_invoice_address'  =>  'boolean',
-            'country_id'          =>  'string',
+            'country_id'          =>  'required|exists:countries,id_ref',
             'email_address'       =>  'email',
             'object'              =>  'required|string',
             'object_id'           =>  'required|string',
