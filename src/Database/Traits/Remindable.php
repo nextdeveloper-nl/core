@@ -19,4 +19,13 @@ namespace PlusClouds\Core\Database\Traits;
  */
 trait Remindable {
 
+    /**
+     * Adres bilgilerini döndürür.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function remindables() {
+        return $this->hasMany( Remindable::class, 'remindables' );
+    }
+
 }
