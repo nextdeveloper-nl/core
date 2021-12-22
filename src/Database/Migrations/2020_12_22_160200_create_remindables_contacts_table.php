@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Schema;
 /**
  * Class CreateStatesTable
  */
-class CreateRemindableContactsTable extends Migration
+class CreateRemindablesContactsTable extends Migration
 {
 
     /**
@@ -23,14 +23,12 @@ class CreateRemindableContactsTable extends Migration
      */
     public function up() {
         Schema::create( 'remindables_contacts', function(Blueprint $table) {
-
-            $table->unsignedBigInteger('remindable_id');
-
+        	$table->unsignedBigInteger('remindable_id');
             $table->unsignedBigInteger('contact_id');
-
             $table->timestamps();
 
             $table->foreign('contact_id')->references('id')->on('contacts');
+	        $table->foreign('remindable_id')->references('id')->on('remindables');
         } );
     }
 
