@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Schema;
 /**
  * Class CreateStatesTable
  */
-class CreateRemindableTable extends Migration
+class CreateRemindablesTable extends Migration
 {
 
     /**
@@ -23,23 +23,15 @@ class CreateRemindableTable extends Migration
      */
     public function up() {
         Schema::create( 'remindables', function(Blueprint $table) {
-
-            $table->bigIncrements( 'id' );
-
+        	$table->bigIncrements( 'id' );
+	        $table->char('id_ref', 10)->charset('utf8')->collate('utf8_bin')->unique()->nullable();
             $table->unsignedBigInteger('remindable_id');
-
             $table->string('remindable_object_type');
-
             $table->datetime('remind_datetime')->nullable();
-
             $table->datetime('snooze_datetime')->nullable();
-
             $table->integer('user_id')->nullable();
-
             $table->text('note')->nullable();
-
             $table->integer('status')->default('0')->comment('0 bekliyor,1 hatırlatıyor,2 görüldü,3 ertelendi bekliyor,4 iptal edildi');
-
             $table->timestamps();
 
             $table->softDeletes();
