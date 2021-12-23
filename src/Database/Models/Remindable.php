@@ -3,9 +3,9 @@
 namespace PlusClouds\Core\Database\Models;
 
 
+use PlusClouds\Core\Database\Traits\UuidId;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use PlusClouds\Core\Database\Traits\Filterable;
-use PlusClouds\Core\Database\Traits\HashId;
 
 /**
  * Class Remindable
@@ -14,7 +14,7 @@ use PlusClouds\Core\Database\Traits\HashId;
 class Remindable extends AbstractModel
 {
 
-    use SoftDeletes, HashId, Filterable;
+    use SoftDeletes, UuidId, Filterable;
 
     /**
      * @var array
