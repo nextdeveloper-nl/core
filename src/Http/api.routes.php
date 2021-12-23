@@ -225,3 +225,13 @@ Route::prefix('addresses')->middleware('auth:api')->group(function () {
     Route::delete('/{address}', 'AddressController@destroy');
 
 });
+
+Route::prefix('remindable')->middleware('auth:api')->group(function () {
+
+    Route::post('/', 'RemindableController@store');
+
+    Route::put('/{remindable}', 'RemindableController@update');
+
+    Route::delete('/{remindable}', 'RemindableController@destroy');
+
+});
