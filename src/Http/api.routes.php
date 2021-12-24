@@ -14,6 +14,9 @@ Route::get('/', function () {
     ];
 });
 
+Route::get('/module-exist', 'ModuleController@moduleExist');
+
+
 Route::prefix('languages')->group(function () {
     // Dil listesini döndürür
     Route::get('/', 'LanguageController@index');
