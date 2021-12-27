@@ -315,3 +315,30 @@ function findObjectFromClassName($object,$objectId,$trait):array{
 
     return [];
 }
+
+function moduleExists($moduleName):bool{
+
+    //composer dosyasına erişiyoruz
+    $content = file_get_contents('../composer.json');
+
+    //composer dosyasını okuyoruz
+    $loadedLibs = array_keys(json_decode($content,true)['require']);
+
+    foreach ($loadedLibs as $pckName){
+
+        //require edilen plusclouds paketlerini buluyoruz
+        if (substr($pckName,0,10) === 'plusclouds'){
+
+            //bulunan pakette adını alıyoruz
+            $moduleNameComposer = ucfirst(explode('/',$pckName)[1]);
+
+            //ayarladığımız path gerçekten var mı diye bakıyoruz
+            if ($moduleNameComposer ==  $moduleName){
+
+               return true;
+            }
+        }
+    }
+
+    return false;
+}
