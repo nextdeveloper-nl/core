@@ -9,23 +9,36 @@
  */
 
 namespace PlusClouds\Core\Database\Traits;
-
-
+use Carbon\Carbon;
 
 /**
  * Trait .
  *
  * @package PlusClouds\Core\Database\Traits
  */
-trait Remindable {
+trait Remindable
+{
 
     /**
      * Adres bilgilerini döndürür.
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function remindables() {
-        return $this->hasMany( Remindable::class, 'remindables' );
+    public function remindables()
+    {
+
+        return $this->morphMany('\PlusClouds\Core\Database\Models\Remindable', 'remindable', 'remindable_object_type');
+    }
+
+
+    public function remind($dateTime = null, $note = null)
+    {
+        return $this->remindables()->create([
+            'note' => $note,
+            'status' => 0,
+            'remind_datetime' => $dateTime ?: Carbon::tomorrow(),
+            'user_id' => getAUUser()->id
+        ]);
     }
 
 }
