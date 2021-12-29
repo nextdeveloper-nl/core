@@ -11,6 +11,7 @@
 namespace PlusClouds\Core;
 
 use GuzzleHttp\Client as GuzzleClient;
+use PlusClouds\Core\Jobs\RemindRemindables;
 use Illuminate\Broadcasting\BroadcastManager;
 use Illuminate\Cache\Repository;
 use Illuminate\Console\Scheduling\Schedule;
@@ -107,6 +108,7 @@ class CoreServiceProvider extends AbstractServiceProvider {
         $this->registerRoutes();
         $this->registerCommands();
         $this->registerTokenService();
+        $this->registerScheduledJobs();
 
         $this->mergeConfigFrom(__DIR__.'/../config/core.php', 'core');
         $this->customMergeConfigFrom(__DIR__.'/../config/relation.php', 'relation');
@@ -514,5 +516,19 @@ class CoreServiceProvider extends AbstractServiceProvider {
         }
 
         return $isSuccessfull;
+    }
+
+    private function registerScheduledJobs()
+    {
+        $this->app->booted(function () {
+            $schedule = $this->app->make(Schedule::class);
+
+
+            $schedule->call(function () {
+                logger()->info('[CRM] Hourly jobs start');
+                dispatch(new RemindRemindables())->onQueue('core/general');
+            })->hourly();
+
+        });
     }
 }
