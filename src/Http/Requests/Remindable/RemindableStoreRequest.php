@@ -36,7 +36,7 @@ class RemindableStoreRequest extends AbstractFormRequest
             'note'              => 'string',
             'remindable_object' => 'string',
             'remindable_id'     => 'string',
-            'remind_datetime'   => 'required|datetime',
+            'remind_datetime'   => 'required|date_format:Y-m-d H:i:s',
         ];
     }
 }
