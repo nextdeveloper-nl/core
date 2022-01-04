@@ -15,11 +15,11 @@ use PlusClouds\Core\Database\Models\Remindable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use PlusClouds\CRM\Database\Models\Organization;
-use PlusClouds\Core\Http\Requests\Address\RemindableStoreRequest;
-use PlusClouds\Core\Http\Requests\Address\RemindableUpdateRequest;
+use PlusClouds\Core\Http\Requests\Remindable\RemindableStoreRequest;
+use PlusClouds\Core\Http\Requests\Remindable\RemindableUpdateRequest;
 
 /**
- * Class AddressController
+ * Class RemindableController
  * @package PlusClouds\Core\Http\Controllers
  */
 class RemindableController extends AbstractController
@@ -31,7 +31,7 @@ class RemindableController extends AbstractController
 
         $objectArr = findObjectFromClassName($data['remindable_object'], $data['remindable_id'], 'Remindable');
 
-        Remindable::create([
+        $remindable = Remindable::create([
             'note'                   => $data['note'] ?? null,
             'remindable_id'          => $objectArr[1],
             'remindable_object_type' => $objectArr[0],
@@ -39,7 +39,8 @@ class RemindableController extends AbstractController
             'user_id'                => getAUUser()->id,
         ]);
 
-        return $this->noContent();
+
+        return $this->withItem($remindable, app('PlusClouds\Core\Http\Transformers\RemindableTransformer'));
     }
 
     public function update(RemindableUpdateRequest $request, Remindable $remindable)
@@ -52,7 +53,7 @@ class RemindableController extends AbstractController
 
         $remindable->update($data);
 
-        return $this->noContent();
+        return $this->withItem($remindable->fresh(), app('PlusClouds\Core\Http\Transformers\RemindableTransformer'));
     }
 
 
