@@ -231,6 +231,8 @@ Route::prefix('addresses')->middleware('auth:api')->group(function () {
 
 Route::prefix('remindable')->middleware('auth:api')->group(function () {
 
+    Route::get('/', 'RemindableController@index');
+
     Route::post('/', 'RemindableController@store');
 
     Route::put('/{remindable}', 'RemindableController@update');

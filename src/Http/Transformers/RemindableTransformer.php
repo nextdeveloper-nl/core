@@ -27,6 +27,7 @@ class RemindableTransformer extends AbstractTransformer
      */
     public function transform($reminable) {
         return $this->buildPayload( [
+            'id'                      => $reminable->id_ref,
             'remind_datetime'         => $reminable->remind_datetime,
             'object_id'               => $reminable->remindable_id,
             'remindable_object_type'  => $reminable->remindable_object,

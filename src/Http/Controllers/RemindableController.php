@@ -15,6 +15,7 @@ use PlusClouds\Core\Database\Models\Remindable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use PlusClouds\CRM\Database\Models\Organization;
+use PlusClouds\Core\Database\Filters\RemindableQueryFilter;
 use PlusClouds\Core\Http\Requests\Remindable\RemindableStoreRequest;
 use PlusClouds\Core\Http\Requests\Remindable\RemindableUpdateRequest;
 
@@ -24,6 +25,14 @@ use PlusClouds\Core\Http\Requests\Remindable\RemindableUpdateRequest;
  */
 class RemindableController extends AbstractController
 {
+
+    public function index(RemindableQueryFilter $filter)
+    {
+        $remindables = Remindable::filter($filter)->get();
+
+
+        return $this->withCollection($remindables, app('PlusClouds\Core\Http\Transformers\RemindableTransformer'));
+    }
 
     public function store(RemindableStoreRequest $request)
     {
