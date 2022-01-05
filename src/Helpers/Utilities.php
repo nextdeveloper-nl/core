@@ -297,6 +297,8 @@ function findObjectFromClassName($object, $objectId, $trait):array
             //bulunan pakette adını alıyoruz
             $moduleName = ucfirst(explode('/', $pckName)[1]);
 
+
+
             //crm komple uppercase yazıldığından dolayı crm gelirse komple büyük yazıyoruz
             if ($moduleName === 'Crm') {
                 $moduleName = 'CRM';
@@ -325,7 +327,9 @@ function findObjectFromClassName($object, $objectId, $trait):array
         }
     }
 
-    return [];
+    logger()->error('[Util|findObjectFromClassName] Provided object not available for this action');
+
+    throw new \Exception('Provided object not available for this action');
 }
 
 function moduleExists($moduleName):bool
