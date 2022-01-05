@@ -10,9 +10,7 @@
 
 namespace PlusClouds\Core\Http\Controllers;
 
-
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
 use PlusClouds\Core\Database\Filters\TagQueryFilter;
 use PlusClouds\Core\Database\Models\Tag;
 use PlusClouds\Core\Database\Models\Taggables;
@@ -38,17 +36,19 @@ class TagController extends AbstractController
      * @return \Illuminate\Http\JsonResponse
      * @throws \Throwable
      */
-    public function index(TagQueryFilter $filter) {
-        $tags = Tag::where( 'type', '!=', TagType::APPLICATION )->filter( $filter );
+    public function index(TagQueryFilter $filter)
+    {
+        $tags = Tag::where('type', '!=', TagType::APPLICATION)->filter($filter);
 
-        if( isLoggedIn() )
+        if (isLoggedIn()) {
             $tags = $tags->where('account_id', getAUCurrentAccount()->id);
+        }
 
         $tags = $tags->get();
 
-        throw_if( $tags->isEmpty(), ModelNotFoundException::class, 'Could not find the tags you are looking for.' );
+        throw_if($tags->isEmpty(), ModelNotFoundException::class, 'Could not find the tags you are looking for.');
 
-        return $this->withCollection( $tags, app( TagTransformer::class ) );
+        return $this->withCollection($tags, app(TagTransformer::class));
     }
 
     /**
@@ -57,29 +57,30 @@ class TagController extends AbstractController
      * @return \Illuminate\Http\JsonResponse
      * @throws UnauthorizedException
      */
-    public function store(TagStoreRequest $request) {
-        if( ! getAUUser()->hasRole( [ 'super-admin', 'admin' ] ) ) {
-            if( in_array( $request->get( 'type' ), [ TagType::SYSTEM, TagType::COMMON ] ) ) {
-                throw new UnauthorizedException( 'You are not authorized to do this.' );
+    public function store(TagStoreRequest $request)
+    {
+        if (! getAUUser()->hasRole([ 'super-admin', 'admin' ])) {
+            if (in_array($request->get('type'), [ TagType::SYSTEM, TagType::COMMON ])) {
+                throw new UnauthorizedException('You are not authorized to do this.');
             }
         }
 
-        $data = collect( $request->validated() );
+        $data = collect($request->validated());
 
-        $data->when( in_array( $data->get( 'type' ), [ TagType::APPLICATION, TagType::USER ] ), function($collection) {
-            return $collection->put( 'account_id', getAUCurrentAccount()->id );
-        }, function($collection) {
-            return $collection->put( 'account_id', null );
-        } )->filter();
+        $data->when(in_array($data->get('type'), [ TagType::APPLICATION, TagType::USER ]), function ($collection) {
+            return $collection->put('account_id', getAUCurrentAccount()->id);
+        }, function ($collection) {
+            return $collection->put('account_id', null);
+        })->filter();
 
-        $tag = Tag::firstOrCreate( $data->except( 'description' )->toArray() );
+        $tag = Tag::firstOrCreate($data->except('description')->toArray());
 
-        if( $data->has( 'description' ) ) {
-            $tag->update( $data->only( 'description' )->toArray() );
+        if ($data->has('description')) {
+            $tag->update($data->only('description')->toArray());
         }
 
-        return $this->setStatusCode( 201 )
-            ->withItem( $tag->fresh(), app( TagTransformer::class ) );
+        return $this->setStatusCode(201)
+            ->withItem($tag->fresh(), app(TagTransformer::class));
     }
 
     /**
@@ -90,8 +91,9 @@ class TagController extends AbstractController
      * @return mixed
      * @throws \Exception
      */
-    public function destroy(Tag $tag) {
-        $this->authorize( 'tagDestroy', $tag );
+    public function destroy(Tag $tag)
+    {
+        $this->authorize('tagDestroy', $tag);
 
         $tag->delete();
 
@@ -106,27 +108,28 @@ class TagController extends AbstractController
      * @return \Illuminate\Http\JsonResponse
      * @throws \Throwable
      */
-    public function applications(TagQueryFilter $filter) {
-        $tags = Tag::where( 'type', TagType::APPLICATION )->filter( $filter );
+    public function applications(TagQueryFilter $filter)
+    {
+        $tags = Tag::where('type', TagType::APPLICATION)->filter($filter);
 
-        if( isLoggedIn() )
+        if (isLoggedIn()) {
             $tags = $tags->where('account_id', getAUCurrentAccount()->id);
+        }
 
         $tags = $tags->get();
 
-        throw_if( $tags->isEmpty(), ModelNotFoundException::class, 'Could not find application tags you are looking for.' );
+        throw_if($tags->isEmpty(), ModelNotFoundException::class, 'Could not find application tags you are looking for.');
 
-        return $this->withCollection( $tags, app( TagTransformer::class ) );
+        return $this->withCollection($tags, app(TagTransformer::class));
     }
 
-    public function attach(TagAttachRequest $request) {
-
+    public function attach(TagAttachRequest $request)
+    {
         $data = $request->validated();
 
-        $classArr = findObjectFromClassName($data['object'],$data['object_id'],'Taggable');
+        $classArr = findObjectFromClassName($data['object'], $data['object_id'], 'Taggable');
 
-        if(empty($classArr)){
-
+        if (empty($classArr)) {
             logger()->error('[Tag|Attach] Object Not Found');
 
             throw new \Exception('Object Not Found');
@@ -134,7 +137,7 @@ class TagController extends AbstractController
 
         $tag = Tag::firstOrCreate(['name' => $data['tag']]);
 
-	    Taggables::create([
+        Taggables::create([
            'taggable_type' => $classArr[0],
            'taggable_id'   => $classArr[1],
            'tag_id'        => $tag->id,
@@ -143,10 +146,11 @@ class TagController extends AbstractController
         return $this->noContent();
     }
 
-    public function detach(TagDetachRequest $request) {
+    public function detach(TagDetachRequest $request)
+    {
         $data = $request->validated();
 
-        $classArr = findObjectFromClassName($data['object'],$data['object_id'],'Taggable');
+        $classArr = findObjectFromClassName($data['object'], $data['object_id'], 'Taggable');
 
         $tag = Tag::find($data['tag_id']);
 
@@ -154,5 +158,4 @@ class TagController extends AbstractController
 
         return $this->noContent();
     }
-
 }

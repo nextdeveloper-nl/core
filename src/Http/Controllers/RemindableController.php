@@ -11,9 +11,6 @@
 namespace PlusClouds\Core\Http\Controllers;
 
 use PlusClouds\Core\Database\Models\Remindable;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
-use PlusClouds\CRM\Database\Models\Organization;
 use PlusClouds\Core\Database\Filters\RemindableQueryFilter;
 use PlusClouds\Core\Http\Requests\Remindable\RemindableStoreRequest;
 use PlusClouds\Core\Http\Requests\Remindable\RemindableUpdateRequest;

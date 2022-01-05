@@ -10,10 +10,6 @@
 
 namespace PlusClouds\Core\Http\Controllers;
 
-
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use PlusClouds\Core\Http\Requests\MailBatchSendRequest;
-use PlusClouds\Core\Http\Requests\MailSendRequest;
 use PlusClouds\Core\Http\Requests\ModuleExistRequest;
 
 /**
@@ -22,21 +18,19 @@ use PlusClouds\Core\Http\Requests\ModuleExistRequest;
  */
 class ModuleController extends AbstractController
 {
-
     /**
-     * ilgili modül var mı yok mu kontrol eder
+     * Checks if related module exists
      *
      * @param ModuleExistRequest $request
      *
      * @return mixed
      */
-    public function moduleExist(ModuleExistRequest $request){
+    public function moduleExist(ModuleExistRequest $request)
+    {
         $exists = moduleExists($request->validated()['name']);
-
 
         return $this->withArray([
             'exists' => $exists,
         ]);
     }
-
 }
