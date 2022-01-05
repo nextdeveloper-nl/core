@@ -22,7 +22,8 @@ use PlusClouds\Core\Database\Models\ExchangeRate;
  *
  * @return int
  */
-function generateRandomCode($length = 4) {
+function generateRandomCode($length = 4)
+{
     $chars = str_shuffle('abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ');
 
     return substr($chars, 1, $length);
@@ -38,7 +39,8 @@ function generateRandomCode($length = 4) {
  *
  * @return bool|string
  */
-function generateRandomString($length = 4) {
+function generateRandomString($length = 4)
+{
     $chars = str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
 
     return substr($chars, 1, $length);
@@ -49,7 +51,8 @@ function generateRandomString($length = 4) {
  *
  * @return bool|int
  */
-function generateRandomNumber($length = 4) {
+function generateRandomNumber($length = 4)
+{
     $min = (10 ** $length) / 10; // 100...
     $max = (10 ** $length) - 1;  // 999...
 
@@ -64,7 +67,8 @@ function generateRandomNumber($length = 4) {
  *
  * @return float
  */
-function customRnd($min = 1, $max = 2) {
+function customRnd($min = 1, $max = 2)
+{
     return  $min + ($max - $min) * (mt_rand() / mt_getrandmax());
 }
 
@@ -75,8 +79,9 @@ function customRnd($min = 1, $max = 2) {
  *
  * @return string
  */
-function genUuid($prefix = null) {
-    if ( ! is_null($prefix)) {
+function genUuid($prefix = null)
+{
+    if (! is_null($prefix)) {
         $length = strlen($prefix);
 
         if ($length > 3) {
@@ -86,9 +91,11 @@ function genUuid($prefix = null) {
         }
     }
 
-    $uuid = sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+    $uuid = sprintf(
+        '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
         // 32 bits for "time_low"
-        mt_rand(0, 0xffff), mt_rand(0, 0xffff),
+        mt_rand(0, 0xffff),
+        mt_rand(0, 0xffff),
         // 16 bits for "time_mid"
         mt_rand(0, 0xffff),
         // 16 bits for "time_hi_and_version",
@@ -99,7 +106,9 @@ function genUuid($prefix = null) {
         // two most significant bits holds zero and one for variant DCE1.1
         mt_rand(0, 0x3fff) | 0x8000,
         // 48 bits for "node"
-        mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
+        mt_rand(0, 0xffff),
+        mt_rand(0, 0xffff),
+        mt_rand(0, 0xffff)
     );
 
     return $prefix ? sprintf('%s-%s', $prefix, $uuid) : $uuid;
@@ -112,7 +121,8 @@ function genUuid($prefix = null) {
  *
  * @return array
  */
-function buildTagArray($tags) {
+function buildTagArray($tags)
+{
     if (is_array($tags)) {
         return $tags;
     }
@@ -136,7 +146,8 @@ function buildTagArray($tags) {
  *
  * @return array
  */
-function normalizeTag($tags) {
+function normalizeTag($tags)
+{
     $tags = buildTagArray($tags);
 
     return array_map('trim', array_map('ucwordsTr', $tags));
@@ -149,7 +160,8 @@ function normalizeTag($tags) {
  *
  * @return array
  */
-function getArrayFrom($arg) {
+function getArrayFrom($arg)
+{
     return ! is_array($arg) ? preg_split('/ ?[,|] ?/', $arg) : $arg;
 }
 
@@ -158,7 +170,8 @@ function getArrayFrom($arg) {
  *
  * @return array
  */
-function customFilter(array $data) {
+function customFilter(array $data)
+{
     return array_filter($data, function ($v) {
         return false !== $v && ! is_null($v) && ('' != $v || '0' == $v);
     });
@@ -170,7 +183,8 @@ function customFilter(array $data) {
  *
  * @return float|int
  */
-function randomFloat($min, $max) {
+function randomFloat($min, $max)
+{
     return  $min + lcg_value() * (abs($max - $min));
 }
 
@@ -182,7 +196,8 @@ function randomFloat($min, $max) {
  *
  * @return float
  */
-function currencyConverter($price, $foreignCurrencyCode, $domesticCurrencyCode, $date = null) {
+function currencyConverter($price, $foreignCurrencyCode, $domesticCurrencyCode, $date = null)
+{
     $start = microtime(true);
 
     if ($foreignCurrencyCode != $domesticCurrencyCode) {
@@ -194,7 +209,7 @@ function currencyConverter($price, $foreignCurrencyCode, $domesticCurrencyCode, 
         //     ->orderBy('id', 'DESC')
         //     ->first();
 
-	    //  Removed \ because it was creating problems with IDE. IDE dont recognize Laravel Facade classes!!!
+        //  Removed \ because it was creating problems with IDE. IDE dont recognize Laravel Facade classes!!!
         $domesticCurrency = DB::select("SELECT * FROM exchange_rates WHERE code = '{$domesticCurrencyCode}' AND DATE_FORMAT(last_modified, '%Y-%m-%d') <= '{$date}' ORDER BY id DESC LIMIT 1");
         $domesticCurrency = array_first($domesticCurrency);
 
@@ -206,7 +221,7 @@ function currencyConverter($price, $foreignCurrencyCode, $domesticCurrencyCode, 
             //     ->orderBy('id', 'DESC')
             //     ->first();
 
-	        //  Removed \ because it was creating problems with IDE. IDE dont recognize Laravel Facade classes!!!
+            //  Removed \ because it was creating problems with IDE. IDE dont recognize Laravel Facade classes!!!
             $foreignCurrency = DB::select("SELECT * FROM exchange_rates WHERE code = '{$foreignCurrencyCode}' AND DATE_FORMAT(last_modified, '%Y-%m-%d') <= '{$date}' ORDER BY id DESC LIMIT 1");
             $foreignCurrency = array_first($foreignCurrency);
 
@@ -234,7 +249,8 @@ function currencyConverter($price, $foreignCurrencyCode, $domesticCurrencyCode, 
  *
  * @return float
  */
-function formatNumber($num, $decimals = 0, $decimalSeparator = '.', $thousandsSeparator = ',') {
+function formatNumber($num, $decimals = 0, $decimalSeparator = '.', $thousandsSeparator = ',')
+{
     $num = number_format($num, $decimals, $decimalSeparator, $thousandsSeparator);
 
     return (float)filter_var($num, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
@@ -264,50 +280,46 @@ function fullTextWildcards($term)
 }
 
 
-function findObjectFromClassName($object,$objectId,$trait):array{
+function findObjectFromClassName($object, $objectId, $trait):array
+{
 
     //composer dosyasına erişiyoruz
     $content = file_get_contents('../composer.json');
 
     //composer dosyasını okuyoruz
-    $loadedLibs = array_keys(json_decode($content,true)['require']);
+    $loadedLibs = array_keys(json_decode($content, true)['require']);
 
-    foreach ($loadedLibs as $pckName){
+    foreach ($loadedLibs as $pckName) {
 
         //require edilen plusclouds paketlerini buluyoruz
-        if (substr($pckName,0,10) === 'plusclouds'){
+        if (substr($pckName, 0, 10) === 'plusclouds') {
 
             //bulunan pakette adını alıyoruz
-            $moduleName = ucfirst(explode('/',$pckName)[1]);
+            $moduleName = ucfirst(explode('/', $pckName)[1]);
 
             //crm komple uppercase yazıldığından dolayı crm gelirse komple büyük yazıyoruz
-            if ($moduleName === 'Crm'){
+            if ($moduleName === 'Crm') {
                 $moduleName = 'CRM';
             }
 
             //sonra bu paketin olabilecek pathini ayarlıyoruz
-            $path = sprintf('PlusClouds\%s\Database\Models\%s',$moduleName,dashesToCamelCase($object,true));
+            $path = sprintf('PlusClouds\%s\Database\Models\%s', $moduleName, dashesToCamelCase($object, true));
 
             //ayarladığımız path gerçekten var mı diye bakıyoruz
-            if (class_exists($path)){
-
+            if (class_exists($path)) {
                 $class = new $path();
 
                 //ayarladığımız path var ise ve bu path taggable ise ilgili modeli buluyoruz
-                if (array_key_exists(sprintf('PlusClouds\Core\Database\Traits\%s',$trait),class_uses_recursive($class))){
-
+                if (array_key_exists(sprintf('PlusClouds\Core\Database\Traits\%s', $trait), class_uses_recursive($class))) {
                     $objectId =  $class->findByRef($objectId)->id;
 
                     $object = $path;
 
                     return [$object,$objectId];
-
-                }else{
-
+                } else {
                     logger()->error('[Util|findObjectFromClassName] Provided object not available for this action');
 
                     throw new \Exception('Provided object not available for this action');
-
                 }
             }
         }
@@ -316,26 +328,26 @@ function findObjectFromClassName($object,$objectId,$trait):array{
     return [];
 }
 
-function moduleExists($moduleName):bool{
+function moduleExists($moduleName):bool
+{
 
     //composer dosyasına erişiyoruz
     $content = file_get_contents('../composer.json');
 
     //composer dosyasını okuyoruz
-    $loadedLibs = array_keys(json_decode($content,true)['require']);
+    $loadedLibs = array_keys(json_decode($content, true)['require']);
 
-    foreach ($loadedLibs as $pckName){
+    foreach ($loadedLibs as $pckName) {
 
         //require edilen plusclouds paketlerini buluyoruz
-        if (substr($pckName,0,10) === 'plusclouds'){
+        if (substr($pckName, 0, 10) === 'plusclouds') {
 
             //bulunan pakette adını alıyoruz
-            $moduleNameComposer = ucfirst(explode('/',$pckName)[1]);
+            $moduleNameComposer = ucfirst(explode('/', $pckName)[1]);
 
             //ayarladığımız path gerçekten var mı diye bakıyoruz
-            if ($moduleNameComposer ==  $moduleName){
-
-               return true;
+            if ($moduleNameComposer ==  $moduleName) {
+                return true;
             }
         }
     }

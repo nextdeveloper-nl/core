@@ -10,7 +10,6 @@
 
 namespace PlusClouds\Core\Http\Transformers;
 
-
 use PlusClouds\Core\Database\Models\Remindable;
 
 /**
@@ -25,14 +24,15 @@ class RemindableTransformer extends AbstractTransformer
      *
      * @return array
      */
-    public function transform($reminable) {
-        return $this->buildPayload( [
+    public function transform($reminable)
+    {
+        return $this->buildPayload([
+            'id'                      => $reminable->id_ref,
             'remind_datetime'         => $reminable->remind_datetime,
             'object_id'               => $reminable->remindable_id,
-            'remindable_object_type'  => $reminable->remindable_object,
+            'remindable_object_type'  => $reminable->remindable_object_type,
             'snooze_datetime'         => $reminable->snooze_datetime,
             'note'                    => $reminable->note,
-        ] );
+        ]);
     }
-
 }
