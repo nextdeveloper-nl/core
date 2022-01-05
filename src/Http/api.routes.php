@@ -170,6 +170,8 @@ Route::prefix('mails')->middleware('auth:api')->group(function () {
 
 Route::prefix('comments')->middleware('auth:api')->group(function () {
 
+    Route::get('/', 'CommentController@index');
+
     Route::post('/', 'CommentController@store');
 
     Route::put('/{comment}', 'CommentController@update');
@@ -179,6 +181,8 @@ Route::prefix('comments')->middleware('auth:api')->group(function () {
 
 
 Route::prefix('metas')->middleware('auth:api')->group(function () {
+
+    Route::get('/', 'MetableController@index');
 
     Route::post('/', 'MetableController@store');
 
