@@ -10,7 +10,6 @@
 
 namespace PlusClouds\Core\Http\Controllers;
 
-
 use PlusClouds\Core\Database\Models\Remindable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -25,11 +24,9 @@ use PlusClouds\Core\Http\Requests\Remindable\RemindableUpdateRequest;
  */
 class RemindableController extends AbstractController
 {
-
     public function index(RemindableQueryFilter $filter)
     {
         $remindables = Remindable::filter($filter)->get();
-
 
         return $this->withCollection($remindables, app('PlusClouds\Core\Http\Transformers\RemindableTransformer'));
     }
@@ -48,7 +45,6 @@ class RemindableController extends AbstractController
             'user_id'                => getAUUser()->id,
         ]);
 
-
         return $this->withItem($remindable, app('PlusClouds\Core\Http\Transformers\RemindableTransformer'));
     }
 
@@ -56,7 +52,7 @@ class RemindableController extends AbstractController
     {
         $data = $request->validated();
 
-        if ($request->has('snooze_datetime')){
+        if ($request->has('snooze_datetime')) {
             $data['status'] = 3;
         }
 
@@ -64,7 +60,6 @@ class RemindableController extends AbstractController
 
         return $this->withItem($remindable->fresh(), app('PlusClouds\Core\Http\Transformers\RemindableTransformer'));
     }
-
 
     public function destroy(Remindable $remindable)
     {
