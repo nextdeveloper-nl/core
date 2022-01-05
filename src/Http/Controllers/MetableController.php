@@ -10,13 +10,9 @@
 
 namespace PlusClouds\Core\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-
 use PlusClouds\Core\Database\Models\Meta;
 use PlusClouds\Core\Http\Requests\Meta\MetaStoreRequest;
 use PlusClouds\Core\Http\Requests\Meta\MetaUpdateRequest;
-
 
 /**
  * Class DiscountableController.
@@ -25,10 +21,8 @@ use PlusClouds\Core\Http\Requests\Meta\MetaUpdateRequest;
  */
 class MetableController extends AbstractController
 {
-
     public function store(MetaStoreRequest $request)
     {
-
         $data = $request->validated();
 
         $objectArr = findObjectFromClassName($data['object'], $data['object_id'], 'Meta');
@@ -45,21 +39,16 @@ class MetableController extends AbstractController
 
     public function update(MetaUpdateRequest $request, Meta $meta)
     {
-
         $meta->value = $request->validated()['value'];
         $meta->save();
 
         return $this->noContent();
     }
-
-
+    
     public function destroy(Meta $meta)
     {
-
         $meta->destroy();
 
         return $this->noContent();
     }
-
-
 }

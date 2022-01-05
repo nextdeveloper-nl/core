@@ -10,14 +10,10 @@
 
 namespace PlusClouds\Core\Http\Controllers;
 
-
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
 use PlusClouds\Core\Database\Models\Address;
 use PlusClouds\Core\Database\Models\Country;
 use PlusClouds\Core\Http\Requests\Address\AddressStoreRequest;
 use PlusClouds\Core\Http\Requests\Address\AddressUpdateRequest;
-use PlusClouds\CRM\Database\Models\Organization;
 
 /**
  * Class AddressController
@@ -25,7 +21,6 @@ use PlusClouds\CRM\Database\Models\Organization;
  */
 class AddressController extends AbstractController
 {
-
     public function store(AddressStoreRequest $request)
     {
         $data = $request->validated();

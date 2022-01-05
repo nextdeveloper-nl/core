@@ -22,7 +22,8 @@ use PlusClouds\Core\Http\Requests\CategoryUpdateRequest;
  *
  * @package PlusClouds\Core\Http\Controllers
  */
-class CategoryController extends AbstractController {
+class CategoryController extends AbstractController
+{
     /**
      * Kategori listesini döndürür.
      *
@@ -32,7 +33,8 @@ class CategoryController extends AbstractController {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index(CategoryQueryFilter $filter) {
+    public function index(CategoryQueryFilter $filter)
+    {
         $categories = Category::filter($filter)->orderBy('order', 'ASC')->get();
 
         throw_if($categories->isEmpty(), 'Illuminate\Database\Eloquent\ModelNotFoundException', 'Could not find the categories you are looking for.');
@@ -47,7 +49,8 @@ class CategoryController extends AbstractController {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Category $category) {
+    public function show(Category $category)
+    {
         return $this->withItem($category, app('PlusClouds\Core\Http\Transformers\CategoryTransformer'));
     }
 
@@ -58,7 +61,8 @@ class CategoryController extends AbstractController {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(CategoryStoreRequest $request) {
+    public function store(CategoryStoreRequest $request)
+    {
         $data = collect($request->validated())
             ->merge([
                 'user_id'=> getAUUser()->id,
@@ -88,7 +92,8 @@ class CategoryController extends AbstractController {
      *
      * @return mixed
      */
-    public function update(CategoryUpdateRequest $request, Category $category) {
+    public function update(CategoryUpdateRequest $request, Category $category)
+    {
         $data = collect($request->validated())
             ->when($request->filled('domain'), function ($collection) use ($request) {
                 return $collection->put('domain_id', Domain::findByRef($request->get('domain'))->id);
@@ -98,9 +103,9 @@ class CategoryController extends AbstractController {
             })
             ->forget(['domain', 'category']);
 
-	    $slugCheck = Category::where('slug', $request->get('slug'))->first();
+        $slugCheck = Category::where('slug', $request->get('slug'))->first();
 
-	    throw_if($slugCheck, DuplicateModelFoundException::class, 'We have a category with this slug in our database. Please change the slug.');
+        throw_if($slugCheck, DuplicateModelFoundException::class, 'We have a category with this slug in our database. Please change the slug.');
 
         $category->update($data->toArray());
 
@@ -112,8 +117,8 @@ class CategoryController extends AbstractController {
             }
         }
 
-	    return $this->setStatusCode(201)
-		    ->withItem($category->fresh(), app('PlusClouds\Core\Http\Transformers\CategoryTransformer'));
+        return $this->setStatusCode(201)
+            ->withItem($category->fresh(), app('PlusClouds\Core\Http\Transformers\CategoryTransformer'));
     }
 
     /**
@@ -125,7 +130,8 @@ class CategoryController extends AbstractController {
      *
      * @return mixed
      */
-    public function destroy(Category $category) {
+    public function destroy(Category $category)
+    {
         $this->authorize('categoryDestroy', $category);
 
         $category->delete();
