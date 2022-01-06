@@ -26,7 +26,7 @@ class RemindableController extends AbstractController
     {
         $data = $request->validated();
 
-        $userId = User::findByRef($data['user_id'])->id;
+        $userId = getAUUser()->id;
 
         $query = Remindable::where('user_id',$userId);
 

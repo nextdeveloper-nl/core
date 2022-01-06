@@ -34,8 +34,7 @@ class RemindableListRequest extends AbstractFormRequest
     {
         return [
             'remindable_object' => 'string',
-            'remindable_id'     => 'string',
-            'user_id'           => 'required|string',
+            'remindable_id'     => 'string'
         ];
     }
 }
