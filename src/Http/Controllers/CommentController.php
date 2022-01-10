@@ -10,7 +10,6 @@
 
 namespace PlusClouds\Core\Http\Controllers;
 
-use Illuminate\Http\Request;
 use PlusClouds\Core\Database\Models\Comment;
 use PlusClouds\Core\Http\Requests\Comment\CommentStoreRequest;
 use PlusClouds\Core\Http\Requests\Comment\CommentUpdateRequest;
@@ -22,7 +21,6 @@ use PlusClouds\Core\Http\Requests\Comment\CommentUpdateRequest;
  */
 class CommentController extends AbstractController
 {
-
     public function store(CommentStoreRequest $request)
     {
         $data = $request->validated();
@@ -35,14 +33,11 @@ class CommentController extends AbstractController
             'commentable_type' => $objectArr[0]
         ]);
 
-
         return $this->noContent();
     }
 
-
     public function update(CommentUpdateRequest $request, Comment $comment)
     {
-
         $comment->body = $request->validated()['comment'];
         $comment->save();
 
@@ -56,6 +51,4 @@ class CommentController extends AbstractController
 
         return $this->noContent();
     }
-
-
 }

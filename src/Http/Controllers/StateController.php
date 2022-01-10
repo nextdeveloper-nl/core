@@ -10,9 +10,6 @@
 
 namespace PlusClouds\Core\Http\Controllers;
 
-
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
 use PlusClouds\Core\Database\Models\State;
 use PlusClouds\Core\Http\Requests\State\StateStoreRequest;
 use PlusClouds\Core\Http\Requests\State\StateUpdateRequest;
@@ -24,19 +21,17 @@ use PlusClouds\Core\Http\Requests\State\VoteStoreController;
  */
 class StateController extends AbstractController
 {
-
-    public function store(StateStoreRequest $request){
+    public function store(StateStoreRequest $request)
+    {
         $data = $request->validated();
 
-        $classArr = findObjectFromClassName($data['object'],$data['object_id'],'HasStates');
+        $classArr = findObjectFromClassName($data['object'], $data['object_id'], 'HasStates');
 
-        if(empty($classArr)){
-
+        if (empty($classArr)) {
             logger()->error('[State|Store] Object Not Found');
 
             throw new \Exception('Object Not Found');
         }
-
 
         State::create([
             'model_type' => $classArr[0],
@@ -49,8 +44,8 @@ class StateController extends AbstractController
         return $this->noContent();
     }
 
-    public function update(StateUpdateRequest $request, State $state){
-
+    public function update(StateUpdateRequest $request, State $state)
+    {
         $data = $request->validated();
 
         $state->update([
@@ -62,11 +57,10 @@ class StateController extends AbstractController
         return $this->noContent();
     }
 
-    public function destroy(State $state){
-
+    public function destroy(State $state)
+    {
         $state->destroy();
 
         return $this->noContent();
     }
-
 }

@@ -14,6 +14,9 @@ Route::get('/', function () {
     ];
 });
 
+Route::get('/module-exist', 'ModuleController@moduleExist');
+
+
 Route::prefix('languages')->group(function () {
     // Dil listesini döndürür
     Route::get('/', 'LanguageController@index');
@@ -213,5 +216,27 @@ Route::prefix('configs')->middleware('auth:api')->group(function () {
     Route::put('/{config}', 'ConfigController@update');
 
     Route::delete('/{config}', 'ConfigController@destroy');
+
+});
+
+Route::prefix('addresses')->middleware('auth:api')->group(function () {
+
+    Route::post('/', 'AddressController@store');
+
+    Route::put('/{address}', 'AddressController@update');
+
+    Route::delete('/{address}', 'AddressController@destroy');
+
+});
+
+Route::prefix('remindable')->middleware('auth:api')->group(function () {
+
+    Route::get('/', 'RemindableController@index');
+
+    Route::post('/', 'RemindableController@store');
+
+    Route::put('/{remindable}', 'RemindableController@update');
+
+    Route::delete('/{remindable}', 'RemindableController@destroy');
 
 });
