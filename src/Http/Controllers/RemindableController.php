@@ -69,7 +69,7 @@ class RemindableController extends AbstractController
 
         if ($request->has('snooze_datetime')) {
             $data['status'] = 3;
-            $data['remind_datetime'] = $data->snooze_datetime;
+            $data['remind_datetime'] = $data['snooze_datetime'];
         }
 
         $remindable->update($data);

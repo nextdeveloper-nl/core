@@ -43,7 +43,7 @@ class AddressController extends AbstractController
 
         Address::create($data);
 
-        return $this->noContent();
+        return $this->setStatusCode(202)->noContent();
     }
 
     public function update(AddressUpdateRequest $request, Address $address)
