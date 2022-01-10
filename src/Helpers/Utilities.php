@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
-use PlusClouds\Core\Database\Models\ExchangeRate;
+use PlusClouds\Core\Exceptions\ObjectNotFoundException;
 
 /**
  * This file is part of the PlusClouds.Core library.
@@ -321,7 +321,7 @@ function findObjectFromClassName($object, $objectId, $trait):array
                 } else {
                     logger()->error('[Util|findObjectFromClassName] Provided object not available for this action');
 
-                    throw new \Exception('Provided object not available for this action');
+                    throw new ObjectNotFoundException('Provided object not available for this action');
                 }
             }
         }
@@ -329,7 +329,7 @@ function findObjectFromClassName($object, $objectId, $trait):array
 
     logger()->error('[Util|findObjectFromClassName] Provided object not available for this action');
 
-    throw new \Exception('Provided object not available for this action');
+    throw new ObjectNotFoundException('Provided object not available for this action');
 }
 
 function moduleExists($moduleName):bool

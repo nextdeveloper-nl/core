@@ -12,6 +12,7 @@ namespace PlusClouds\Core\Http\Controllers;
 
 use PlusClouds\Account\Database\Models\User;
 use PlusClouds\Core\Database\Models\Remindable;
+use PlusClouds\Core\Exceptions\ObjectNotFoundException;
 use PlusClouds\Core\Http\Requests\Remindable\RemindableListRequest;
 use PlusClouds\Core\Http\Requests\Remindable\RemindableStoreRequest;
 use PlusClouds\Core\Http\Requests\Remindable\RemindableUpdateRequest;
@@ -50,7 +51,11 @@ class RemindableController extends AbstractController
     {
         $data = $request->validated();
 
-        $objectArr = findObjectFromClassName($data['remindable_object'], $data['remindable_id'], 'Remindable');
+		try {
+			$objectArr = findObjectFromClassName($data['remindable_object'], $data['remindable_id'], 'Remindable');
+		} catch (ObjectNotFoundException $e) {
+			return $this->errorUnprocessable($e->getMessage());
+		}
 
         $remindable = Remindable::create([
             'note'                   => $data['note'] ?? null,
