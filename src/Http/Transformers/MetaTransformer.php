@@ -10,13 +10,13 @@
 
 namespace PlusClouds\Core\Http\Transformers;
 
-use PlusClouds\Core\Database\Models\Remindable;
+use PlusClouds\Core\Database\Models\Meta;
 
 /**
  * Class VoteTransformer
  * @package PlusClouds\Core\Http\Transformers
  */
-class RemindableTransformer extends AbstractTransformer
+class MetaTransformer extends AbstractTransformer
 {
 
     /**
@@ -27,11 +27,9 @@ class RemindableTransformer extends AbstractTransformer
     public function transform($reminable)
     {
         return $this->buildPayload([
-            'id'                      => $reminable->id_ref,
-            'remind_datetime'         => $reminable->remind_datetime,
-            'remindable_id'           => $reminable->remindable_id,
-            'remindable_object_type'  => $reminable->remindable_object_type,
-            'note'                    => $reminable->note,
+            'id'        => $reminable->id,
+            'key'       => $reminable->key,
+            'value'     => $reminable->value,
         ]);
     }
 }

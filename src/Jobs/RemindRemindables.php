@@ -22,10 +22,10 @@ class RemindRemindables extends AbstractJob implements ShouldQueue
 {
     public function handle()
     {
-        $waitingAlarm = Remindable::where('status', 0)->whereDate('snooze_datetime', '<', Carbon::now())->get()->toArray();
+        $waitingAlarm = Remindable::where('status', 0)->whereDate('remind_datetime', '<', Carbon::now())->get()->toArray();
 
-        //bunları ayrı ayrı çektik ilerde snoozed ile ilgili başka birşey yapılmak istenebilir.
-        $snoozedAlarm = Remindable::where('status', 3)->whereDate('snooze_datetime', '<', Carbon::now())->get()->toArray();
+        //bunları ayrı ayrı çektik ilerde snoozed ile ilgili başka birşey yapılmak istenebilir / snooze datetime kaldırıldı.
+        $snoozedAlarm = Remindable::where('status', 3)->whereDate('remind_datetime', '<', Carbon::now())->get()->toArray();
 
         $alarms = array_merge($waitingAlarm, $snoozedAlarm);
 
