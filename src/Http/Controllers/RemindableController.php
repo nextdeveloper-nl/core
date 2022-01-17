@@ -29,7 +29,7 @@ class RemindableController extends AbstractController
 
         $userId = getAUUser()->id;
 
-        $query = Remindable::where('user_id',$userId);
+        $query = Remindable::where([['user_id',$userId],['acknowledged',$request->get('acknowledged') ?: false]]);
 
         if($request->has('remindable_object')){
 
