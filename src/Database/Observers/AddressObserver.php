@@ -10,7 +10,6 @@
 
 namespace PlusClouds\Core\Database\Models;
 
-
 use Illuminate\Database\Eloquent\Model;
 use PlusClouds\Core\Database\Observers\AbstractObserver;
 
@@ -24,10 +23,10 @@ class AddressObserver extends AbstractObserver
     /**
      * @param Model $model
      */
-    public function saving(Model $model) {
-        if( $model->is_invoice_address ) {
-            optional( $model->addressable )->removeInvoiceAddress();
+    public function updating(Model $model)
+    {
+        if ($model->is_invoice_address) {
+            optional($model->addressable)->removeInvoiceAddress();
         }
     }
-
 }
