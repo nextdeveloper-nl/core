@@ -30,7 +30,7 @@ class CreateRemindablesTable extends Migration
             $table->datetime('remind_datetime')->nullable();
             $table->integer('user_id')->nullable();
             $table->text('note')->nullable();
-            $table->booleaan('acknowledged')->default('false'); // okundu bilgisi
+            $table->boolean('acknowledged')->default('false'); // okundu bilgisi
             $table->integer('status')->default('0')->comment('0 bekliyor,1 hatırlatıyor,2 görüldü,3 ertelendi bekliyor,4 iptal edildi');
             $table->timestamps();
 
