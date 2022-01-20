@@ -59,6 +59,12 @@ class AddressController extends AbstractController
             );
         }
 
+        if ($request->get('is_invoice_address')) {
+
+            optional($address->addressable)->removeInvoiceAddress();
+
+        }
+
         $address->update($data);
         return $this->noContent();
     }
