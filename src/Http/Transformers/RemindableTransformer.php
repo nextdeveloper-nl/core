@@ -31,9 +31,10 @@ class RemindableTransformer extends AbstractTransformer
         return $this->buildPayload([
             'id'                      => $reminable->id_ref,
             'remind_datetime'         => $reminable->remind_datetime,
-            'remindable_id'           => $reminable->remindable_id,
             'remindable_object_type'  => lowerCaseTr(end($array)),
+            'remindable_object_id'    => $reminable->reminable->id_ref,
             'note'                    => $reminable->note,
+            'status'                  => $reminable->status
         ]);
     }
 }

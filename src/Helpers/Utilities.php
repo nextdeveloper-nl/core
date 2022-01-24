@@ -313,11 +313,15 @@ function findObjectFromClassName($object, $objectId, $trait):array
 
                 //ayarladığımız path var ise ve bu path taggable ise ilgili modeli buluyoruz
                 if (array_key_exists(sprintf('PlusClouds\Core\Database\Traits\%s', $trait), class_uses_recursive($class))) {
-                    $objectId =  $class->findByRef($objectId)->id;
+                    $objectClass =  $class->findByRef($objectId);
+
+                    $objectId =  $objectClass->id;
+
+                    $objectIdRef = $objectClass->id_ref;
 
                     $object = $path;
 
-                    return [$object,$objectId];
+                    return [$object,$objectId,$objectIdRef];
                 } else {
                     logger()->error('[Util|findObjectFromClassName] Provided object not available for this action');
 
