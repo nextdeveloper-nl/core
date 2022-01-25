@@ -35,7 +35,7 @@ class RemindableUpdateRequest extends AbstractFormRequest
         return [
             'note'             => 'string',
             'snooze_datetime'  => 'string',
-            'acknowledged'     => 'boolean',
+            'is_acknowledge'   => 'boolean',
         ];
     }
 }

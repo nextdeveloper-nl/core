@@ -73,11 +73,10 @@ class RemindableController extends AbstractController
 
     public function update(RemindableUpdateRequest $request, Remindable $remindable)
     {
-        $data = $request->validated();
+        $data = collect($request->validated())->forget(['is_acknowledge'])->toArray();
 
-        if ($request->has('snooze_datetime')) {
-            $data['status'] = 3;
-            $data['remind_datetime'] = $data['snooze_datetime'];
+        if ($request->get('is_acknowledge')){
+            $data['status'] = 2;
         }
 
         $remindable->update($data);
