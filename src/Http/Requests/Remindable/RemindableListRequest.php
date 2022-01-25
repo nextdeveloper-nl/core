@@ -35,7 +35,7 @@ class RemindableListRequest extends AbstractFormRequest
         return [
             'remindable_object' => 'string',
             'remindable_id'     => 'string',
-            'acknowledged'      => 'boolean',
+            'is_acknowledge'    => 'boolean',
         ];
     }
 }
