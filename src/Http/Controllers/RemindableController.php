@@ -36,7 +36,6 @@ class RemindableController extends AbstractController
         }
 
         if($request->has('remindable_object')){
-
             $objectArr = findObjectFromClassName($data['remindable_object'], $data['remindable_id'], 'Remindable');
 
             $query->where('remindable_object_type',$objectArr[0]);
