@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
-use PlusClouds\Core\Database\Models\ExchangeRate;
+use PlusClouds\Core\Exceptions\ObjectNotFoundException;
 
 /**
  * This file is part of the PlusClouds.Core library.
@@ -297,6 +297,8 @@ function findObjectFromClassName($object, $objectId, $trait):array
             //bulunan pakette adını alıyoruz
             $moduleName = ucfirst(explode('/', $pckName)[1]);
 
+
+
             //crm komple uppercase yazıldığından dolayı crm gelirse komple büyük yazıyoruz
             if ($moduleName === 'Crm') {
                 $moduleName = 'CRM';
@@ -311,21 +313,27 @@ function findObjectFromClassName($object, $objectId, $trait):array
 
                 //ayarladığımız path var ise ve bu path taggable ise ilgili modeli buluyoruz
                 if (array_key_exists(sprintf('PlusClouds\Core\Database\Traits\%s', $trait), class_uses_recursive($class))) {
-                    $objectId =  $class->findByRef($objectId)->id;
+                    $objectClass =  $class->findByRef($objectId);
+
+                    $objectId =  $objectClass->id;
+
+                    $objectIdRef = $objectClass->id_ref;
 
                     $object = $path;
 
-                    return [$object,$objectId];
+                    return [$object,$objectId,$objectIdRef];
                 } else {
                     logger()->error('[Util|findObjectFromClassName] Provided object not available for this action');
 
-                    throw new \Exception('Provided object not available for this action');
+                    throw new ObjectNotFoundException('Provided object not available for this action');
                 }
             }
         }
     }
 
-    return [];
+    logger()->error('[Util|findObjectFromClassName] Provided object not available for this action');
+
+    throw new ObjectNotFoundException('Provided object not available for this action');
 }
 
 function moduleExists($moduleName):bool

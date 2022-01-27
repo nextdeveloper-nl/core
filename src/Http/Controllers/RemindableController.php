@@ -10,8 +10,10 @@
 
 namespace PlusClouds\Core\Http\Controllers;
 
+use PlusClouds\Account\Database\Models\User;
 use PlusClouds\Core\Database\Models\Remindable;
-use PlusClouds\Core\Database\Filters\RemindableQueryFilter;
+use PlusClouds\Core\Exceptions\ObjectNotFoundException;
+use PlusClouds\Core\Http\Requests\Remindable\RemindableListRequest;
 use PlusClouds\Core\Http\Requests\Remindable\RemindableStoreRequest;
 use PlusClouds\Core\Http\Requests\Remindable\RemindableUpdateRequest;
 
@@ -21,9 +23,31 @@ use PlusClouds\Core\Http\Requests\Remindable\RemindableUpdateRequest;
  */
 class RemindableController extends AbstractController
 {
-    public function index(RemindableQueryFilter $filter)
+    public function index(RemindableListRequest $request)
     {
-        $remindables = Remindable::filter($filter)->get();
+        $data = $request->validated();
+
+        $userId = getAUUser()->id;
+
+        $query = Remindable::where('user_id',$userId);
+
+        if ($request->get('is_acknowledge')){
+            $query->where('status',2);
+        } else {
+	        $query->where('status', '!=', 2);
+        }
+
+        if($request->has('remindable_object')){
+            $objectArr = findObjectFromClassName($data['remindable_object'], $data['remindable_id'], 'Remindable');
+
+            $query->where('remindable_object_type',$objectArr[0]);
+
+            if($request->has('remindable_id')){
+                $query->where('remindable_id',$objectArr[1]);
+            }
+        }
+
+        $remindables = $query->get();
 
         return $this->withCollection($remindables, app('PlusClouds\Core\Http\Transformers\RemindableTransformer'));
     }
@@ -32,7 +56,11 @@ class RemindableController extends AbstractController
     {
         $data = $request->validated();
 
-        $objectArr = findObjectFromClassName($data['remindable_object'], $data['remindable_id'], 'Remindable');
+		try {
+			$objectArr = findObjectFromClassName($data['remindable_object'], $data['remindable_id'], 'Remindable');
+		} catch (ObjectNotFoundException $e) {
+			return $this->errorUnprocessable($e->getMessage());
+		}
 
         $remindable = Remindable::create([
             'note'                   => $data['note'] ?? null,
@@ -47,10 +75,10 @@ class RemindableController extends AbstractController
 
     public function update(RemindableUpdateRequest $request, Remindable $remindable)
     {
-        $data = $request->validated();
+        $data = collect($request->validated())->forget(['is_acknowledge'])->toArray();
 
-        if ($request->has('snooze_datetime')) {
-            $data['status'] = 3;
+        if ($request->get('is_acknowledge')){
+            $data['status'] = 2;
         }
 
         $remindable->update($data);

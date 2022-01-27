@@ -11,6 +11,7 @@
 namespace PlusClouds\Core\Http\Controllers;
 
 use PlusClouds\Core\Database\Models\Comment;
+use PlusClouds\Core\Http\Requests\Comment\CommentListRequest;
 use PlusClouds\Core\Http\Requests\Comment\CommentStoreRequest;
 use PlusClouds\Core\Http\Requests\Comment\CommentUpdateRequest;
 
@@ -21,6 +22,19 @@ use PlusClouds\Core\Http\Requests\Comment\CommentUpdateRequest;
  */
 class CommentController extends AbstractController
 {
+
+    public function index(CommentListRequest $request)
+    {
+        $data = $request->validated();
+
+        $objectArr = findObjectFromClassName($data['object'], $data['object_id'], 'Commentable');
+
+        $comments = Comment::where([['commentable_type',$objectArr[0]],['commentable_id',$objectArr[1]]])->get();
+
+
+        return $this->withCollection($comments, app('PlusClouds\Core\Http\Transformers\CommentTransformer'));
+    }
+
     public function store(CommentStoreRequest $request)
     {
         $data = $request->validated();

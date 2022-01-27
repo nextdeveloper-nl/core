@@ -8,16 +8,16 @@
  * file that was distributed with this source code.
  */
 
-namespace PlusClouds\Core\Http\Requests\Remindable;
+namespace PlusClouds\Core\Http\Requests\Comment;
 
 use PlusClouds\Core\Http\Requests\AbstractFormRequest;
 
 /**
- * Class RemindableUpdateRequest.
+ * Class CommentListRequest.
  *
  * @package PlusClouds\Core\Http\Requests
  */
-class RemindableUpdateRequest extends AbstractFormRequest
+class CommentListRequest extends AbstractFormRequest
 {
     /**
      * @return bool
@@ -33,9 +33,8 @@ class RemindableUpdateRequest extends AbstractFormRequest
     public function rules()
     {
         return [
-            'note'             => 'string',
-            'remind_datetime'  => 'date_format:Y-m-d H:i:s',
-            'is_acknowledge'   => 'boolean',
+            'object'   =>  'required|string',
+            'object_id' =>  'required|string',
         ];
     }
 }

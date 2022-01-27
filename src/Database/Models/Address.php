@@ -10,7 +10,6 @@
 
 namespace PlusClouds\Core\Database\Models;
 
-
 use Illuminate\Database\Eloquent\SoftDeletes;
 use PlusClouds\Core\Database\Traits\Filterable;
 use PlusClouds\Core\Database\Traits\HashId;
@@ -21,7 +20,6 @@ use PlusClouds\Core\Database\Traits\HashId;
  */
 class Address extends AbstractModel
 {
-
     use SoftDeletes, HashId, Filterable;
 
     /**
@@ -46,9 +44,10 @@ class Address extends AbstractModel
     /**
      *
      */
-    public static function boot() {
+    public static function boot()
+    {
         parent::boot();
-        parent::observe( AddressObserver::class );
+        parent::observe(AddressObserver::class);
     }
 
     /**
@@ -56,43 +55,48 @@ class Address extends AbstractModel
      *
      * @return string
      */
-    public function setNameAttribute($value) {
-        return $this->attributes['name'] = ucwordsTr( $value );
+    public function setNameAttribute($value)
+    {
+        return $this->attributes['name'] = ucwordsTr($value);
     }
 
     /**
      * @param $value
      */
-    public function setLine1Attribute($value) {
-        $this->attributes['line1'] = ucwordsTr( $value );
+    public function setLine1Attribute($value)
+    {
+        $this->attributes['line1'] = ucwordsTr($value);
     }
 
     /**
      * @param $value
      */
-    public function setLine2Attribute($value) {
-        $this->attributes['line2'] = ucwordsTr( $value );
+    public function setLine2Attribute($value)
+    {
+        $this->attributes['line2'] = ucwordsTr($value);
     }
 
     /**
      * @param $value
      */
-    public function setCityAttribute($value) {
-        $this->attributes['city'] = ucwordsTr( $value );
+    public function setCityAttribute($value)
+    {
+        $this->attributes['city'] = ucwordsTr($value);
     }
 
     /**
      * @param $value
      */
-    public function setStateAttribute($value) {
-        $this->attributes['state'] = ucwordsTr( $value );
+    public function setStateAttribute($value)
+    {
+        $this->attributes['state'] = ucwordsTr($value);
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
-    public function addressable() {
+    public function addressable()
+    {
         return $this->morphTo();
     }
-
 }

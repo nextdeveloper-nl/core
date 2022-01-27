@@ -41,12 +41,9 @@ class Remindable extends AbstractModel
         return $this->belongsTo('PlusClouds\Account\Database\Models\User');
     }
 
-    public function snooze($dateTime) {
-
-        $this->snooze_datetime = $dateTime;
-        $this->status = 3;
-        $this->save();
-
+    public function reminable() {
+        return $this->morphTo(__FUNCTION__,'remindable_object_type','remindable_id');
     }
+
 
 }

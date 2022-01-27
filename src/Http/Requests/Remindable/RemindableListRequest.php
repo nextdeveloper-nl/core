@@ -13,11 +13,11 @@ namespace PlusClouds\Core\Http\Requests\Remindable;
 use PlusClouds\Core\Http\Requests\AbstractFormRequest;
 
 /**
- * Class RemindableUpdateRequest.
+ * Class RemindableStoreRequest.
  *
  * @package PlusClouds\Core\Http\Requests
  */
-class RemindableUpdateRequest extends AbstractFormRequest
+class RemindableListRequest extends AbstractFormRequest
 {
     /**
      * @return bool
@@ -33,9 +33,9 @@ class RemindableUpdateRequest extends AbstractFormRequest
     public function rules()
     {
         return [
-            'note'             => 'string',
-            'remind_datetime'  => 'date_format:Y-m-d H:i:s',
-            'is_acknowledge'   => 'boolean',
+            'remindable_object' => 'string',
+            'remindable_id'     => 'string',
+            'is_acknowledge'    => 'boolean',
         ];
     }
 }

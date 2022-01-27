@@ -57,4 +57,8 @@ return [
     'address' => function($value) {
         return \PlusClouds\Core\Database\Models\Address::findByRef( $value );
     },
+
+	'remindable'    =>  function($value) {
+		return \PlusClouds\Core\Database\Models\Remindable::findByRef($value);
+	}
 ];

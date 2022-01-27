@@ -28,15 +28,16 @@ class CreateRemindablesTable extends Migration
             $table->unsignedBigInteger('remindable_id');
             $table->string('remindable_object_type');
             $table->datetime('remind_datetime')->nullable();
-            $table->datetime('snooze_datetime')->nullable();
             $table->integer('user_id')->nullable();
             $table->text('note')->nullable();
+            $table->boolean('is_acknowledge')->default('false'); // okundu bilgisi
             $table->integer('status')->default('0')->comment('0 bekliyor,1 hatırlatıyor,2 görüldü,3 ertelendi bekliyor,4 iptal edildi');
             $table->timestamps();
 
             $table->softDeletes();
 
         } );
+
 
         DB::unprepared('
             CREATE TRIGGER before_remindables

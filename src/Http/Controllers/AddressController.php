@@ -43,7 +43,7 @@ class AddressController extends AbstractController
 
         Address::create($data);
 
-        return $this->noContent();
+        return $this->setStatusCode(202)->noContent();
     }
 
     public function update(AddressUpdateRequest $request, Address $address)
@@ -57,6 +57,12 @@ class AddressController extends AbstractController
                     'country_id' => Country::where('id_ref', $request->get('country_id'))->first()->id
                 ]
             );
+        }
+
+        if ($request->get('is_invoice_address')) {
+
+            optional($address->addressable)->removeInvoiceAddress();
+
         }
 
         $address->update($data);

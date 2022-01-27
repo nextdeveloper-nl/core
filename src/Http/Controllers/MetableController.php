@@ -11,6 +11,7 @@
 namespace PlusClouds\Core\Http\Controllers;
 
 use PlusClouds\Core\Database\Models\Meta;
+use PlusClouds\Core\Http\Requests\Meta\MetaListRequest;
 use PlusClouds\Core\Http\Requests\Meta\MetaStoreRequest;
 use PlusClouds\Core\Http\Requests\Meta\MetaUpdateRequest;
 
@@ -21,6 +22,18 @@ use PlusClouds\Core\Http\Requests\Meta\MetaUpdateRequest;
  */
 class MetableController extends AbstractController
 {
+
+    public function index(MetaListRequest $request)
+    {
+        $data = $request->validated();
+
+        $objectArr = findObjectFromClassName($data['object'], $data['object_id'], 'Meta');
+
+        $metas = Meta::where([['metable_type',$objectArr[0]],['metable_id',$objectArr[1]]])->get();
+
+        return $this->withCollection($metas, app('PlusClouds\Core\Http\Transformers\MetaTransformer'));
+    }
+
     public function store(MetaStoreRequest $request)
     {
         $data = $request->validated();
