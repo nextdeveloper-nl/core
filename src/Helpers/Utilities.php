@@ -351,7 +351,9 @@ function moduleExists($moduleName):bool
         if (substr($pckName, 0, 10) === 'plusclouds') {
 
             //bulunan pakette adını alıyoruz
-            $moduleNameComposer = ucfirst(explode('/', $pckName)[1]);
+            $moduleNameComposer = lowerCaseTr(explode('/', $pckName)[1]);
+
+			$moduleName = lowerCaseTr($moduleName);
 
             //ayarladığımız path gerçekten var mı diye bakıyoruz
             if ($moduleNameComposer ==  $moduleName) {

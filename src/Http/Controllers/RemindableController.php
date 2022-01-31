@@ -27,9 +27,7 @@ class RemindableController extends AbstractController
     {
         $data = $request->validated();
 
-        $userId = getAUUser()->id;
-
-        $query = Remindable::where('user_id',$userId);
+        $query = Remindable::where('user_id',getAUUser()->id);
 
         if ($request->get('is_acknowledge')){
             $query->where('status',2);
