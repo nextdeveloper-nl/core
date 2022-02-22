@@ -42,11 +42,16 @@ abstract class AbstractModel extends Model {
             return $relation($this);
         }
 
-
-
         //i: No relation found, return the call to parent (Eloquent) to handle it.
         return parent::__call($method, $parameters);
     }
+
+	public static function boot() {
+		parent::boot();
+		/**
+		 * Burada event'leri register edebilirsin.
+		 */
+	}
 
     /**
      * @param string $key
