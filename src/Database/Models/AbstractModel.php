@@ -46,6 +46,13 @@ abstract class AbstractModel extends Model {
         return parent::__call($method, $parameters);
     }
 
+	public static function boot() {
+		parent::boot();
+		/**
+		 * Burada event'leri register edebilirsin.
+		 */
+	}
+
     /**
      * @param string $key
      *
