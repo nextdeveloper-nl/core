@@ -20,14 +20,16 @@ class DomainQueryFilter extends AbstractQueryFilter
     /**
      * @return mixed
      */
-    public function locked() {
-        return $this->builder->where( 'is_locked', true );
+    public function locked()
+    {
+        return $this->builder->where('is_locked', true);
     }
 
     /**
      * @return mixed
      */
-    public function passive() {
+    public function passive()
+    {
         return $this->builder->withPassive();
     }
 
@@ -37,7 +39,8 @@ class DomainQueryFilter extends AbstractQueryFilter
      * @param $name
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function name( $name ) {
-        return $this->builder->where('name', '%' . $name . '%');
+    public function name($name)
+    {
+        return $this->builder->where('name', 'like', '%' . $name . '%');
     }
 }
