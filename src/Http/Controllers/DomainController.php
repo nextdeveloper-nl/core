@@ -35,13 +35,13 @@ class DomainController extends AbstractController
             ->get();
 
         if (!count($domains)) {
-			if($filter->filters()) {
-				if(array_key_exists('name', $filter->filters())) {
-					return $this->errorNotFound('Cannot find the domain you are looking for. Please search again or remove the search key and press enter to list all domains.');
-				}
-			}
+            if ($filter->filters()) {
+                if (array_key_exists('name', $filter->filters())) {
+                    return $this->errorNotFound('Cannot find the domain you are looking for. Please search again or remove the search key and press enter to list all domains.');
+                }
+            }
 
-			return $this->errorNotFound('We dont have any domain in the system. Please add a new domain.');
+            return $this->errorNotFound('We dont have any domain in the system. Please add a new domain.');
         }
 
         return $this->withCollection($domains, app(DomainTransformer::class));

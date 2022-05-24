@@ -29,7 +29,7 @@ trait SSHable
     {
         throw_if(
             is_null($this->ip_addr) || is_null($this->password),
-            new CannotConnectWithSSHException("Cannot create an SSH Connection. Insufficient Fields in Model.")
+            new CannotConnectWithSSHException("Cannot create an SSH Connection. IP Address and Password information is missing.")
         );
 
         $auth = new PasswordCredential($this->username, $this->password);
@@ -39,11 +39,11 @@ trait SSHable
             22, $auth);
 
         if (!$connection->connect()) {
-            throw new CannotConnectWithSSHException('Error connecting to repo server');
+            throw new CannotConnectWithSSHException('Error connecting to the linux machine');
         }
 
         if (!$connection->authenticate()) {
-            throw new CannotConnectWithSSHException('Error authenticating on repose server');
+            throw new CannotConnectWithSSHException('Error authenticating to the linux machine');
         }
 
         return $connection;
