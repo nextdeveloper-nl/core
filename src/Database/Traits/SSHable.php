@@ -6,6 +6,7 @@ use Bravo3\SSH\Connection;
 use Bravo3\SSH\Credentials\PasswordCredential;
 use PlusClouds\Core\Common\Logger\QueueLogger;
 use PlusClouds\Core\Exceptions\CannotConnectWithSSHException;
+use PlusClouds\Ip\Database\Models\Ip;
 
 /*
  * This trait creates SSH Connections
@@ -52,7 +53,16 @@ trait SSHable
      */
     public function createSSHConnection(QueueLogger $logger = null): Connection
     {
+        $ipAddr = null;
+        if ("PlusClouds\IAAS\Database\Models\VirtualMachine" == get_class($this)
+            &&
+            $this->virtualNetworkCards->count() > 0
+        ) {
+            $networkCard = $this->virtualNetworkCards[0];
+            $ip = Ip::where("virtual_network_card_id", $networkCard->id)->first();
 
+            $this->ip_addr = $ip->ip_addr;
+        }
         throw_if(
             is_null($this->ip_addr) || is_null($this->password),
             new CannotConnectWithSSHException("Cannot create an SSH Connection. IP Address and Password information is missing.")
@@ -64,7 +74,6 @@ trait SSHable
         if (is_null($this->username)) {
             $this->username = "root";
         }
-
 
         $auth = new PasswordCredential($this->username, $this->password);
 
