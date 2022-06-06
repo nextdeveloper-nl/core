@@ -12,6 +12,8 @@ return [
 		'production' =>  'leo.yenibosna.plusclouds'
 	],
 
+    'serviceDownloadUrl'=> "/v2/service/",
+
     'schedule' => [
         'exchange_rate' => env('EXCHANGE_RATE_SCHEDULE', false),
     ],

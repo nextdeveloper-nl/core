@@ -23,17 +23,29 @@ trait HasServiceRoles
      */
     public function serviceRoles()
     {
-        return $this->morphMany(ServiceRole::class, 'service_roles', 'object_type');
+        return $this->morphMany(ServiceRole::class, 'service_roles', 'object_type', "id");
     }
 
-    public function setServiceRole($name)
+    public function setServiceRole($name, $url = null)
     {
+        $reflect = new \ReflectionClass($this);
+        $appEnv = env("APP_ENV");
+
+        if($this->serviceRoles()->where("name", $name)->count() != 0)
+        {
+            throw new \Exception("Service Role already exists on the ".$reflect->getShortName() ." Model.");
+        }
+
         $this->serviceRoles()->create([
-            'name'  =>  $name
+            'name'  =>  $name,
+
+            "object_id" => $this->id,
+            "url" => $url ?: config("core.apiUrl.${appEnv}") . config("core.serviceDownloadUrl").$name
         ]);
     }
 
     public function removeServiceRole($name)
     {
+        $this->serviceRoles()->where("name", $name)->delete();
     }
 }

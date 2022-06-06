@@ -25,6 +25,12 @@ class ServiceRole extends AbstractModel
     protected $guarded = [];
 
     /**
+     * @var array
+     */
+    protected $casts = [
+        'has_update' => 'bool',
+    ];
+    /**
      * @var string
      */
     protected $table = 'service_roles';
