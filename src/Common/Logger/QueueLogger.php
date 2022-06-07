@@ -18,7 +18,6 @@ class QueueLogger
         $this->_combinedTag = "[".$queueName."@".$functionName."->".$queueTarget."]";
     }
 
-
     function info($message) {
             logger()->info($this->_combinedTag.$message);
     }
@@ -26,4 +25,8 @@ class QueueLogger
     function error($message){
         logger()->error($this->_combinedTag.$message);
     }
+
+	function warning($message){
+		logger()->warning($this->_combinedTag.$message);
+	}
 }

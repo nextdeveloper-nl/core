@@ -17,14 +17,19 @@ trait SSHable
     public function performSSHCommand(string $command, QueueLogger $logger = null)
     {
         $connection = $this->createSSHConnection($logger);
+
         if (!is_null($logger)) {
             $logger->info("Executing : " . $command);
         }
+
         $result = trim($connection->execute($command)->getOutput());
+
         if (!is_null($logger)) {
             $logger->info("Result : " . $result);
         }
+
         $connection->disconnect();
+
         return $result;
     }
 
@@ -33,10 +38,12 @@ trait SSHable
         $connection = $this->createSSHConnection($logger);
 
         $result = "";
+
         foreach ($commands as $command) {
             if (!is_null($logger)) {
                 $logger->info("Executing " . $command);
             }
+
             $result = trim($connection->execute($command)->getOutput());
 
             if (!is_null($logger)) {
@@ -54,6 +61,7 @@ trait SSHable
     public function createSSHConnection(QueueLogger $logger = null): Connection
     {
         $ipAddr = null;
+
         if ("PlusClouds\IAAS\Database\Models\VirtualMachine" == get_class($this)
             &&
             $this->virtualNetworkCards->count() > 0
@@ -71,6 +79,7 @@ trait SSHable
         if (is_null($this->password)) {
             $this->password = "template1";
         }
+		
         if (is_null($this->username)) {
             $this->username = "root";
         }
