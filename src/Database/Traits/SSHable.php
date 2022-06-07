@@ -67,7 +67,7 @@ trait SSHable
             $this->virtualNetworkCards->count() > 0
         ) {
             $networkCard = $this->virtualNetworkCards[0];
-            $ip = Ip::where("virtual_network_card_id", $networkCard->id)->first();
+            $ip = Ip::where("virtual_network_card_id", $networkCard->id)->where('is_reachable', true)->first();
 
             $this->ip_addr = $ip->ip_addr;
         }
@@ -79,7 +79,7 @@ trait SSHable
         if (is_null($this->password)) {
             $this->password = "template1";
         }
-		
+
         if (is_null($this->username)) {
             $this->username = "root";
         }
