@@ -10,7 +10,6 @@
 
 namespace PlusClouds\Core\Http\Controllers;
 
-
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use PlusClouds\Core\Database\Filters\DomainQueryFilter;
 use PlusClouds\Core\Database\Models\Domain;
@@ -29,14 +28,23 @@ class DomainController extends AbstractController
      * @return \Illuminate\Http\JsonResponse
      * @throws \Throwable
      */
-    public function index(DomainQueryFilter $filter) {
-        $domains = Domain::filter( $filter )
-            ->where( 'account_id', getAUCurrentAccount()->id )
+    public function index(DomainQueryFilter $filter)
+    {
+        $domains = Domain::where('account_id', getAUCurrentAccount()->id)
+            ->filter($filter)
             ->get();
 
-        throw_if( $domains->isEmpty(), ModelNotFoundException::class, 'Could not find the domain you are looking for.' );
+        if (!count($domains)) {
+            if ($filter->filters()) {
+                if (array_key_exists('name', $filter->filters())) {
+                    return $this->errorNotFound('Cannot find the domain you are looking for. Please search again or remove the search key and press enter to list all domains.');
+                }
+            }
 
-        return $this->withCollection( $domains, app( DomainTransformer::class ) );
+            return $this->errorNotFound('We dont have any domain in the system. Please add a new domain.');
+        }
+
+        return $this->withCollection($domains, app(DomainTransformer::class));
     }
 
     /**
@@ -46,10 +54,11 @@ class DomainController extends AbstractController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Domain $domain) {
-        throw_if( $domain->account_id != getAUCurrentAccount()->id, ModelNotFoundException::class, 'Could not find the domain you are looking for.' );
+    public function show(Domain $domain)
+    {
+        throw_if($domain->account_id != getAUCurrentAccount()->id, ModelNotFoundException::class, 'Could not find the domain you are looking for.');
 
-        return $this->withItem( $domain, app( DomainTransformer::class ) );
+        return $this->withItem($domain, app(DomainTransformer::class));
     }
 
     /**
@@ -59,15 +68,16 @@ class DomainController extends AbstractController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(DomainStoreRequest $request) {
-        $data = collect( $request->validated() );
+    public function store(DomainStoreRequest $request)
+    {
+        $data = collect($request->validated());
 
         $data->put('account_id', getAUCurrentAccount()->id);
 
-        $domain = Domain::create( $data->toArray() );
+        $domain = Domain::create($data->toArray());
 
-        return $this->setStatusCode( 201 )
-            ->withItem( $domain->fresh(), app( DomainTransformer::class ) );
+        return $this->setStatusCode(201)
+            ->withItem($domain->fresh(), app(DomainTransformer::class));
     }
 
     /**
@@ -78,8 +88,9 @@ class DomainController extends AbstractController
      *
      * @return mixed
      */
-    public function update(DomainUpdateRequest $request, Domain $domain) {
-        $domain->update( $request->validated() );
+    public function update(DomainUpdateRequest $request, Domain $domain)
+    {
+        $domain->update($request->validated());
 
         return $this->noContent();
     }
@@ -92,12 +103,12 @@ class DomainController extends AbstractController
      * @return mixed
      * @throws \Exception
      */
-    public function destroy(Domain $domain) {
-        $this->authorize( 'destroy', $domain );
+    public function destroy(Domain $domain)
+    {
+        $this->authorize('destroy', $domain);
 
         $domain->delete();
 
         return $this->noContent();
     }
-
 }

@@ -49,9 +49,7 @@ class DomainTransformer extends AbstractTransformer {
         return $this->buildPayload([
             'id'                    => $domain->id_ref,
             'name'                  => $domain->name,
-            'iam_service_id'        => null,
             'networks_attached'     => $networkCount,
-            'dns_domain_id'         => $domain->dns_domain_id,
             'dns_service_id'        => $dnsServiceId,
         ]);
     }
