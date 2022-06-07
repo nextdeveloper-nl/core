@@ -7,12 +7,12 @@ return [
     ],
 
 	'apiUrl'    =>  [
-		'dev'   =>  'apiv2.yenibosna.plusclouds',
-		'local' =>  'apiv2.yenibosna.plusclouds',
-		'production' =>  'leo.yenibosna.plusclouds'
+		'dev'   =>  'deployment.yenibosna.plusclouds/services',
+		'local' =>  'deployment.yenibosna.plusclouds/services',
+		'production' =>  'api.plusclouds.com'
 	],
 
-    'serviceDownloadUrl'=> "/v2/service/",
+    'serviceDownloadUrl'=> "/services/",
 
     'schedule' => [
         'exchange_rate' => env('EXCHANGE_RATE_SCHEDULE', false),
