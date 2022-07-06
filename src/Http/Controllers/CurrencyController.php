@@ -22,6 +22,8 @@ class CurrencyController extends AbstractController
 {
 
     /**
+     * Returns the list of currencies available in the API
+     *
      * @return \Illuminate\Http\JsonResponse
      * @throws \Throwable
      */

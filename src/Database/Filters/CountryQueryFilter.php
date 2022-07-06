@@ -21,6 +21,8 @@ class CountryQueryFilter extends AbstractQueryFilter
 {
 
     /**
+     * @name Filter by continent code
+     * @description ....
      * @param $code
      *
      * @return mixed

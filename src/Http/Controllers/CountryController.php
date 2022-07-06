@@ -25,10 +25,10 @@ class CountryController extends AbstractController
 {
 
     /**
-     * Ülke listesini döndürür.
+     * @name List Countries
+     * @description Ülke listesini döndürür.
      *
      * @param CountryQueryFilter $filter
-     *
      * @return \Illuminate\Http\JsonResponse
      * @throws \Throwable
      */
@@ -41,7 +41,7 @@ class CountryController extends AbstractController
     }
 
     /**
-     * Ülke bilgisini döndürür.
+     * Returns country specific information stated in the API.
      *
      * @param Country $country
      *
@@ -52,7 +52,7 @@ class CountryController extends AbstractController
     }
 
     /**
-     * // Yeni bir ülke oluşturur.
+     * Creates a new country within the API.
      *
      * @param CountryStoreRequest $request
      *
