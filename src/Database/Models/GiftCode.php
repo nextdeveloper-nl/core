@@ -12,6 +12,7 @@ namespace PlusClouds\Core\Database\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use PlusClouds\Core\Database\Traits\Filterable;
 use PlusClouds\Core\Database\Traits\UuidId;
 
 /**
@@ -20,7 +21,7 @@ use PlusClouds\Core\Database\Traits\UuidId;
  * @package PlusClouds\Core\Database\Models
  */
 class GiftCode extends AbstractModel {
-    use SoftDeletes, UuidId;
+    use SoftDeletes, UuidId, Filterable;
 
     /**
      * @var array
