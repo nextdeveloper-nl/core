@@ -29,6 +29,14 @@ Route::prefix('languages')->group(function () {
     Route::get('/', 'LanguageController@index');
 });
 
+Route::prefix('core')->group(function() {
+	Route::prefix('gift-codes')->group(function() {
+		Route::get('/', 'GiftCodesController@index');
+		Route::get('/code-exists', 'GiftCodesController@getBycode');
+		Route::get('/{gift-code}', 'GiftCodesController@show');
+	});
+});
+
 Route::prefix('countries')->group(function () {
     // Ülke listesini döndürür.
     Route::get('/', 'CountryController@index');
