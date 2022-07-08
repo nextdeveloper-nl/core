@@ -35,8 +35,8 @@ class GiftCodesController extends AbstractController
     public function index(GiftCodesQueryFilter $filter)
     {
         $giftCodes = GiftCode::filter($filter)
-	        ->where('user_id', getAUUser()->id)
-		    ->get();
+            ->where('user_id', getAUUser()->id)
+            ->get();
 
         if (!count($giftCodes)) {
             return $this->errorNotFound('Cannot find any gift code with your current search parameters. Please extend your search OR make sure that you have used a gift code for yourself.');
@@ -54,19 +54,19 @@ class GiftCodesController extends AbstractController
      */
     public function show(GiftCode $giftCode)
     {
-	    return $this->withItem($giftCode, app(GiftCodesTransformer::class));
+        return $this->withItem($giftCode, app(GiftCodesTransformer::class));
     }
 
-	public function getBycode(Request $request)
-	{
-		$code = $request->get('code');
+    public function getBycode(Request $request)
+    {
+        $code = $request->get('code');
 
-		$giftCode = GiftCode::where('code', $code)->first();
+        $giftCode = GiftCode::where('code', $code)->first();
 
-		if($giftCode) {
-			return $this->withItem($giftCode, app(GiftCodesTransformer::class));
-		}
+        if ($giftCode) {
+            return $this->withItem($giftCode, app(GiftCodesTransformer::class));
+        }
 
-		return $this->errorNotFound('Cannot find a gift code with that code');
-	}
+        return $this->errorNotFound('Cannot find a gift code with that code');
+    }
 }
