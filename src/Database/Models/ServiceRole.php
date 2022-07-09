@@ -11,6 +11,9 @@
 namespace PlusClouds\Core\Database\Models;
 
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use PlusClouds\Core\Database\Traits\Filterable;
+use PlusClouds\Core\Database\Traits\UuidId;
 
 /**
  * Class State
@@ -18,6 +21,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  */
 class ServiceRole extends AbstractModel
 {
+    use SoftDeletes,UuidId , Filterable;
 
     /**
      * @var array

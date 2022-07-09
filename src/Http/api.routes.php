@@ -17,11 +17,14 @@ Route::get('/', function () {
 Route::get('/module-exist', 'ModuleController@moduleExist');
 
 Route::get('/service/{name}', function($name) {
-    $vm = \PlusClouds\IAAS\Database\Models\VirtualMachine::first();
-
-
-    
     return File::get(public_path() . "/service_roles/${name}.zip");
+});
+
+Route::prefix('services')->group(function () {
+    Route::prefix('roles/{serviceRole}')->group(function () {
+        Route::put('ansible', "ServiceRoleController@ansibleUpdate");
+        Route::put('service', "ServiceRoleController@serviceUpdate");
+    });
 });
 
 Route::prefix('languages')->group(function () {
