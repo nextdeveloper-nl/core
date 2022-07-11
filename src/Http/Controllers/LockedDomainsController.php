@@ -21,7 +21,7 @@ class LockedDomainsController extends AbstractController
 {
 
     /**
-     * Alan adını kullanıma kapatır.
+     * @name Locks the usage for a Domain
      *
      * @param Domain $domain
      *
@@ -38,7 +38,7 @@ class LockedDomainsController extends AbstractController
 
 
     /**
-     * Alan adını kullanıma açar.
+     * @name Deletes a log on a Domain
      *
      * @param Domain $domain
      *

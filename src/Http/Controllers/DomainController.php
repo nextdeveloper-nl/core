@@ -21,7 +21,7 @@ class DomainController extends AbstractController
 {
 
     /**
-     * Alan adı listesini döndürür.
+     * @name Returns the Domain List
      *
      * @param DomainQueryFilter $filter
      *
@@ -48,7 +48,7 @@ class DomainController extends AbstractController
     }
 
     /**
-     * Alan adı bilgisini döndürür.
+     * @name Returns details of a Domain
      *
      * @param Domain $domain
      *
@@ -62,7 +62,7 @@ class DomainController extends AbstractController
     }
 
     /**
-     * Yeni bir alan adı oluşturur.
+     * @name Registers a new Domain
      *
      * @param DomainStoreRequest $request
      *
@@ -81,7 +81,7 @@ class DomainController extends AbstractController
     }
 
     /**
-     * Varolan alan adı bilgilerini günceller.
+     * @name Updates details of a Domain Instance
      *
      * @param DomainUpdateRequest $request
      * @param Domain $domain
@@ -96,7 +96,7 @@ class DomainController extends AbstractController
     }
 
     /**
-     * Varolan bir alan adını siler.
+     * @name Deletes a specific domain
      *
      * @param Domain $domain
      *

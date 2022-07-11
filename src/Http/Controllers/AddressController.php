@@ -21,6 +21,13 @@ use PlusClouds\Core\Http\Requests\Address\AddressUpdateRequest;
  */
 class AddressController extends AbstractController
 {
+	/**
+	 * Creates a new Address
+	 *
+	 * @param AddressStoreRequest $request
+	 * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+	 * @throws \PlusClouds\Core\Exceptions\ObjectNotFoundException
+	 */
     public function store(AddressStoreRequest $request)
     {
         $data = $request->validated();
@@ -46,6 +53,13 @@ class AddressController extends AbstractController
         return $this->setStatusCode(202)->noContent();
     }
 
+	/**
+	 * @name Update an Address
+	 *
+	 * @param AddressUpdateRequest $request
+	 * @param Address $address
+	 * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+	 */
     public function update(AddressUpdateRequest $request, Address $address)
     {
         $data = collect($request->validated())->forget(['addressable_id'])->toArray();
@@ -70,6 +84,13 @@ class AddressController extends AbstractController
     }
 
 
+	/**
+	 * @name Delete an Address
+	 *
+	 * @param Address $address
+	 * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+	 * @throws \Exception
+	 */
     public function destroy(Address $address)
     {
         $address->delete();

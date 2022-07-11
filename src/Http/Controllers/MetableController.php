@@ -23,6 +23,12 @@ use PlusClouds\Core\Http\Requests\Meta\MetaUpdateRequest;
 class MetableController extends AbstractController
 {
 
+	/**
+	 *
+	 * @param MetaListRequest $request
+	 * @return \Illuminate\Http\JsonResponse
+	 * @throws \PlusClouds\Core\Exceptions\ObjectNotFoundException
+	 */
     public function index(MetaListRequest $request)
     {
         $data = $request->validated();
@@ -34,6 +40,11 @@ class MetableController extends AbstractController
         return $this->withCollection($metas, app('PlusClouds\Core\Http\Transformers\MetaTransformer'));
     }
 
+	/**
+	 * @param MetaStoreRequest $request
+	 * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+	 * @throws \PlusClouds\Core\Exceptions\ObjectNotFoundException
+	 */
     public function store(MetaStoreRequest $request)
     {
         $data = $request->validated();
@@ -50,6 +61,11 @@ class MetableController extends AbstractController
         return $this->noContent();
     }
 
+	/**
+	 * @param MetaUpdateRequest $request
+	 * @param Meta $meta
+	 * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+	 */
     public function update(MetaUpdateRequest $request, Meta $meta)
     {
         $meta->value = $request->validated()['value'];
@@ -57,7 +73,11 @@ class MetableController extends AbstractController
 
         return $this->noContent();
     }
-    
+
+	/**
+	 * @param Meta $meta
+	 * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+	 */
     public function destroy(Meta $meta)
     {
         $meta->destroy();

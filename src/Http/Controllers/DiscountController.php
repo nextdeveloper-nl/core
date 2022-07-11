@@ -25,7 +25,7 @@ use PlusClouds\Core\Http\Requests\DiscountUpdateRequest;
  */
 class DiscountController extends AbstractController {
     /**
-     * İndirim listesini döndürür.
+     * @name Returns the Discount List
      *
      * @throws \Throwable
      *
@@ -40,7 +40,7 @@ class DiscountController extends AbstractController {
     }
 
     /**
-     * İndirim bilgisini döndürür.
+     * @name Returns details of a Discount
      *
      * @param Discount $discount
      *
@@ -51,7 +51,7 @@ class DiscountController extends AbstractController {
     }
 
     /**
-     * Yeni bir indirim oluşturur.
+     * @name Creates a new Discount
      *
      * @param DiscountStoreRequest $request
      *
@@ -74,7 +74,7 @@ class DiscountController extends AbstractController {
     }
 
     /**
-     * Varolan indirim bilgilerini günceller.
+     * @name Update a Discount
      *
      * @param DiscountUpdateRequest $request
      * @param Discount              $discount
@@ -100,7 +100,7 @@ class DiscountController extends AbstractController {
     }
 
     /**
-     * Varolan bir indirimi siler.
+     * @name Delete a Discount
      *
      * @param Discount $discount
      *
@@ -116,6 +116,13 @@ class DiscountController extends AbstractController {
         return $this->noContent();
     }
 
+	/**
+	 * @name Attach a Discount
+	 *
+	 * @param DiscountableStoreRequest $request
+	 * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+	 * @throws \PlusClouds\Core\Exceptions\ObjectNotFoundException
+	 */
     public function attach(DiscountableStoreRequest $request) {
 
         $data = $request->validated();
@@ -140,6 +147,13 @@ class DiscountController extends AbstractController {
         return $this->noContent();
     }
 
+	/**
+	 * @name Detach a Discount
+	 *
+	 * @param DiscountableStoreRequest $request
+	 * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+	 * @throws \PlusClouds\Core\Exceptions\ObjectNotFoundException
+	 */
     public function detach(DiscountableStoreRequest $request) {
         $data = $request->validated();
 

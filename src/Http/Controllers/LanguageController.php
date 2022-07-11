@@ -22,6 +22,8 @@ class LanguageController extends AbstractController
 {
 
     /**
+	 * @name Returns a list of existing Languages on PLusClouds System
+	 *
      * @return \Illuminate\Http\JsonResponse
      */
     public function index() {
