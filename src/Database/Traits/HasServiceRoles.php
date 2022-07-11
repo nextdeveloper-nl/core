@@ -39,7 +39,7 @@ trait HasServiceRoles
             'name' => $name,
 
             "object_id" => $this->id,
-            "url"       => $url ?: config("core.apiUrl.${appEnv}") . config("core.serviceDownloadUrl") . $name
+            "url"       => $url ?: config("core.serviceDownloadBaseUrl") . config("core.serviceDownloadPath") . $name
         ]);
 
         return $serviceRole->fresh();
