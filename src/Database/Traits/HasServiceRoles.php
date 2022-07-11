@@ -31,17 +31,18 @@ trait HasServiceRoles
         $reflect = new \ReflectionClass($this);
         $appEnv = env("APP_ENV");
 
-        if($this->serviceRoles()->where("name", $name)->count() != 0)
-        {
-            throw new \Exception("Service Role already exists on the ".$reflect->getShortName() ." Model.");
+        if ($this->serviceRoles()->where("name", $name)->count() != 0) {
+            throw new \Exception("Service Role already exists on the " . $reflect->getShortName() . " Model.");
         }
 
-        $this->serviceRoles()->create([
-            'name'  =>  $name,
+        $serviceRole = $this->serviceRoles()->create([
+            'name' => $name,
 
             "object_id" => $this->id,
-            "url" => $url ?: config("core.apiUrl.${appEnv}") . config("core.serviceDownloadUrl").$name
+            "url"       => $url ?: config("core.apiUrl.${appEnv}") . config("core.serviceDownloadUrl") . $name
         ]);
+
+        return $serviceRole->fresh();
     }
 
     public function removeServiceRole($name)
