@@ -42,6 +42,16 @@ class ServiceRoleController extends AbstractController
 
         $serviceRole->update($val);
 
+        $serviceRole->fresh();
+
+        if ($serviceRole->service_status == "completed" && $serviceRole->ansible_status == "completed") {
+            $serviceRole->update(
+                [
+                    "has_update" => false
+                ]
+            );
+        }
+
         return $this->noContent();
     }
 }
