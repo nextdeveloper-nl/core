@@ -6,13 +6,14 @@ return [
         'default'    => env('DEFAULT_LOCALE', 'en'),
     ],
 
-	'apiUrl'    =>  [
+    'apiUrl'    =>  [
+		'local' =>  '127.0.0.1:8000',
 		'dev'   =>  'deployment.yenibosna.plusclouds/services',
-		'local' =>  'deployment.yenibosna.plusclouds/services',
-		'production' =>  'api.plusclouds.com'
-	],
+        'production' =>  'api.plusclouds.com'
+    ],
 
-    'serviceDownloadUrl'=> "/services/",
+    'serviceDownloadBaseUrl'=> "repository.plusclouds.com",
+    'serviceDownloadPath'=> "/services/",
 
     'schedule' => [
         'exchange_rate' => env('EXCHANGE_RATE_SCHEDULE', false),
