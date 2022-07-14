@@ -32,15 +32,15 @@ trait HasServiceRoles
 		$appEnv = env("APP_ENV");
 
 		if ($this->serviceRoles()->where("name", $name)->count() != 0) {
-			throw new \Exception("Service Role already exists on the " . $reflect->getShortName() . " Model.");
+			$this->serviceRoles()->where("name", $name)->first()->update(["has_update" => true]);
 		}
 
-		$serviceRole = $this->serviceRoles()->create([
-			'name' => $name,
 
-			"object_id" => $this->id,
-			"url"       => $url ?: config("core.serviceDownloadBaseUrl") . config("core.serviceDownloadPath") . $name . ".tar.gz"
-		]);
+		$serviceRole = $this->serviceRoles()->updateOrCreate(
+			['name' => $name],
+			["url" => $url ?: config("core.serviceDownloadBaseUrl") . config("core.serviceDownloadPath") . $name . ".tar.gz"]
+		);
+
 
 		return $serviceRole->fresh();
 	}
