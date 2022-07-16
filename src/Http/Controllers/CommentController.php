@@ -23,6 +23,13 @@ use PlusClouds\Core\Http\Requests\Comment\CommentUpdateRequest;
 class CommentController extends AbstractController
 {
 
+	/**
+	 * @name Get a Comment List
+	 *
+	 * @param CommentListRequest $request
+	 * @return \Illuminate\Http\JsonResponse
+	 * @throws \PlusClouds\Core\Exceptions\ObjectNotFoundException
+	 */
     public function index(CommentListRequest $request)
     {
         $data = $request->validated();
@@ -35,6 +42,13 @@ class CommentController extends AbstractController
         return $this->withCollection($comments, app('PlusClouds\Core\Http\Transformers\CommentTransformer'));
     }
 
+	/**
+	 * @name Create a new Comment
+	 *
+	 * @param CommentStoreRequest $request
+	 * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+	 * @throws \PlusClouds\Core\Exceptions\ObjectNotFoundException
+	 */
     public function store(CommentStoreRequest $request)
     {
         $data = $request->validated();
@@ -50,6 +64,13 @@ class CommentController extends AbstractController
         return $this->noContent();
     }
 
+	/**
+	 * @name Update a comment details
+	 *
+	 * @param CommentUpdateRequest $request
+	 * @param Comment $comment
+	 * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+	 */
     public function update(CommentUpdateRequest $request, Comment $comment)
     {
         $comment->body = $request->validated()['comment'];
@@ -59,6 +80,12 @@ class CommentController extends AbstractController
     }
 
 
+	/**
+	 * @name Deletes a Comment
+	 *
+	 * @param Comment $comment
+	 * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+	 */
     public function destroy(Comment $comment)
     {
         $comment->destroy();

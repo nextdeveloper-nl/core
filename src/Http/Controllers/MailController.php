@@ -23,7 +23,7 @@ class MailController extends AbstractController
 {
 
     /**
-     * Bir kullanıcıya e-posta gönderir.
+     * @name Send a Mail to a specific User
      *
      * @param MailSendRequest $request
      *
@@ -43,7 +43,7 @@ class MailController extends AbstractController
     }
 
     /**
-     * Toplu e-posta gönderimi yapar.
+     * @name Send a message to multiple people.
      *
      * @param MailBatchSendRequest $request
      *

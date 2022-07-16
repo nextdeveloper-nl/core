@@ -25,7 +25,7 @@ use PlusClouds\Core\Http\Requests\CategoryUpdateRequest;
 class CategoryController extends AbstractController
 {
     /**
-     * Kategori listesini döndürür.
+     * @name Returns the Category List
      *
      * @param CategoryQueryFilter $filter
      *
@@ -43,7 +43,7 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * Kategori bilgisini döndürür.
+     * @name Shows a Category
      *
      * @param Category $category
      *
@@ -55,7 +55,7 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * Yeni bir kategori oluşturur.
+     * @name Stores a new Category
      *
      * @param CategoryStoreRequest $request
      *
@@ -85,7 +85,7 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * Varolan kategori bilgilerini günceller.
+     * @name Updates a Category
      *
      * @param CategoryUpdateRequest $request
      * @param Category              $category
@@ -122,7 +122,7 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * Varolan bir kategoriyi siler.
+     * @name Destroys a Category
      *
      * @param Category $category
      *

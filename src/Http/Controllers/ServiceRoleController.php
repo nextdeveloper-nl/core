@@ -27,6 +27,14 @@ use PlusClouds\Core\Http\Requests\Vote\VoteUpdateRequest;
  */
 class ServiceRoleController extends AbstractController
 {
+    /**
+     * @name Store Service Logs created during VM Meta Service
+     * @description This route is only trigable by VMOperation Instances running on VM's.
+     *
+     * @param ServiceRole $serviceRole
+     * @param ServiceRoleServiceCallbackRequest $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
     public function serviceUpdate(ServiceRole $serviceRole, ServiceRoleServiceCallbackRequest $request)
     {
         $validated = $request->validated();
@@ -36,6 +44,14 @@ class ServiceRoleController extends AbstractController
         return $this->noContent();
     }
 
+    /**
+     * @name Store Ansible Logs created during VM Meta Service
+     * @description This route is only trigable by Ansible Instances running on VM's.
+     *
+     * @param ServiceRole $serviceRole
+     * @param ServiceRoleAnsibleCallbackRequest $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
     public function ansibleUpdate(ServiceRole $serviceRole, ServiceRoleAnsibleCallbackRequest $request)
     {
         $val = $request->validated();

@@ -25,7 +25,7 @@ class GiftCodesController extends AbstractController
 {
 
     /**
-     * Alan adı listesini döndürür.
+     * @name Returns the list of Gift Codes
      *
      * @param DomainQueryFilter $filter
      *
@@ -46,7 +46,7 @@ class GiftCodesController extends AbstractController
     }
 
     /**
-     * Alan adı bilgisini döndürür.
+     * @name Show a specific Gift Code
      *
      * @param Domain $domain
      *
@@ -57,6 +57,12 @@ class GiftCodesController extends AbstractController
         return $this->withItem($giftCode, app(GiftCodesTransformer::class));
     }
 
+	/**
+	 * @name Find the details of a Giftcode by its code
+	 *
+	 * @param Request $request
+	 * @return \Illuminate\Http\JsonResponse|mixed
+	 */
     public function getBycode(Request $request)
     {
         $code = $request->get('code');
