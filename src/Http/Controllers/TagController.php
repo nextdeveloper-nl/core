@@ -29,7 +29,7 @@ class TagController extends AbstractController
 {
 
     /**
-     * Returns the tag list
+     * @name Returns the tag list
      *
      * @param TagQueryFilter $filter
      *
@@ -52,6 +52,8 @@ class TagController extends AbstractController
     }
 
     /**
+	 * @name Create a new Tag
+	 *
      * @param TagStoreRequest $request
      *
      * @return \Illuminate\Http\JsonResponse
@@ -84,7 +86,7 @@ class TagController extends AbstractController
     }
 
     /**
-     * Varolan bir etiketi siler.
+     * @name Delete a tag
      *
      * @param Tag $tag
      *
@@ -101,7 +103,7 @@ class TagController extends AbstractController
     }
 
     /**
-     * Returns the list of applications
+     * @name Returns the list of applications related to a Tag
      *
      * @param TagQueryFilter $filter
      *
@@ -123,6 +125,13 @@ class TagController extends AbstractController
         return $this->withCollection($tags, app(TagTransformer::class));
     }
 
+	/**
+	 * @name Attach a Tag to an object
+	 *
+	 * @param TagAttachRequest $request
+	 * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+	 * @throws \PlusClouds\Core\Exceptions\ObjectNotFoundException
+	 */
     public function attach(TagAttachRequest $request)
     {
         $data = $request->validated();
@@ -146,6 +155,13 @@ class TagController extends AbstractController
         return $this->noContent();
     }
 
+	/**
+	 * @name Detach a tag from an object
+	 *
+	 * @param TagDetachRequest $request
+	 * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+	 * @throws \PlusClouds\Core\Exceptions\ObjectNotFoundException
+	 */
     public function detach(TagDetachRequest $request)
     {
         $data = $request->validated();
