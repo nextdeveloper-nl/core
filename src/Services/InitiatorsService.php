@@ -42,6 +42,8 @@ class InitiatorsService
 
         $class = new $class();
 
+        logger()->info('[Core\InitiatorService] Dispatching class: ' . $class);
+
         dispatch($class);
 
         return true;
