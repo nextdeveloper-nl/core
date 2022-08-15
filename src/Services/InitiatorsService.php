@@ -42,7 +42,7 @@ class InitiatorsService
 
         $class = new $class();
 
-        logger()->info('[Core\InitiatorService] Dispatching class: ' . $class);
+        logger()->info('[Core\InitiatorService] Dispatching class: ' . get_class($class));
 
         dispatch($class);
 
