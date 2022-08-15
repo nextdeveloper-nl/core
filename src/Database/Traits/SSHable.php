@@ -71,8 +71,14 @@ trait SSHable
 
             $this->ip_addr = $ip->ip_addr;
         }
+
+        /**
+         * Some tables has ip_v4, some has ip_addr, fixing here that problem
+         */
+        $ipAddr = $this->ip_v4 ?? $this->ip_addr;
+
         throw_if(
-            is_null($this->ip_addr) || is_null($this->password),
+            is_null($ipAddr) || is_null($this->password),
             new CannotConnectWithSSHException("Cannot create an SSH Connection. IP Address and Password information is missing.")
         );
 
@@ -87,7 +93,7 @@ trait SSHable
         $auth = new PasswordCredential($this->username, $this->password);
 
         $connection = new Connection(
-            $this->ip_addr,
+            $ipAddr,
             22,
             $auth
         );

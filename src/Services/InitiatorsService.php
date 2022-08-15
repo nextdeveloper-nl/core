@@ -16,67 +16,73 @@ class InitiatorsService
         return $allFiles;
     }
 
-	public static function executeInitiator($moduleName, $initiator)
-	{
-		$moduleFolder = base_path('vendor/plusclouds/' . $moduleName . '/src/Initiators/');
+    public static function executeInitiator($moduleName, $initiator)
+    {
+        $moduleFolder = base_path('vendor/plusclouds/' . $moduleName . '/src/Initiators/');
 
-		$filename = $moduleFolder . $initiator . '.php';
+        $filename = $moduleFolder . $initiator . '.php';
 
-		throw_if(!file_exists($filename), InitiatorNotExistsException::class, 'Initiator do not exists.');
+        throw_if(!file_exists($filename), InitiatorNotExistsException::class, 'Initiator do not exists.');
 
-		switch ($moduleName) {
-			case 'iaas':
-				$moduleName = 'IAAS';
-				break;
-			default:
-				$moduleName = camel_case($moduleName);
-				break;
-		}
+        switch ($moduleName) {
+            case 'iaas':
+                $moduleName = 'IAAS';
+                break;
+            case 'crm':
+                $moduleName = 'CRM';
+                break;
+            default:
+                $moduleName = ucwordsTr($moduleName);
+                break;
+        }
 
-		$class = '\\PlusClouds\\' . $moduleName . '\\Initiators\\' . str_replace('/', '\\', $initiator);
+        $class = '\\PlusClouds\\' . $moduleName . '\\Initiators\\' . str_replace('/', '\\', $initiator);
 
-		throw_if(!class_exists($class), InitiatorNotExistsException::class, 'Initiator exists as a file but cannot find it as a class.');
+        throw_if(!class_exists($class), InitiatorNotExistsException::class, 'Initiator exists as a file but cannot find it as a class.');
 
-		$class = new $class();
+        $class = new $class();
 
-		dispatch($class);
+        dispatch($class);
 
-		return true;
-	}
+        return true;
+    }
 
-	public static function getDirContentsAsArray($dir) {
-		$contents = self::getDirContents($dir);
+    public static function getDirContentsAsArray($dir)
+    {
+        $contents = self::getDirContents($dir);
 
-		$tempContents = [];
+        $tempContents = [];
 
-		foreach ($contents as $content) {
-			if('php' != pathinfo($content, PATHINFO_EXTENSION))
-				continue;
+        foreach ($contents as $content) {
+            if ('php' != pathinfo($content, PATHINFO_EXTENSION)) {
+                continue;
+            }
 
-			$initiatorsFolderPos = strpos($content, 'Initiators');
-			$initiator = substr($content, $initiatorsFolderPos);
-			$initiator = str_replace('.php', '', $initiator);
-			$tempContents[] = str_replace('Initiators/', '', $initiator);
-		}
+            $initiatorsFolderPos = strpos($content, 'Initiators');
+            $initiator = substr($content, $initiatorsFolderPos);
+            $initiator = str_replace('.php', '', $initiator);
+            $tempContents[] = str_replace('Initiators/', '', $initiator);
+        }
 
-		$contents = $tempContents;
+        $contents = $tempContents;
 
-		return $contents;
-	}
+        return $contents;
+    }
 
-	public static function getDirContents($dir, &$results = array()) {
-		$files = scandir($dir);
+    public static function getDirContents($dir, &$results = array())
+    {
+        $files = scandir($dir);
 
-		foreach ($files as $key => $value) {
-			$path = realpath($dir . DIRECTORY_SEPARATOR . $value);
-			if (!is_dir($path)) {
-				$results[] = $path;
-			} else if ($value != "." && $value != "..") {
-				self::getDirContents($path, $results);
-				$results[] = $path;
-			}
-		}
+        foreach ($files as $key => $value) {
+            $path = realpath($dir . DIRECTORY_SEPARATOR . $value);
+            if (!is_dir($path)) {
+                $results[] = $path;
+            } elseif ($value != "." && $value != "..") {
+                self::getDirContents($path, $results);
+                $results[] = $path;
+            }
+        }
 
-		return $results;
-	}
+        return $results;
+    }
 }

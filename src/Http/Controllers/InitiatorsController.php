@@ -51,8 +51,10 @@ class InitiatorsController extends AbstractController
     }
 
 	public function execute(InitiatorExecutionRequest $request) {
-		$result = InitiatorsService::executeInitiator($request->get('module_name'), $request->get('initiator'));
-
-
+        try {
+            $result = InitiatorsService::executeInitiator($request->get('module_name'), $request->get('initiator'));
+        } catch (\Exception $e) {
+            throw $e;
+        }
 	}
 }
