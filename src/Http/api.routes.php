@@ -38,6 +38,11 @@ Route::prefix('core')->group(function() {
 		Route::get('/code-exists', 'GiftCodesController@getBycode');
 		Route::get('/{gift-code}', 'GiftCodesController@show');
 	});
+
+	Route::prefix('initiators')->group(function() {
+		Route::post('/', 'InitiatorsController@execute');
+		Route::get('/{moduleName}', 'InitiatorsController@index');
+	});
 });
 
 Route::prefix('countries')->group(function () {

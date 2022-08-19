@@ -18,35 +18,33 @@ use PlusClouds\Core\Database\Models\ServiceRole;
  */
 trait HasServiceRoles
 {
-	/**
-	 * @return mixed
-	 */
-	public function serviceRoles()
-	{
-		return $this->morphMany(ServiceRole::class, 'service_roles', 'object_type', "object_id");
-	}
+    /**
+     * @return mixed
+     */
+    public function serviceRoles()
+    {
+        return $this->morphMany(ServiceRole::class, 'service_roles', 'object_type', "object_id");
+    }
 
-	public function setServiceRole($name, $url = null)
-	{
-		$reflect = new \ReflectionClass($this);
-		$appEnv = env("APP_ENV");
+    public function setServiceRole($name, $url = null)
+    {
+        $reflect = new \ReflectionClass($this);
+        $appEnv = env("APP_ENV");
 
-		if ($this->serviceRoles()->where("name", $name)->count() != 0) {
-			$this->serviceRoles()->where("name", $name)->first()->update(["has_update" => true]);
-		}
+        if ($this->serviceRoles()->where("name", $name)->count() != 0) {
+            $this->serviceRoles()->where("name", $name)->first()->update(["has_update" => true]);
+        }
 
+        $serviceRole = $this->serviceRoles()->updateOrCreate(
+            ['name' => $name],
+            ["url" => $url ?: config("core.serviceDownloadBaseUrl") . config("core.serviceDownloadPath") . $name . ".tar.gz"]
+        );
 
-		$serviceRole = $this->serviceRoles()->updateOrCreate(
-			['name' => $name],
-			["url" => $url ?: config("core.serviceDownloadBaseUrl") . config("core.serviceDownloadPath") . $name . ".tar.gz"]
-		);
+        return $serviceRole->fresh();
+    }
 
-
-		return $serviceRole->fresh();
-	}
-
-	public function removeServiceRole($name)
-	{
-		$this->serviceRoles()->where("name", $name)->delete();
-	}
+    public function removeServiceRole($name)
+    {
+        $this->serviceRoles()->where("name", $name)->delete();
+    }
 }
