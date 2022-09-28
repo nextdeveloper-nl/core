@@ -76,7 +76,7 @@ CREATE TABLE `account_balance_logs` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `abl_generate_uuid` BEFORE INSERT ON `account_balance_logs` FOR EACH ROW BEGIN
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `abl_generate_uuid` BEFORE INSERT ON `account_balance_logs` FOR EACH ROW BEGIN
     set new.id_ref = uuid();
 END */;;
 DELIMITER ;
@@ -240,7 +240,7 @@ CREATE TABLE `accounts` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `crm_create_account_data` AFTER INSERT ON `accounts` FOR EACH ROW begin
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `crm_create_account_data` AFTER INSERT ON `accounts` FOR EACH ROW begin
     insert into crm_account_data (account_id) values (new.id);
     
     insert into crm_user_data (account_id, user_id, crm_created_at, crm_updated_at)
@@ -571,7 +571,7 @@ CREATE TABLE `ansible_roles` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_ansible_roles` BEFORE INSERT ON `ansible_roles` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_ansible_roles` BEFORE INSERT ON `ansible_roles` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -1591,7 +1591,7 @@ CREATE TABLE `certificate_client` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`semihyonet`@`%`*/ /*!50003 TRIGGER `before_insert_vpn_servers` BEFORE INSERT ON `certificate_client` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_vpn_servers` BEFORE INSERT ON `certificate_client` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -1635,7 +1635,7 @@ CREATE TABLE `certificates` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`semihyonet`@`%`*/ /*!50003 TRIGGER `before_insert_certificates` BEFORE INSERT ON `certificates` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_certificates` BEFORE INSERT ON `certificates` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -1709,7 +1709,7 @@ CREATE TABLE `communication_messages` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_communication_messages` BEFORE INSERT ON `communication_messages` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_communication_messages` BEFORE INSERT ON `communication_messages` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -1755,7 +1755,7 @@ CREATE TABLE `communication_notification_messages` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_communication_notification_messages` BEFORE INSERT ON `communication_notification_messages` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_communication_notification_messages` BEFORE INSERT ON `communication_notification_messages` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -1789,7 +1789,7 @@ CREATE TABLE `communication_notification_types` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_communication_notification_types` BEFORE INSERT ON `communication_notification_types` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_communication_notification_types` BEFORE INSERT ON `communication_notification_types` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -1834,7 +1834,7 @@ CREATE TABLE `communication_sessions` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_communication_sessions` BEFORE INSERT ON `communication_sessions` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_communication_sessions` BEFORE INSERT ON `communication_sessions` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -1872,7 +1872,7 @@ CREATE TABLE `communication_user_channels` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_communication_user_channels` BEFORE INSERT ON `communication_user_channels` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_communication_user_channels` BEFORE INSERT ON `communication_user_channels` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -1915,7 +1915,7 @@ CREATE TABLE `communication_user_preferences` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_communication_user_preferences` BEFORE INSERT ON `communication_user_preferences` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_communication_user_preferences` BEFORE INSERT ON `communication_user_preferences` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -2336,7 +2336,7 @@ CREATE TABLE `contacts` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_contacts` BEFORE INSERT ON `contacts` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_contacts` BEFORE INSERT ON `contacts` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -3653,7 +3653,7 @@ CREATE TABLE `dns_domain_records` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_dns_domain_records` BEFORE INSERT ON `dns_domain_records` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_dns_domain_records` BEFORE INSERT ON `dns_domain_records` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -3859,7 +3859,7 @@ CREATE TABLE `encryption_clusters` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_encryption_clusters` BEFORE INSERT ON `encryption_clusters` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_encryption_clusters` BEFORE INSERT ON `encryption_clusters` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -3901,7 +3901,7 @@ CREATE TABLE `encryption_engine_usages` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_encryption_engine_usages` BEFORE INSERT ON `encryption_engine_usages` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_encryption_engine_usages` BEFORE INSERT ON `encryption_engine_usages` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -3943,7 +3943,7 @@ CREATE TABLE `encryption_engines` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_encryption_engines` BEFORE INSERT ON `encryption_engines` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_encryption_engines` BEFORE INSERT ON `encryption_engines` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4004,7 +4004,7 @@ CREATE TABLE `error_codes` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_error_codes` BEFORE INSERT ON `error_codes` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_error_codes` BEFORE INSERT ON `error_codes` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4124,7 +4124,7 @@ CREATE TABLE `gift_codes` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_gift_cards` BEFORE INSERT ON `gift_codes` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_gift_cards` BEFORE INSERT ON `gift_codes` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4259,7 +4259,7 @@ CREATE TABLE `hosting_accounts` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_hosting_accounts` BEFORE INSERT ON `hosting_accounts` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_hosting_accounts` BEFORE INSERT ON `hosting_accounts` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4304,7 +4304,7 @@ CREATE TABLE `hosting_clusters` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_hosting_clusters` BEFORE INSERT ON `hosting_clusters` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_hosting_clusters` BEFORE INSERT ON `hosting_clusters` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4367,7 +4367,7 @@ CREATE TABLE `hosting_servers` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_hosting_servers` BEFORE INSERT ON `hosting_servers` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_hosting_servers` BEFORE INSERT ON `hosting_servers` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4503,7 +4503,7 @@ CREATE TABLE `industries` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_industries` BEFORE INSERT ON `industries` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_industries` BEFORE INSERT ON `industries` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4542,7 +4542,7 @@ CREATE TABLE `intelligence_domains` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_intelligence_domains` BEFORE INSERT ON `intelligence_domains` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_intelligence_domains` BEFORE INSERT ON `intelligence_domains` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4557,7 +4557,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `intelligence_create_domain_dns_data` AFTER INSERT ON `intelligence_domains` FOR EACH ROW begin
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `intelligence_create_domain_dns_data` AFTER INSERT ON `intelligence_domains` FOR EACH ROW begin
     insert ignore into intelligence_domains_dns (intelligence_domain_id, created_at)
     select id, created_at from intelligence_domains;
 end */;;
@@ -4665,7 +4665,7 @@ CREATE TABLE `intelligence_email_addresses` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_intelligence_email_addresses` BEFORE INSERT ON `intelligence_email_addresses` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_intelligence_email_addresses` BEFORE INSERT ON `intelligence_email_addresses` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4706,7 +4706,7 @@ CREATE TABLE `intelligence_ip_routes` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_intelligence_ip_routes` BEFORE INSERT ON `intelligence_ip_routes` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_intelligence_ip_routes` BEFORE INSERT ON `intelligence_ip_routes` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4744,7 +4744,7 @@ CREATE TABLE `intelligence_ips` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_intelligence_ips` BEFORE INSERT ON `intelligence_ips` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_intelligence_ips` BEFORE INSERT ON `intelligence_ips` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4787,7 +4787,7 @@ CREATE TABLE `intelligence_mailboxes` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_intelligence_user_mailboxes` BEFORE INSERT ON `intelligence_mailboxes` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_intelligence_user_mailboxes` BEFORE INSERT ON `intelligence_mailboxes` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -5058,7 +5058,7 @@ CREATE TABLE `ip_addresses` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_ip_addresses` BEFORE INSERT ON `ip_addresses` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_ip_addresses` BEFORE INSERT ON `ip_addresses` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -5432,7 +5432,7 @@ CREATE TABLE `lead_lists` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_lead_lists` BEFORE INSERT ON `lead_lists` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_lead_lists` BEFORE INSERT ON `lead_lists` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -5581,7 +5581,7 @@ CREATE TABLE `marketing_campaigns` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_marketing_campaigns` BEFORE INSERT ON `marketing_campaigns` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_marketing_campaigns` BEFORE INSERT ON `marketing_campaigns` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -5626,7 +5626,7 @@ CREATE TABLE `marketing_lists` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_marketing_lists` BEFORE INSERT ON `marketing_lists` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_marketing_lists` BEFORE INSERT ON `marketing_lists` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -5707,7 +5707,7 @@ CREATE TABLE `message_brokers` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`semihyonet`@`%`*/ /*!50003 TRIGGER `before_insert_message_brookers` BEFORE INSERT ON `message_brokers` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_message_brookers` BEFORE INSERT ON `message_brokers` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -5873,7 +5873,7 @@ CREATE TABLE `netgateway_loadbalancer_domains` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`semihyonet`@`%`*/ /*!50003 TRIGGER `before_insert_netgateway_loadbalancer_domains` BEFORE INSERT ON `netgateway_loadbalancer_domains` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_netgateway_loadbalancer_domains` BEFORE INSERT ON `netgateway_loadbalancer_domains` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -6122,7 +6122,7 @@ CREATE TABLE `networks` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_networks` BEFORE INSERT ON `networks` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_networks` BEFORE INSERT ON `networks` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -6439,7 +6439,7 @@ CREATE TABLE `organizations` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_crm_organizations` BEFORE INSERT ON `organizations` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_crm_organizations` BEFORE INSERT ON `organizations` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -6660,7 +6660,7 @@ CREATE TABLE `product_translations` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_product_translations` BEFORE INSERT ON `product_translations` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_product_translations` BEFORE INSERT ON `product_translations` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -6827,7 +6827,7 @@ CREATE TABLE `projects` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_create_project` BEFORE INSERT ON `projects` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_create_project` BEFORE INSERT ON `projects` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -7095,7 +7095,7 @@ CREATE TABLE `remindables` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_remindables` BEFORE INSERT ON `remindables` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_remindables` BEFORE INSERT ON `remindables` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -7349,7 +7349,7 @@ CREATE TABLE `repo_servers` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_repo_servers` BEFORE INSERT ON `repo_servers` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_repo_servers` BEFORE INSERT ON `repo_servers` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -7410,7 +7410,7 @@ CREATE TABLE `repo_virtual_machine_images` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_repo_virtual_machine_images` BEFORE INSERT ON `repo_virtual_machine_images` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_repo_virtual_machine_images` BEFORE INSERT ON `repo_virtual_machine_images` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -7548,7 +7548,7 @@ CREATE TABLE `segment_types` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_segment_type` BEFORE INSERT ON `segment_types` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_segment_type` BEFORE INSERT ON `segment_types` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -7588,7 +7588,7 @@ CREATE TABLE `segments` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_segments` BEFORE INSERT ON `segments` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_segments` BEFORE INSERT ON `segments` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -7631,7 +7631,7 @@ CREATE TABLE `service_roles` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_service_roles` BEFORE INSERT ON `service_roles` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_service_roles` BEFORE INSERT ON `service_roles` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -7692,7 +7692,7 @@ CREATE TABLE `ssh_keys` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_ssh_keys` BEFORE INSERT ON `ssh_keys` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_ssh_keys` BEFORE INSERT ON `ssh_keys` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -7741,7 +7741,7 @@ CREATE TABLE `stash_accounts` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_stash_accounts` BEFORE INSERT ON `stash_accounts` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_stash_accounts` BEFORE INSERT ON `stash_accounts` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -7825,7 +7825,7 @@ CREATE TABLE `stash_users` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_stash_users` BEFORE INSERT ON `stash_users` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_stash_users` BEFORE INSERT ON `stash_users` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -7889,7 +7889,7 @@ CREATE TABLE `storage_member_connections` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_storage_member_connections` BEFORE INSERT ON `storage_member_connections` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_storage_member_connections` BEFORE INSERT ON `storage_member_connections` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -7928,7 +7928,7 @@ CREATE TABLE `storage_member_data` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_storage_member_data` BEFORE INSERT ON `storage_member_data` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_storage_member_data` BEFORE INSERT ON `storage_member_data` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -7974,7 +7974,7 @@ CREATE TABLE `storage_member_devices` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_storage_member_devices` BEFORE INSERT ON `storage_member_devices` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_storage_member_devices` BEFORE INSERT ON `storage_member_devices` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -8049,7 +8049,7 @@ CREATE TABLE `storage_members` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_storage_members` BEFORE INSERT ON `storage_members` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_storage_members` BEFORE INSERT ON `storage_members` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -8204,7 +8204,7 @@ CREATE TABLE `storage_volumes` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_storage_volumes` BEFORE INSERT ON `storage_volumes` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_storage_volumes` BEFORE INSERT ON `storage_volumes` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -8256,7 +8256,7 @@ CREATE TABLE `stream_clusters` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_stream_clusters` BEFORE INSERT ON `stream_clusters` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_stream_clusters` BEFORE INSERT ON `stream_clusters` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -8294,7 +8294,7 @@ CREATE TABLE `stream_edges` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_stream_edges` BEFORE INSERT ON `stream_edges` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_stream_edges` BEFORE INSERT ON `stream_edges` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -8330,7 +8330,7 @@ CREATE TABLE `stream_folder_bitrates` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_stream_folder_bitrates` BEFORE INSERT ON `stream_folder_bitrates` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_stream_folder_bitrates` BEFORE INSERT ON `stream_folder_bitrates` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -8420,7 +8420,7 @@ CREATE TABLE `stream_folders` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_stream_folders` BEFORE INSERT ON `stream_folders` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_stream_folders` BEFORE INSERT ON `stream_folders` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -8458,7 +8458,7 @@ CREATE TABLE `stream_origins` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_stream_origins` BEFORE INSERT ON `stream_origins` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_stream_origins` BEFORE INSERT ON `stream_origins` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -8531,7 +8531,7 @@ CREATE TABLE `streams` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_streams` BEFORE INSERT ON `streams` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_streams` BEFORE INSERT ON `streams` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -9533,7 +9533,7 @@ CREATE TABLE `web_objects` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`10.100.0.105`*/ /*!50003 TRIGGER `before_insert_web_objects` BEFORE INSERT ON `web_objects` FOR EACH ROW SET new.id_ref = uuid() */;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `before_insert_web_objects` BEFORE INSERT ON `web_objects` FOR EACH ROW SET new.id_ref = uuid() */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -9745,7 +9745,7 @@ CREATE TABLE `web_visitors_personality` (
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`10.100.0.105` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `account_usage_report_view` AS select `A`.`id_ref` AS `account_id`,`A`.`name` AS `account_name`,`DN`.`id_ref` AS `datacenter_node_id`,`DN`.`name` AS `datacenter_node_name`,sum(`VM`.`total_cpu`) AS `used_cpu`,sum(`VM`.`actual_cpu`) AS `actual_cpu`,sum(`VM`.`total_ram`) AS `used_ram`,sum(`VM`.`actual_ram`) AS `actual_ram`,sum(`VM`.`total_disk`) AS `used_disk`,sum(`VM`.`actual_disk`) AS `actutal_disk`,`CP`.`cpu_hourly_price` AS `cpu_hourly_price`,`CP`.`ram_hourly_price` AS `ram_hourly_price`,`CP`.`hdd_hourly_price` AS `hdd_hourly_price`,(sum(`VM`.`total_cpu`) * `CP`.`cpu_hourly_price`) AS `used_cpu_hourly_price`,(sum(`VM`.`total_ram`) * `CP`.`ram_hourly_price`) AS `used_ram_hourly_price`,(sum(`VM`.`actual_disk`) * `CP`.`hdd_hourly_price`) AS `used_hdd_hourly_price`,(((sum(`VM`.`total_cpu`) * `CP`.`cpu_hourly_price`) * 24) * 30) AS `used_cpu_monthly_price`,(((sum(`VM`.`total_ram`) * `CP`.`ram_hourly_price`) * 24) * 30) AS `used_ram_monthly_price`,(((sum(`VM`.`actual_disk`) * `CP`.`hdd_hourly_price`) * 24) * 30) AS `used_hdd_monthly_price`,`CP`.`currency_code` AS `currency_code` from (((`accounts` `A` join `virtual_machines` `VM` on(((`VM`.`account_id` = `A`.`id`) and (`VM`.`deleted_at` is null)))) join `datacenter_nodes` `DN` on(((`DN`.`id` = `VM`.`datacenter_node_id`) and (`DN`.`deleted_at` is null)))) join `compute_pools` `CP` on(((`CP`.`id` = `DN`.`compute_pool_id`) and (`CP`.`deleted_at` is null)))) where (`A`.`deleted_at` is null) group by `A`.`id`,`VM`.`datacenter_node_id` order by `A`.`id` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -9763,7 +9763,7 @@ CREATE TABLE `web_visitors_personality` (
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`10.100.0.105` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `active_customers` AS select `accounts`.`id` AS `id`,`accounts`.`id_ref` AS `id_ref`,`accounts`.`name` AS `name`,`accounts`.`balance` AS `balance`,`accounts`.`currency_code` AS `currency_code`,`accounts`.`credit` AS `credit`,`accounts`.`credit_currency_code` AS `credit_currency_code`,`accounts`.`risk_level` AS `risk_level`,`accounts`.`is_team` AS `is_team`,(select `u`.`id` from `users` `u` where (`u`.`id` = `accounts`.`owner_id`)) AS `owner_id`,(select `u`.`id_ref` from `users` `u` where (`u`.`id` = `accounts`.`owner_id`)) AS `owner_id_ref`,(select `u`.`fullname` from `users` `u` where (`u`.`id` = `accounts`.`owner_id`)) AS `owner_name`,`acc`.`name` AS `representative_account_name`,`acc`.`id_ref` AS `representative_account_id_ref`,`acc`.`id` AS `representative_account_id`,`usr`.`fullname` AS `representative_user`,`usr`.`id_ref` AS `representative_user_id_ref`,`usr`.`id` AS `representative_user_id`,`accounts`.`account_type_id` AS `account_type_id`,`cad`.`last_invoice_date` AS `last_invoice_date`,`cad`.`last_invoice_amount` AS `last_invoice_amount`,`accounts`.`suspended_at` AS `suspended_at`,`accounts`.`created_at` AS `created_at` from ((((`accounts` join `crm_account_data` `cad` on((`accounts`.`id` = `cad`.`account_id`))) join `billing_account_informations` `bai` on((`accounts`.`id` = `bai`.`account_id`))) join `accounts` `acc` on((`acc`.`id` = `cad`.`customer_of_account`))) join `users` `usr` on((`usr`.`id` = `cad`.`customer_of_user`))) where (`bai`.`is_active_customer` = true) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -9781,7 +9781,7 @@ CREATE TABLE `web_visitors_personality` (
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`10.100.0.105` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `compute_members_overview` AS select `C`.`id` AS `id`,`C`.`id_ref` AS `id_ref`,`C`.`name` AS `name`,`C`.`hostname` AS `hostname`,`C`.`ip_addr` AS `ip_addr`,`C`.`management_url` AS `management_url`,`C`.`port` AS `port`,`C`.`hypervisor_uuid` AS `hypervisor_uuid`,`C`.`total_cpu` AS `total_cpu`,`C`.`total_ram` AS `total_ram`,`C`.`total_vm` AS `total_vm`,`C`.`used_cpu` AS `used_cpu`,`C`.`used_ram` AS `used_ram`,`C`.`is_alive` AS `is_alive`,`C`.`compute_pool_id` AS `compute_pool_id`,`CP`.`id_ref` AS `compute_pool_id_ref`,`CP`.`name` AS `compute_pool_name`,`CP`.`management_type` AS `compute_pool_management_type`,`CP`.`is_public` AS `compute_pool_is_public`,`DN`.`id` AS `datacenter_node_id`,`DN`.`id_ref` AS `datacenter_node_id_ref`,`DN`.`name` AS `datacenter_node_name`,`A`.`id` AS `vendor_id`,`A`.`id_ref` AS `vendor_id_ref`,`A`.`name` AS `vendor_name` from (((`compute_members` `C` join `compute_pools` `CP` on((`CP`.`id` = `C`.`compute_pool_id`))) left join `datacenter_nodes` `DN` on((`DN`.`compute_pool_id` = `CP`.`id`))) join `accounts` `A` on((`A`.`id` = `CP`.`vendor_id`))) where (`C`.`deleted_at` is null) order by `C`.`id` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -9799,7 +9799,7 @@ CREATE TABLE `web_visitors_personality` (
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`10.100.0.105` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `compute_pools_overview` AS select `C`.`id` AS `id`,`C`.`id_ref` AS `id_ref`,`C`.`name` AS `name`,`C`.`resource_validator` AS `resource_validator`,`C`.`pool_type` AS `pool_type`,`C`.`master_ip_addr` AS `master_ip_addr`,`C`.`management_url` AS `management_url`,`C`.`port` AS `port`,`C`.`management_type` AS `management_type`,`C`.`virtualization` AS `virtualization`,`C`.`virtualization_version` AS `virtualization_version`,`C`.`provisioning_alg` AS `provisioning_alg`,`C`.`management_package_name` AS `management_package_name`,`C`.`is_active` AS `is_active`,`C`.`is_alive` AS `is_alive`,`C`.`is_public` AS `is_public`,`C`.`datacenter_id` AS `datacenter_id`,`D`.`id_ref` AS `datacenter_id_ref`,`D`.`name` AS `datacenter_name`,`DN`.`id` AS `datacenter_node_id`,`DN`.`id_ref` AS `datacenter_node_id_ref`,`DN`.`name` AS `datacenter_node_name`,`C`.`product_id` AS `product_id`,`P`.`id_ref` AS `product_id_ref`,`P`.`name` AS `product_name`,`C`.`vendor_id` AS `vendor_id`,`A`.`id_ref` AS `vendor_id_ref`,`A`.`name` AS `vendor_name` from ((((`compute_pools` `C` join `accounts` `A` on((`A`.`id` = `C`.`vendor_id`))) join `datacenters` `D` on((`D`.`id` = `C`.`datacenter_id`))) left join `products` `P` on((`P`.`id` = `C`.`product_id`))) left join `datacenter_nodes` `DN` on((`DN`.`compute_pool_id` = `C`.`id`))) where (`C`.`deleted_at` is null) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -9817,7 +9817,7 @@ CREATE TABLE `web_visitors_personality` (
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`10.100.0.105` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `crm_contact_overview` AS select `c`.`id` AS `id`,`c`.`id_ref` AS `id_ref`,`c`.`account_id` AS `account_id`,`c`.`user_id` AS `user_id`,`c`.`customer_id` AS `customer_id`,`c`.`name` AS `name`,`c`.`surname` AS `surname`,`c`.`full_name` AS `full_name`,`c`.`position` AS `position`,`c`.`email` AS `email`,`c`.`cellphone` AS `cellphone`,`c`.`workphone` AS `workphone`,`c`.`workphone_extension` AS `workphone_extension`,`c`.`address` AS `address`,`c`.`gender` AS `gender`,`c`.`birthday` AS `birthday`,`l`.`source` AS `source`,`l`.`lead_source` AS `lead_source`,`l`.`lead_list_id` AS `lead_list_id`,`ll`.`name` AS `lead_list_name`,`l`.`state` AS `state`,`l`.`is_marketing_qualified` AS `is_marketing_qualified`,`l`.`is_sales_qualified` AS `is_sales_qualified`,`o`.`name` AS `organization_name`,`o`.`id_ref` AS `organization_id`,`c`.`created_at` AS `created_at`,`c`.`updated_at` AS `updated_at` from (((`contacts` `c` left join `leads` `l` on((`c`.`lead_id` = `l`.`id`))) left join `lead_lists` `ll` on((`l`.`lead_list_id` = `ll`.`id`))) left join `organizations` `o` on((`c`.`organization_id` = `o`.`id`))) order by `c`.`id` desc */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -9835,7 +9835,7 @@ CREATE TABLE `web_visitors_personality` (
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`10.100.0.105` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `crm_created_customers_overview` AS select `a`.`id` AS `id`,`a`.`id_ref` AS `id_ref`,`a`.`name` AS `name`,`a`.`domain` AS `domain`,concat(`a`.`phone_code`,' ',`a`.`phone`) AS `phone_number`,`a`.`balance` AS `balance`,`a`.`currency_code` AS `currency_code`,`at`.`name` AS `account_type`,`cad`.`risk_level` AS `risk_level`,`cad`.`credit_score` AS `credit_score`,`cad`.`credit` AS `credit`,`cad`.`credit_override` AS `credit_override`,`a`.`approved_at` AS `approved_at`,`a`.`suspended_at` AS `suspended_at`,`a`.`created_at` AS `created_at`,`a`.`deleted_at` AS `deleted_at`,'unknown@unknown.com' AS `user_email`,'unknown' AS `user_username`,'unknown' AS `user_gender`,concat(`urep`.`name`,' ',`urep`.`surname`) AS `representative_user_name`,`urep`.`id` AS `representative_user_id`,concat(`arep`.`name`) AS `representative_account_name`,`arep`.`id` AS `representative_account_id` from (((((`accounts` `a` join `users` `rep` on((`rep`.`id` = `a`.`representative_id`))) join `account_types` `at` on((`a`.`account_type_id` = `at`.`id`))) join `crm_account_data` `cad` on((`a`.`id` = `cad`.`account_id`))) join `accounts` `arep` on((`cad`.`customer_of_account` = `arep`.`id`))) join `users` `urep` on((`cad`.`customer_of_user` = `urep`.`id`))) where ((`a`.`account_type_id` <> 8) and (`a`.`owner_id` is null)) order by `a`.`id` desc */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -9853,7 +9853,7 @@ CREATE TABLE `web_visitors_personality` (
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`10.100.0.105` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `crm_customer_iaas_usage_report` AS select `o`.`id_ref` AS `organization_id`,`o`.`name` AS `organization_name`,`o`.`representative_account_id` AS `representative_account_id`,`a`.`id_ref` AS `account_id`,(select sum(`i`.`amount`) from `invoices` `i` where ((`i`.`customer_id` = `a`.`id`) and (`i`.`is_paid` = 0))) AS `account_balance`,`a`.`currency_code` AS `account_currency_code`,`a`.`credit` AS `account_credit`,`u`.`id_ref` AS `responsible_user_id`,`u`.`fullname` AS `responsible_user`,`dn`.`name` AS `datacenter_node_name`,`vm`.`name` AS `vm_name`,`vm`.`actual_cpu` AS `vm_cpu`,`vm`.`actual_ram` AS `vm_ram`,`vm`.`actual_disk` AS `vm_disk`,`vm`.`status` AS `status` from ((((`accounts` `a` join `organizations` `o` on((`a`.`id` = `o`.`account_id`))) join `virtual_machines` `vm` on((`a`.`id` = `vm`.`account_id`))) join `datacenter_nodes` `dn` on((`vm`.`datacenter_node_id` = `dn`.`id`))) join `users` `u` on((`o`.`representative_user_id` = `u`.`id`))) where ((`vm`.`deleted_at` is null) and (`vm`.`is_template` = 0)) order by `a`.`id_ref` desc */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -9871,7 +9871,7 @@ CREATE TABLE `web_visitors_personality` (
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`10.100.0.105` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `crm_customer_overview` AS select `crm_registered_customers_overview`.`id` AS `id`,`crm_registered_customers_overview`.`id_ref` AS `id_ref`,`crm_registered_customers_overview`.`name` AS `name`,`crm_registered_customers_overview`.`domain` AS `domain`,`crm_registered_customers_overview`.`phone_number` AS `phone_number`,`crm_registered_customers_overview`.`balance` AS `balance`,`crm_registered_customers_overview`.`currency_code` AS `currency_code`,`crm_registered_customers_overview`.`account_type` AS `account_type`,`crm_registered_customers_overview`.`risk_level` AS `risk_level`,`crm_registered_customers_overview`.`credit_score` AS `credit_score`,`crm_registered_customers_overview`.`credit` AS `credit`,`crm_registered_customers_overview`.`credit_override` AS `credit_override`,`crm_registered_customers_overview`.`approved_at` AS `approved_at`,`crm_registered_customers_overview`.`suspended_at` AS `suspended_at`,`crm_registered_customers_overview`.`created_at` AS `created_at`,`crm_registered_customers_overview`.`deleted_at` AS `deleted_at`,`crm_registered_customers_overview`.`user_email` AS `user_email`,`crm_registered_customers_overview`.`user_username` AS `user_username`,`crm_registered_customers_overview`.`user_gender` AS `user_gender`,`crm_registered_customers_overview`.`representative_user_name` AS `representative_user_name`,`crm_registered_customers_overview`.`representative_user_id` AS `representative_user_id`,`crm_registered_customers_overview`.`representative_account_name` AS `representative_account_name`,`crm_registered_customers_overview`.`representative_account_id` AS `representative_account_id` from `crm_registered_customers_overview` union select `crm_created_customers_overview`.`id` AS `id`,`crm_created_customers_overview`.`id_ref` AS `id_ref`,`crm_created_customers_overview`.`name` AS `name`,`crm_created_customers_overview`.`domain` AS `domain`,`crm_created_customers_overview`.`phone_number` AS `phone_number`,`crm_created_customers_overview`.`balance` AS `balance`,`crm_created_customers_overview`.`currency_code` AS `currency_code`,`crm_created_customers_overview`.`account_type` AS `account_type`,`crm_created_customers_overview`.`risk_level` AS `risk_level`,`crm_created_customers_overview`.`credit_score` AS `credit_score`,`crm_created_customers_overview`.`credit` AS `credit`,`crm_created_customers_overview`.`credit_override` AS `credit_override`,`crm_created_customers_overview`.`approved_at` AS `approved_at`,`crm_created_customers_overview`.`suspended_at` AS `suspended_at`,`crm_created_customers_overview`.`created_at` AS `created_at`,`crm_created_customers_overview`.`deleted_at` AS `deleted_at`,`crm_created_customers_overview`.`user_email` AS `user_email`,`crm_created_customers_overview`.`user_username` AS `user_username`,`crm_created_customers_overview`.`user_gender` AS `user_gender`,`crm_created_customers_overview`.`representative_user_name` AS `representative_user_name`,`crm_created_customers_overview`.`representative_user_id` AS `representative_user_id`,`crm_created_customers_overview`.`representative_account_name` AS `representative_account_name`,`crm_created_customers_overview`.`representative_account_id` AS `representative_account_id` from `crm_created_customers_overview` order by `id` desc */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -9889,7 +9889,7 @@ CREATE TABLE `web_visitors_personality` (
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`10.100.0.105` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `crm_marketing_lists_contacts` AS select `c`.`id_ref` AS `id`,`c`.`account_id` AS `account_id`,`c`.`user_id` AS `user_id`,`c`.`name` AS `name`,`c`.`surname` AS `surname`,`c`.`full_name` AS `full_name`,`c`.`email` AS `email`,`ml`.`id_ref` AS `marketing_list_id`,`ml`.`name` AS `marketing_list_name` from ((`contacts` `c` join `marketing_lists_contacts` `mlc` on((`c`.`id` = `mlc`.`contact_id`))) join `marketing_lists` `ml` on((`mlc`.`ml_id` = `ml`.`id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -9907,7 +9907,7 @@ CREATE TABLE `web_visitors_personality` (
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`10.100.0.105` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `crm_organizations_overview` AS select `o`.`id_ref` AS `id`,`o`.`name` AS `name`,`o`.`domain` AS `domain`,`o`.`website` AS `website`,`o`.`phone_code` AS `phone_code`,`o`.`phone` AS `phone`,`c`.`name` AS `country_name`,`l`.`source` AS `source`,`l`.`lead_source` AS `lead_source`,`ll`.`id_ref` AS `lead_list_id`,`ll`.`name` AS `lead_list_name`,`l`.`state` AS `state`,`l`.`is_marketing_qualified` AS `is_marketing_qualified`,`l`.`is_sales_qualified` AS `is_sales_qualified`,`s`.`name` AS `segment_name`,`o`.`account_id` AS `account_id`,`a`.`id_ref` AS `representative_account_id`,`a`.`name` AS `representative_account_name`,`u`.`fullname` AS `representative_user_name`,`u`.`id_ref` AS `representative_user_id`,`o`.`created_at` AS `created_at` from ((((((`organizations` `o` left join `countries` `c` on((`o`.`country_id` = `c`.`id`))) left join `leads` `l` on((`o`.`lead_id` = `l`.`id`))) left join `lead_lists` `ll` on((`l`.`lead_list_id` = `ll`.`id`))) left join `segments` `s` on((`o`.`segment_id` = `s`.`id`))) join `accounts` `a` on((`o`.`representative_account_id` = `a`.`id`))) join `users` `u` on((`o`.`representative_user_id` = `u`.`id`))) where (`o`.`deleted_at` is null) order by `o`.`created_at` desc */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -9925,7 +9925,7 @@ CREATE TABLE `web_visitors_personality` (
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`10.100.0.105` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `crm_registered_customers_overview` AS select `a`.`id` AS `id`,`a`.`id_ref` AS `id_ref`,`a`.`name` AS `name`,`a`.`domain` AS `domain`,concat(`a`.`phone_code`,' ',`a`.`phone`) AS `phone_number`,`a`.`balance` AS `balance`,`a`.`currency_code` AS `currency_code`,`at`.`name` AS `account_type`,`cad`.`risk_level` AS `risk_level`,`cad`.`credit_score` AS `credit_score`,`cad`.`credit` AS `credit`,`cad`.`credit_override` AS `credit_override`,`a`.`approved_at` AS `approved_at`,`a`.`suspended_at` AS `suspended_at`,`a`.`created_at` AS `created_at`,`a`.`deleted_at` AS `deleted_at`,`u`.`email` AS `user_email`,`u`.`username` AS `user_username`,`u`.`gender` AS `user_gender`,concat(`urep`.`name`,' ',`urep`.`surname`) AS `representative_user_name`,`urep`.`id` AS `representative_user_id`,concat(`arep`.`name`) AS `representative_account_name`,`arep`.`id` AS `representative_account_id` from (((((((`accounts` `a` join `users` `rep` on((`rep`.`id` = `a`.`representative_id`))) join `account_types` `at` on((`a`.`account_type_id` = `at`.`id`))) join `crm_account_data` `cad` on((`a`.`id` = `cad`.`account_id`))) join `accounts` `arep` on((`cad`.`customer_of_account` = `arep`.`id`))) join `users` `urep` on((`cad`.`customer_of_user` = `urep`.`id`))) join `account_user` `au` on((`a`.`id` = `au`.`account_id`))) join `users` `u` on((`au`.`user_id` = `u`.`id`))) where (`a`.`account_type_id` <> 8) order by `a`.`id` desc */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -9943,7 +9943,7 @@ CREATE TABLE `web_visitors_personality` (
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`10.100.0.105` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `datacenter_node_usage_report_view` AS select `DN`.`id_ref` AS `datacenter_node_id`,`DN`.`name` AS `datacenter_node_name`,sum(`CM`.`total_vm`) AS `running_vm`,sum(`CM`.`used_cpu`) AS `used_cpu`,sum(`CM`.`total_ram`) AS `total_ram`,sum(`CM`.`used_ram`) AS `used_ram`,sum((`CM`.`total_ram` - `CM`.`used_ram`)) AS `free_ram`,`CP`.`cpu_hourly_price` AS `cpu_hourly_price`,`CP`.`ram_hourly_price` AS `ram_hourly_price`,`CP`.`hdd_hourly_price` AS `hdd_hourly_price`,(sum(`CM`.`used_cpu`) * `CP`.`cpu_hourly_price`) AS `used_cpu_hourly_price`,(sum(`CM`.`used_ram`) * `CP`.`ram_hourly_price`) AS `used_ram_hourly_price`,(((sum(`CM`.`used_cpu`) * `CP`.`cpu_hourly_price`) * 24) * 30) AS `used_cpu_monthly_price`,(((sum(`CM`.`used_ram`) * `CP`.`ram_hourly_price`) * 24) * 30) AS `used_ram_monthly_price` from ((`datacenter_nodes` `DN` join `compute_pools` `CP` on(((`CP`.`id` = `DN`.`compute_pool_id`) and (`CP`.`deleted_at` is null)))) join `compute_members` `CM` on(((`CM`.`compute_pool_id` = `CP`.`id`) and (`CM`.`deleted_at` is null)))) where (`DN`.`deleted_at` is null) group by `DN`.`id` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -9961,7 +9961,7 @@ CREATE TABLE `web_visitors_personality` (
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`10.100.0.105` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `datacenter_nodes_overview` AS select `DN`.`id` AS `id`,`DN`.`id_ref` AS `id_ref`,`DN`.`name` AS `name`,`DN`.`slug` AS `slug`,`DN`.`pricing_model` AS `pricing_model`,`DN`.`is_active` AS `is_active`,`DN`.`is_edge` AS `is_edge`,`DN`.`is_public` AS `is_public`,`DN`.`maintenance_mode` AS `maintenance_mode`,`DN`.`min_cpu_limit` AS `min_cpu_limit`,`DN`.`max_cpu_limit` AS `max_cpu_limit`,`DN`.`min_ram_limit` AS `min_ram_limit`,`DN`.`max_ram_limit` AS `max_ram_limit`,`DN`.`position` AS `position`,`DNT`.`description` AS `description`,`DNT`.`features` AS `features`,`DNT`.`locale` AS `locale`,(select group_concat(`T`.`slug`,',' separator ',') AS `tag` from (`tags` `T` join `taggables` `TA` on(((`TA`.`tag_id` = `T`.`id`) and (`TA`.`taggable_type` = 'PlusClouds\\IAAS\\Database\\Models\\DatacenterNode')))) where (`TA`.`taggable_id` = `DN`.`id`)) AS `tags`,`D`.`id_ref` AS `datacenter_id`,`D`.`name` AS `datacenter_name`,`D`.`city` AS `datacenter_city`,`CP`.`id_ref` AS `compute_pool_id`,`CP`.`name` AS `compute_pool_name`,`P`.`id_ref` AS `product_id`,`P`.`name` AS `product_name`,`C`.`code` AS `country_code`,`C`.`name` AS `country_name`,`A`.`id_ref` AS `account_id`,`A`.`name` AS `account_name` from ((((((`datacenter_nodes` `DN` left join `datacenter_node_translations` `DNT` on((`DNT`.`datacenter_node_id` = `DN`.`id`))) join `accounts` `A` on((`A`.`id` = `DN`.`vendor_id`))) join `datacenters` `D` on((`D`.`id` = `DN`.`datacenter_id`))) left join `compute_pools` `CP` on((`CP`.`id` = `DN`.`compute_pool_id`))) left join `products` `P` on((`P`.`id` = `DN`.`product_id`))) left join `countries` `C` on((`C`.`id` = `D`.`country_id`))) where (`DN`.`deleted_at` is null) order by (`DN`.`position` is null),`DN`.`position`,`DN`.`id` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -9979,7 +9979,7 @@ CREATE TABLE `web_visitors_personality` (
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`10.100.0.105` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `datacenters_overview` AS select `D`.`id` AS `id`,`D`.`id_ref` AS `id_ref`,`D`.`name` AS `name`,`D`.`slug` AS `slug`,`D`.`uuid_prefix` AS `uuid_prefix`,`D`.`is_default` AS `is_default`,`D`.`is_active` AS `is_active`,`D`.`is_public` AS `is_public`,`D`.`is_edge` AS `is_edge`,`D`.`maintenance_mode` AS `maintenance_mode`,(select `C`.`name` from `countries` `C` where (`C`.`id` = `D`.`country_id`)) AS `country_name`,`D`.`city` AS `city`,`DT`.`description` AS `description`,`DT`.`security` AS `security`,`DT`.`electricity` AS `electricity`,`DT`.`generators` AS `generators`,`D`.`geo_latitude` AS `geo_latitude`,`D`.`geo_longitude` AS `geo_longitude`,`D`.`tier_level` AS `tier_level`,`D`.`total_capacity` AS `total_capacity`,`D`.`guaranteed_uptime` AS `guaranteed_uptime`,`D`.`carrier_neutral` AS `carrier_neutral`,`D`.`local_area_network_capacity` AS `local_area_network_capacity`,`D`.`power_source` AS `power_source`,`D`.`ups` AS `ups`,`D`.`cooling` AS `cooling`,`D`.`position` AS `position`,`DT`.`locale` AS `locale`,`D`.`vendor_id` AS `vendor_id`,`A`.`id_ref` AS `vendor_id_ref`,`A`.`name` AS `vendor_name` from ((`datacenters` `D` left join `datacenter_translations` `DT` on((`DT`.`datacenter_id` = `D`.`id`))) join `accounts` `A` on((`A`.`id` = `D`.`vendor_id`))) where (`D`.`deleted_at` is null) order by (`D`.`position` is null),`D`.`position`,`D`.`id` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -9997,7 +9997,7 @@ CREATE TABLE `web_visitors_personality` (
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`10.100.0.105` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `invoices_overview` AS select `invoices`.`id` AS `invoice_id`,`invoices`.`id_ref` AS `invoice_id_ref`,`a`.`id` AS `account_id`,`c`.`id` AS `customer_id`,`a`.`id_ref` AS `account_id_ref`,`c`.`id_ref` AS `customer_id_ref`,`c`.`name` AS `customer_name`,`invoices`.`amount` AS `amount`,`invoices`.`vat` AS `vat`,`invoices`.`currency_code` AS `currency_code`,`invoices`.`exchange_rate` AS `exchange_rate`,`invoices`.`is_paid` AS `is_paid`,`invoices`.`is_refund` AS `is_refund`,`invoices`.`note` AS `note`,`invoices`.`custom_invoice_number` AS `custom_invoice_number`,`invoices`.`invoice_number` AS `invoice_number`,`invoices`.`detailed_report` AS `detailed_report`,`invoices`.`invoice_date` AS `invoice_date`,`invoices`.`invoice_due_date` AS `invoice_due_date`,`invoices`.`invoice_paid_date` AS `invoice_paid_date`,`invoices`.`created_at` AS `created_at` from ((`invoices` join `accounts` `a` on((`invoices`.`account_id` = `a`.`id`))) join `accounts` `c` on((`c`.`id` = `invoices`.`customer_id`))) order by `invoices`.`id` desc */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -10015,7 +10015,7 @@ CREATE TABLE `web_visitors_personality` (
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`10.100.0.105` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `ip_addresses_overview` AS select distinct `ip`.`id` AS `id`,`ip`.`id_ref` AS `id_ref`,`ip`.`ip_addr` AS `ip_addr`,`ip`.`version` AS `version`,`ip`.`is_reserved` AS `is_reserved`,`ip`.`is_reachable` AS `is_reachable`,`ip`.`is_public` AS `is_public`,`dn`.`id` AS `datacenter_node_id`,`dn`.`id_ref` AS `datacenter_node_id_ref`,`dn`.`name` AS `datacenter_node_name`,`ntw`.`id` AS `network_id`,`ntw`.`id_ref` AS `network_id_ref`,`ntw`.`name` AS `network_name`,`ntw`.`vlan` AS `network_vlan`,`ntw`.`ip_addr` AS `network_ip_addr`,`ntw`.`ip_range_start` AS `network_ip_range_start`,`ntw`.`ip_range_end` AS `network_ip_range_end`,`ntw`.`gateway` AS `network_gateway`,`ntw`.`subnet` AS `network_subnet`,`ntw`.`netmask` AS `network_netmask`,`ntw`.`network` AS `network_network`,`ntw`.`dns_nameservers` AS `network_dns_nameservers`,`ntw`.`mtu` AS `network_mtu`,`vif`.`id` AS `vif_id`,`vif`.`id_ref` AS `vif_id_ref`,`vif`.`name` AS `vif_name`,`vif`.`device_number` AS `vif_device_number`,`vif`.`mac_addr` AS `vif_mac_addr`,`vif`.`is_attached` AS `vif_is_attached`,`vm`.`id` AS `vm_id`,`vm`.`id_ref` AS `vm_id_ref`,`vm`.`name` AS `vm_name`,`vm`.`os` AS `vm_os`,`vm`.`distro` AS `vm_distro`,`vm`.`version` AS `vm_version`,`vm`.`status` AS `vm_status`,`vm`.`total_cpu` AS `vm_total_cpu`,`vm`.`total_ram` AS `vm_total_ram`,`vm`.`total_disk` AS `vm_total_disk`,`vm`.`total_network` AS `vm_total_network`,`vm`.`actual_cpu` AS `vm_actual_cpu`,`vm`.`actual_ram` AS `vm_actual_ram`,`vm`.`actual_disk` AS `vm_actual_disk`,`vm`.`actual_network` AS `vm_actual_network`,`vm`.`domain_type` AS `vm_domain_type`,`vm`.`is_template` AS `vm_is_template`,`vm`.`is_snapshot` AS `vm_is_snapshot`,`vm`.`is_locked` AS `vm_is_locked`,`vm`.`is_lost` AS `vm_is_lost`,`ip`.`account_id` AS `account_id`,`A`.`id_ref` AS `account_id_ref`,`A`.`name` AS `account_name` from ((((((`ip_addresses` `ip` left join `networks` `ntw` on((`ntw`.`id` = `ip`.`network_id`))) left join `datacenter_node_networks` `dnn` on((`dnn`.`network_id` = `ntw`.`id`))) left join `datacenter_nodes` `dn` on((`dn`.`id` = `dnn`.`datacenter_node_id`))) left join `virtual_network_cards` `vif` on((`vif`.`id` = `ip`.`virtual_network_card_id`))) left join `virtual_machines` `vm` on((`vm`.`id` = `vif`.`virtual_machine_id`))) join `accounts` `A` on((`A`.`id` = `ip`.`account_id`))) where ((`dn`.`deleted_at` is null) and (`vm`.`deleted_at` is null)) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -10033,7 +10033,7 @@ CREATE TABLE `web_visitors_personality` (
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`10.100.0.105` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `marketing_campaign_contacts` AS select `c`.`id_ref` AS `id`,`c`.`name` AS `name`,`c`.`surname` AS `surname`,`c`.`full_name` AS `fullname`,`c`.`email` AS `email`,`c`.`cellphone` AS `cellphone`,`c`.`workphone` AS `workphone`,`mc`.`id_ref` AS `campaign_id`,`mc`.`name` AS `campaign_name` from ((((`marketing_campaigns` `mc` join `marketing_campaign_marketing_lists` `mcml` on((`mc`.`id` = `mcml`.`mc_id`))) join `marketing_lists` `ml` on((`mcml`.`ml_id` = `ml`.`id`))) join `marketing_lists_contacts` `mlc` on((`ml`.`id` = `mlc`.`ml_id`))) join `contacts` `c` on((`mlc`.`contact_id` = `c`.`id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -10051,7 +10051,7 @@ CREATE TABLE `web_visitors_personality` (
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`10.100.0.105` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `netgateways_overview` AS select distinct `ngw`.`id` AS `id`,`ngw`.`id_ref` AS `id_ref`,`ngw`.`name` AS `name`,`net`.`name` AS `managed_network`,`ngw`.`type` AS `type`,`a`.`id` AS `account_id`,`a`.`id_ref` AS `account_id_ref`,`ngw`.`virtual_machine_id` AS `virtual_machine_id`,`vm`.`id_ref` AS `virtual_machine_id_ref`,`vm`.`is_locked` AS `is_locked`,`vm`.`status` AS `status`,`ngw`.`is_connected` AS `is_connected`,`ngw`.`is_usable` AS `is_usable`,`ngw`.`is_connection_secure` AS `is_connection_secure`,(select `ipa`.`ip_addr` from (((`netgateways` `ngw2` join `virtual_machines` `vm2` on((`ngw2`.`virtual_machine_id` = `vm2`.`id`))) join `virtual_network_cards` `vnc2` on((`vm2`.`id` = `vnc2`.`virtual_machine_id`))) join `ip_addresses` `ipa` on((`vnc2`.`id` = `ipa`.`virtual_network_card_id`))) where ((`ngw2`.`id` = `ngw`.`id`) and (`vnc2`.`device_number` = 0))) AS `ip_addr` from ((((`netgateways` `ngw` join `virtual_machines` `vm` on((`ngw`.`virtual_machine_id` = `vm`.`id`))) join `virtual_network_cards` `vnc` on((`vm`.`id` = `vnc`.`virtual_machine_id`))) join `networks` `net` on((`vnc`.`network_id` = `net`.`id`))) join `accounts` `a` on((`ngw`.`account_id` = `a`.`id`))) where ((`ngw`.`deleted_at` is null) and (`vnc`.`device_number` = 1) and (`vnc`.`deleted_at` is null)) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -10069,7 +10069,7 @@ CREATE TABLE `web_visitors_personality` (
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`10.100.0.105` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `networks_overview` AS select `N`.`id` AS `id`,`N`.`id_ref` AS `id_ref`,if((`DN`.`name` is not null),concat(`N`.`name`,' on ',`DN`.`name`),`N`.`name`) AS `name`,`N`.`vlan` AS `vlan`,`N`.`mtu` AS `mtu`,`N`.`network_type` AS `network_type`,`N`.`ip_addr` AS `ip_addr`,`N`.`ip_range_start` AS `ip_range_start`,`N`.`ip_range_end` AS `ip_range_end`,`N`.`gateway` AS `gateway`,`N`.`subnet` AS `subnet`,`N`.`netmask` AS `netmask`,`N`.`network` AS `network`,`N`.`dns_nameservers` AS `dns_nameservers`,`N`.`local_domain` AS `local_domain`,`N`.`is_bridge` AS `is_bridge`,`N`.`is_virtual_network` AS `is_virtual_network`,`N`.`is_interroutable` AS `is_interroutable`,`N`.`is_default_pif` AS `is_default_pif`,`N`.`is_master_record` AS `is_master_record`,`N`.`is_visible` AS `is_visible`,`N`.`network_pool_id` AS `network_pool_id`,`NP`.`id_ref` AS `network_pool_id_ref`,`NP`.`name` AS `network_pool_name`,`DN`.`id` AS `datacenter_node_id`,`DN`.`id_ref` AS `datacenter_node_id_ref`,`DN`.`name` AS `datacenter_node_name`,`N`.`dhcp_server_id` AS `dhcp_server_id`,`DS`.`id_ref` AS `dhcp_server_id_ref`,`DS`.`name` AS `dhcp_server_name`,`N`.`proxy_server_id` AS `proxy_server_id`,`PS`.`id_ref` AS `proxy_server_id_ref`,`PS`.`name` AS `proxy_server_name`,`N`.`nat_server_id` AS `nat_server_id`,`NS`.`id_ref` AS `nat_server_id_ref`,`NS`.`name` AS `nat_server_name`,`N`.`domain_id` AS `domain_id`,`D`.`id_ref` AS `domain_id_ref`,`D`.`name` AS `domain_name`,`N`.`account_id` AS `account_id`,`A`.`id_ref` AS `account_id_ref`,`A`.`name` AS `account_name` from ((((((((`networks` `N` join `network_pools` `NP` on((`NP`.`id` = `N`.`network_pool_id`))) left join `dhcp_servers` `DS` on((`DS`.`id` = `N`.`dhcp_server_id`))) left join `proxy_servers` `PS` on((`PS`.`id` = `N`.`proxy_server_id`))) left join `nat_servers` `NS` on((`NS`.`id` = `N`.`nat_server_id`))) left join `domains` `D` on((`D`.`id` = `N`.`domain_id`))) join `accounts` `A` on((`A`.`id` = `N`.`account_id`))) left join `datacenter_node_networks` `DNN` on((`DNN`.`network_id` = `N`.`id`))) left join `datacenter_nodes` `DN` on((`DN`.`id` = `DNN`.`datacenter_node_id`))) where (`N`.`deleted_at` is null) group by `N`.`id`,`DNN`.`datacenter_node_id` order by `N`.`id` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -10087,7 +10087,7 @@ CREATE TABLE `web_visitors_personality` (
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`10.100.0.105` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `projects_overview` AS select `p`.`id` AS `id`,`p`.`id_ref` AS `id_ref`,`p`.`name` AS `name`,`p`.`description` AS `description`,`p`.`start` AS `start`,`p`.`end` AS `end`,`p`.`status` AS `status`,`p`.`gitlab_url` AS `gitlab_url`,`p`.`priority` AS `priority`,`p`.`type` AS `type`,`a`.`name` AS `account_name`,`c`.`name` AS `customer_name`,`l`.`name` AS `leads_name`,`u`.`fullname` AS `created_by`,`u`.`id` AS `user_id`,`u`.`id_ref` AS `user_id_ref`,`c`.`id` AS `customer_id`,`c`.`id_ref` AS `customer_id_ref`,`l`.`id` AS `lead_id`,`l`.`id_ref` AS `lead_id_ref`,`p`.`created_at` AS `created_at`,`p`.`updated_at` AS `updated_at` from ((((`projects` `p` left join `accounts` `a` on((`p`.`account_id` = `a`.`id`))) left join `accounts` `c` on((`p`.`customer_id` = `c`.`id`))) left join `leads` `l` on((`p`.`lead_id` = `l`.`id`))) left join `users` `u` on((`p`.`user_id` = `u`.`id`))) where (`p`.`deleted_at` is null) order by `p`.`id` desc */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -10105,7 +10105,7 @@ CREATE TABLE `web_visitors_personality` (
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`10.100.0.105` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `storage_volume_usage_report_view` AS select `SV`.`id_ref` AS `storage_volume_id`,`SV`.`name` AS `storage_volume_name`,`DN`.`id_ref` AS `datacenter_node_id`,`DN`.`name` AS `datacenter_node_name`,sum(`SV`.`total_hdd`) AS `total_hdd`,sum(`SV`.`used_hdd`) AS `used_hdd`,sum((`SV`.`total_hdd` - `SV`.`used_hdd`)) AS `free_hdd`,`CP`.`hdd_hourly_price` AS `hdd_hourly_price`,(sum(`SV`.`used_hdd`) * `CP`.`hdd_hourly_price`) AS `used_hdd_hourly_price`,(((sum(`SV`.`used_hdd`) * `CP`.`hdd_hourly_price`) * 24) * 30) AS `used_hdd_monthly_price` from (((`storage_volumes` `SV` join `datacenter_node_storage_volumes` `DNSV` on((`DNSV`.`storage_volume_id` = `SV`.`id`))) join `datacenter_nodes` `DN` on(((`DN`.`id` = `DNSV`.`datacenter_node_id`) and (`DN`.`deleted_at` is null)))) join `compute_pools` `CP` on(((`CP`.`id` = `DN`.`compute_pool_id`) and (`CP`.`deleted_at` is null)))) where ((`SV`.`deleted_at` is null) and (`CP`.`pool_type` <> 'FARM') and (`SV`.`connection_type` <> 'local')) group by `SV`.`id`,`DN`.`id` order by `DN`.`id`,`SV`.`id` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -10123,7 +10123,7 @@ CREATE TABLE `web_visitors_personality` (
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`semihyonet`@`%` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `swarm_compute_members_overview` AS select `C`.`id` AS `id`,`C`.`id_ref` AS `id_ref`,`C`.`name` AS `name`,`C`.`hostname` AS `hostname`,`C`.`ip_addr` AS `ip_addr`,`scm`.`status` AS `swarm_compute_member_status`,`scm`.`type` AS `swarm_compute_member_type`,`scm`.`port` AS `swarm_compute_member_port`,`scm`.`is_leader` AS `is_leader`,`C`.`management_url` AS `management_url`,`C`.`port` AS `port`,`C`.`hypervisor_uuid` AS `hypervisor_uuid`,`C`.`total_cpu` AS `total_cpu`,`C`.`total_ram` AS `total_ram`,`C`.`total_vm` AS `total_vm`,`C`.`used_cpu` AS `used_cpu`,`C`.`used_ram` AS `used_ram`,`C`.`is_alive` AS `is_alive`,`C`.`compute_pool_id` AS `compute_pool_id` from (`swarm_compute_members` `scm` join `compute_members` `C` on((`scm`.`compute_member_id` = `C`.`id`))) where (`C`.`deleted_at` is null) order by `C`.`id` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -10141,7 +10141,7 @@ CREATE TABLE `web_visitors_personality` (
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`semihyonet`@`%` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `swarm_compute_pool_overview` AS select `C`.`id` AS `id`,`SCP`.`listen_addr` AS `listen_addr`,`SCP`.`listen_port` AS `listen_port`,`SCP`.`advertise_addr` AS `advertise_addr`,`SCP`.`advertise_port` AS `advertise_port`,`C`.`id_ref` AS `id_ref`,`C`.`name` AS `name`,`C`.`resource_validator` AS `resource_validator`,`C`.`pool_type` AS `pool_type`,`C`.`master_ip_addr` AS `master_ip_addr`,`C`.`management_url` AS `management_url`,`C`.`port` AS `port`,`C`.`management_type` AS `management_type`,`C`.`virtualization` AS `virtualization`,`C`.`virtualization_version` AS `virtualization_version`,`C`.`provisioning_alg` AS `provisioning_alg`,`C`.`management_package_name` AS `management_package_name`,`C`.`is_active` AS `is_active`,`C`.`is_alive` AS `is_alive`,`C`.`is_public` AS `is_public`,`C`.`datacenter_id` AS `datacenter_id` from (`swarm_compute_pools` `SCP` join `compute_pools` `C` on((`SCP`.`compute_pool_id` = `C`.`id`))) where (`C`.`deleted_at` is null) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -10159,7 +10159,7 @@ CREATE TABLE `web_visitors_personality` (
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`semihyonet`@`%` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `swarm_compute_pools_overview` AS select `C`.`id` AS `id`,`SCP`.`listen_addr` AS `listen_addr`,`SCP`.`listen_port` AS `listen_port`,`SCP`.`advertise_addr` AS `advertise_addr`,`SCP`.`advertise_port` AS `advertise_port`,`C`.`id_ref` AS `id_ref`,`C`.`name` AS `name`,`C`.`resource_validator` AS `resource_validator`,`C`.`pool_type` AS `pool_type`,`C`.`master_ip_addr` AS `master_ip_addr`,`C`.`management_url` AS `management_url`,`C`.`port` AS `port`,`C`.`management_type` AS `management_type`,`C`.`virtualization` AS `virtualization`,`C`.`virtualization_version` AS `virtualization_version`,`C`.`provisioning_alg` AS `provisioning_alg`,`C`.`management_package_name` AS `management_package_name`,`C`.`is_active` AS `is_active`,`C`.`is_alive` AS `is_alive`,`C`.`is_public` AS `is_public`,`C`.`datacenter_id` AS `datacenter_id` from (`swarm_compute_pools` `SCP` join `compute_pools` `C` on((`SCP`.`compute_pool_id` = `C`.`id`))) where (`C`.`deleted_at` is null) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -10177,7 +10177,7 @@ CREATE TABLE `web_visitors_personality` (
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`semihyonet`@`%` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `swarm_network_overview` AS select `N`.`id` AS `id`,`N`.`id_ref` AS `id_ref`,if((`DN`.`name` is not null),concat(`N`.`name`,' on ',`DN`.`name`),`N`.`name`) AS `name`,`SN`.`docker_network_id` AS `docker_network_id`,`N`.`vlan` AS `vlan`,`N`.`mtu` AS `mtu`,`N`.`network_type` AS `network_type`,`N`.`ip_addr` AS `ip_addr`,`N`.`ip_range_start` AS `ip_range_start`,`N`.`ip_range_end` AS `ip_range_end`,`N`.`gateway` AS `gateway`,`N`.`subnet` AS `subnet`,`N`.`netmask` AS `netmask`,`N`.`network` AS `network`,`N`.`dns_nameservers` AS `dns_nameservers`,`N`.`local_domain` AS `local_domain`,`N`.`is_bridge` AS `is_bridge`,`N`.`is_virtual_network` AS `is_virtual_network`,`N`.`is_interroutable` AS `is_interroutable`,`N`.`is_default_pif` AS `is_default_pif`,`N`.`is_master_record` AS `is_master_record`,`N`.`is_visible` AS `is_visible`,`N`.`network_pool_id` AS `network_pool_id`,`NP`.`id_ref` AS `network_pool_id_ref`,`NP`.`name` AS `network_pool_name`,`DN`.`id` AS `datacenter_node_id`,`DN`.`id_ref` AS `datacenter_node_id_ref`,`DN`.`name` AS `datacenter_node_name`,`N`.`dhcp_server_id` AS `dhcp_server_id`,`DS`.`id_ref` AS `dhcp_server_id_ref`,`DS`.`name` AS `dhcp_server_name`,`N`.`proxy_server_id` AS `proxy_server_id`,`PS`.`id_ref` AS `proxy_server_id_ref`,`PS`.`name` AS `proxy_server_name`,`N`.`nat_server_id` AS `nat_server_id`,`NS`.`id_ref` AS `nat_server_id_ref`,`NS`.`name` AS `nat_server_name`,`N`.`domain_id` AS `domain_id`,`D`.`id_ref` AS `domain_id_ref`,`D`.`name` AS `domain_name`,`N`.`account_id` AS `account_id`,`A`.`id_ref` AS `account_id_ref`,`A`.`name` AS `account_name` from (((((((((`swarm_networks` `SN` left join `networks` `N` on((`SN`.`network_id` = `N`.`id`))) join `network_pools` `NP` on((`NP`.`id` = `N`.`network_pool_id`))) left join `dhcp_servers` `DS` on((`DS`.`id` = `N`.`dhcp_server_id`))) left join `proxy_servers` `PS` on((`PS`.`id` = `N`.`proxy_server_id`))) left join `nat_servers` `NS` on((`NS`.`id` = `N`.`nat_server_id`))) left join `domains` `D` on((`D`.`id` = `N`.`domain_id`))) join `accounts` `A` on((`A`.`id` = `N`.`account_id`))) left join `datacenter_node_networks` `DNN` on((`DNN`.`network_id` = `N`.`id`))) left join `datacenter_nodes` `DN` on((`DN`.`id` = `DNN`.`datacenter_node_id`))) where (`N`.`deleted_at` is null) group by `N`.`id`,`DNN`.`datacenter_node_id`,`SN`.`id` order by `N`.`id` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -10195,7 +10195,7 @@ CREATE TABLE `web_visitors_personality` (
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`semihyonet`@`%` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `swarm_networks_overview` AS select `sn`.`id` AS `swarm_id` from (`swarm_networks` `sn` join `networks` `n` on((`sn`.`network_id` = `n`.`id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -10213,7 +10213,7 @@ CREATE TABLE `web_visitors_personality` (
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`semihyonet`@`%` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `swarm_virtual_machines_overview` AS select `vm`.`id` AS `id`,`vm`.`id_ref` AS `id_ref`,`vm`.`name` AS `name`,`sr`.`name` AS `replica_name`,`sr`.`image_url` AS `image_url`,`vm`.`hostname` AS `hostname`,`vm`.`os` AS `os`,`vm`.`distro` AS `distro`,`vm`.`domain_type` AS `domain_type`,`vm`.`winrm_enabled` AS `winrm_enabled`,`vm`.`is_locked` AS `is_locked`,`vm`.`is_lost` AS `is_lost`,`vm`.`status` AS `status`,`vm`.`actual_cpu` AS `actual_cpu`,`vm`.`actual_ram` AS `actual_ram`,`vm`.`actual_disk` AS `actual_disk`,`vm`.`actual_network` AS `actual_network`,`vm`.`product_id` AS `product_id`,`vm`.`product_catalog_id` AS `product_catalog_id`,(select `ip_addresses`.`ip_addr` from (`ip_addresses` join `virtual_network_cards` `vnc` on((`ip_addresses`.`virtual_network_card_id` = `vnc`.`id`))) where ((`vnc`.`virtual_machine_id` = `vm`.`id`) and (`ip_addresses`.`is_reachable` = true)) limit 1) AS `ip_addr`,(select count(`v`.`id`) from (`virtual_machines` `v` join `virtual_network_cards` `c` on((`v`.`id` = `c`.`virtual_machine_id`))) where ((`v`.`id` = `vm`.`id`) and (`c`.`deleted_at` is null))) AS `network_count`,(select `n`.`name` from ((`networks` `n` join `virtual_network_cards` `vnc2` on((`n`.`id` = `vnc2`.`network_id`))) join `virtual_machines` `m` on((`vnc2`.`virtual_machine_id` = `m`.`id`))) where ((`m`.`id` = `vm`.`id`) and (`vnc2`.`deleted_at` is null)) limit 1) AS `connected_to`,`dn`.`id_ref` AS `datacenter_node_id`,`dn`.`name` AS `datacenter_node_name`,`a`.`id_ref` AS `account_id`,`u`.`id_ref` AS `user_id`,`vm`.`created_at` AS `created_at`,`vm`.`updated_at` AS `updated_at` from (((((`swarm_virtual_machines` `svm` join `virtual_machines` `vm` on((`vm`.`id` = `svm`.`virtual_machine_id`))) join `datacenter_nodes` `dn` on((`vm`.`datacenter_node_id` = `dn`.`id`))) join `accounts` `a` on((`vm`.`account_id` = `a`.`id`))) join `users` `u` on((`vm`.`user_id` = `u`.`id`))) join `swarm_replicas` `sr` on((`sr`.`id` = `svm`.`replica_id`))) where ((`vm`.`deleted_at` is null) and (`vm`.`is_template` = 0) and (`vm`.`is_snapshot` = 0) and exists(select 1 from `netgateways` `ng` where (`ng`.`virtual_machine_id` = `vm`.`id`)) is false) order by `vm`.`created_at` desc */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -10231,7 +10231,7 @@ CREATE TABLE `web_visitors_personality` (
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`10.100.0.105` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `virtual_machines_overview` AS select `vm`.`id` AS `id`,`vm`.`id_ref` AS `id_ref`,`vm`.`name` AS `name`,`vm`.`hostname` AS `hostname`,`vm`.`os` AS `os`,`vm`.`distro` AS `distro`,`vm`.`domain_type` AS `domain_type`,`vm`.`winrm_enabled` AS `winrm_enabled`,`vm`.`is_locked` AS `is_locked`,`vm`.`is_lost` AS `is_lost`,`vm`.`status` AS `status`,`vm`.`actual_cpu` AS `actual_cpu`,`vm`.`actual_ram` AS `actual_ram`,`vm`.`actual_disk` AS `actual_disk`,`vm`.`actual_network` AS `actual_network`,`vm`.`product_id` AS `product_id`,`vm`.`product_catalog_id` AS `product_catalog_id`,(select `ip_addresses`.`ip_addr` from (`ip_addresses` join `virtual_network_cards` `vnc` on((`ip_addresses`.`virtual_network_card_id` = `vnc`.`id`))) where ((`vnc`.`virtual_machine_id` = `vm`.`id`) and (`ip_addresses`.`is_reachable` = true)) limit 1) AS `ip_addr`,(select count(`v`.`id`) from (`virtual_machines` `v` join `virtual_network_cards` `c` on((`v`.`id` = `c`.`virtual_machine_id`))) where ((`v`.`id` = `vm`.`id`) and (`c`.`deleted_at` is null))) AS `network_count`,(select `n`.`name` from ((`networks` `n` join `virtual_network_cards` `vnc2` on((`n`.`id` = `vnc2`.`network_id`))) join `virtual_machines` `m` on((`vnc2`.`virtual_machine_id` = `m`.`id`))) where ((`m`.`id` = `vm`.`id`) and (`vnc2`.`deleted_at` is null)) limit 1) AS `connected_to`,`dn`.`id_ref` AS `datacenter_node_id`,`dn`.`name` AS `datacenter_node_name`,`a`.`id_ref` AS `account_id`,`u`.`id_ref` AS `user_id`,`vm`.`last_metadata_request` AS `last_metadata_request`,`vm`.`created_at` AS `created_at`,`vm`.`updated_at` AS `updated_at` from (((`virtual_machines` `vm` join `datacenter_nodes` `dn` on((`vm`.`datacenter_node_id` = `dn`.`id`))) join `accounts` `a` on((`vm`.`account_id` = `a`.`id`))) join `users` `u` on((`vm`.`user_id` = `u`.`id`))) where ((`vm`.`deleted_at` is null) and (`vm`.`is_template` = 0) and (`vm`.`is_snapshot` = 0) and exists(select 1 from `netgateways` `ng` where (`ng`.`virtual_machine_id` = `vm`.`id`)) is false) order by `vm`.`created_at` desc */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
