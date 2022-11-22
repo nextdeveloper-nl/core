@@ -31,6 +31,9 @@ class InitiatorsService
             case 'crm':
                 $moduleName = 'CRM';
                 break;
+            case 'iam':
+                $moduleName = 'IAM';
+                break;
             default:
                 $moduleName = ucwordsTr($moduleName);
                 break;
